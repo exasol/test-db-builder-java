@@ -1,0 +1,80 @@
+package com.exasol.dbbuilder;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.iterableWithSize;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
+
+@ExtendWith(MockitoExtension.class)
+public class TableTest {
+    @Mock
+    private DatabaseObjectWriter writerMock;
+    @Mock
+    private Schema schemaMock;
+
+    @Test
+    void testGetType() {
+        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().getType(), equalTo("table"));
+    }
+
+    @Test
+    void testGetFullyQualifiedName() {
+        Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("THESCHEMA");
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "THETABLE").build();
+        assertThat(table.getFullyQualifiedName(), equalTo("THESCHEMA.THETABLE"));
+    }
+
+    @Test
+    void testGetName() {
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "FOO").build();
+        assertThat(table.getName(), equalTo("FOO"));
+    }
+
+    @Test
+    void testGetColumns() {
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "BAR") //
+                .column("COL1", "VARCHAR(40)") //
+                .column("COL2", "DATE") //
+                .build();
+        final List<Column> columns = table.getColumns();
+        assertAll(() -> assertThat("size", columns, iterableWithSize(2)), //
+                () -> assertThat(columns.get(0).getName(), equalTo("COL1")), //
+                () -> assertThat(columns.get(1).getType(), equalTo("DATE")), //
+                () -> assertThat(table.getColumnCount(), equalTo(2)));
+    }
+
+    @Test
+    void testInsert() {
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "TABLEWITHCONTENT") //
+                .column("NAME", "VARCHAR(40)") //
+                .column("BIRTHDAY", "DATE") //
+                .build() //
+                .insert("Claudia", "2001-01-01") //
+                .insert("Steven", "2002-02-02");
+        final List<List<Object>> rows = table.getRows();
+        assertThat(rows, contains(contains("Claudia", "2001-01-01"), contains("Steven", "2002-02-02")));
+    }
+
+    @Test
+    void testInsertThrowsExceptionOnValueCountMismatch() {
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "ONECOLUMNTABLE") //
+                .column("FOO", "DATE") //
+                .build();
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> table.insert("1", "2"));
+        assertThat(exception.getMessage(), startsWith("Column count mismatch"));
+    }
+}
