@@ -26,7 +26,7 @@ public final class DatabaseObjectFactory {
      * @param name name of the schema
      * @return new {@link Schema} instance.
      */
-    public AbstractDatabaseObject createSchema(final String name) {
+    public Schema createSchema(final String name) {
         return new Schema(this.writer, name);
     }
 
@@ -38,5 +38,30 @@ public final class DatabaseObjectFactory {
      */
     public User createUser(final String name) {
         return new User(this.writer, name);
+    }
+
+    /**
+     * Create a connection without credentials.
+     *
+     * @param name name of the connection
+     * @param to   target the connection points to
+     * @return new {@link User} instance
+     */
+    public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
+        return new ConnectionDefinition(this.writer, name, to);
+    }
+
+    /**
+     * Create a connection without credentials.
+     *
+     * @param name     name of the connection
+     * @param to       target the connection points to
+     * @param userName user as which to connect
+     * @param password password or password-like credential
+     * @return new {@link User} instance
+     */
+    public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
+            final String password) {
+        return new ConnectionDefinition(this.writer, name, to, userName, password);
     }
 }

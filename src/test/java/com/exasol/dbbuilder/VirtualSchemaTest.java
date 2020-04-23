@@ -22,12 +22,12 @@ public class VirtualSchemaTest {
     @Mock
     private DatabaseObjectWriter writerMock;
     @Mock
-    private Schema parentSchemaMock;
+    private Schema schemaMock;
     private VirtualSchema.Builder builder;
 
     @BeforeEach
     void beforeEach() {
-        this.builder = VirtualSchema.builder(this.writerMock, this.parentSchemaMock, "VS");
+        this.builder = VirtualSchema.builder(this.writerMock, this.schemaMock, "VS");
     }
 
     @Test
@@ -37,13 +37,23 @@ public class VirtualSchemaTest {
 
     @Test
     void testGetFullyQuallifiedName() {
-        when(this.parentSchemaMock.getFullyQualifiedName()).thenReturn("PARENT");
-        assertThat(this.builder.build().getFullyQualifiedName(), equalTo("PARENT.VS"));
+        when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"PARENT\"");
+        assertThat(this.builder.build().getFullyQualifiedName(), equalTo("\"PARENT\".\"VS\""));
     }
 
     @Test
     void testGetType() {
         assertThat(this.builder.build().getType(), equalTo("virtual schema"));
+    }
+
+    @Test
+    void testHasParent() {
+        assertThat(this.builder.build().hasParent(), equalTo(true));
+    }
+
+    @Test
+    void testGetParent() {
+        assertThat(this.builder.build().getParent(), sameInstance(this.schemaMock));
     }
 
     @Test
@@ -77,13 +87,16 @@ public class VirtualSchemaTest {
     }
 
     @Test
-    void testGetProperties() {
+    void testGetProperties(@Mock final ConnectionDefinition connectionDefinitionMock) {
+        when(connectionDefinitionMock.getName()).thenReturn("THE_CONNECTION");
         final Map<String, String> properties = this.builder //
                 .dialectName("EXASOL_VS") //
                 .properties(Map.of("FOO", "BAR", "BAZ", "ZOO")) //
+                .connectionDefinition(connectionDefinitionMock) //
                 .build() //
                 .getProperties();
-        assertAll(() -> assertThat(properties, hasEntry("SQL_DIALECT", "EXASOL_VS")),
+        assertAll(() -> assertThat("dialect property", properties, hasEntry("SQL_DIALECT", "EXASOL_VS")),
+                () -> assertThat("connection property", properties, hasEntry("CONNECTION_NAME", "THE_CONNECTION")),
                 () -> assertThat(properties, hasEntry("BAZ", "ZOO")),
                 () -> assertThat(properties, hasEntry("FOO", "BAR")));
     }

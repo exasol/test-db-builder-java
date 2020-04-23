@@ -25,16 +25,22 @@ public class AdapterScript extends AbstractDatabaseObject {
         this.schema = parentSchema;
         this.language = language;
         this.content = content;
-    }
-
-    @Override
-    public String getFullyQualifiedName() {
-        return this.schema.getFullyQualifiedName() + "." + this.name;
+        writer.write(this);
     }
 
     @Override
     public String getType() {
         return "adapter script";
+    }
+
+    @Override
+    public boolean hasParent() {
+        return true;
+    }
+
+    @Override
+    public DatabaseObject getParent() {
+        return this.schema;
     }
 
     /**

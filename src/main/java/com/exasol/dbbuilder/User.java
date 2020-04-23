@@ -33,8 +33,14 @@ public class User extends AbstractDatabaseObject {
     }
 
     @Override
-    public String getFullyQualifiedName() {
-        return this.name;
+    public boolean hasParent() {
+        return false;
+    }
+
+    @Override
+    public DatabaseObject getParent() {
+        throw new DatabaseObjectException(this,
+                "Illegal attempt to access parent object of a USER which is a top-level object.");
     }
 
     /**

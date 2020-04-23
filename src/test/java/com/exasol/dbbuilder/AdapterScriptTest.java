@@ -6,6 +6,7 @@ import static com.exasol.dbbuilder.AdapterScript.Language.PYTHON;
 import static com.exasol.dbbuilder.AdapterScript.Language.R;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.sameInstance;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,21 +26,34 @@ class AdapterScriptTest {
 
     @Test
     void testGetName() {
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "").getName(),
-                equalTo(ADAPTER_NAME));
+        assertThat(createContentlessJavaAdapterScript().getName(), equalTo(ADAPTER_NAME));
+    }
+
+    private AdapterScript createContentlessJavaAdapterScript() {
+        return new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "");
     }
 
     @Test
     void testGetFullyQualifiedName() {
-        Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("PARENT");
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "").getFullyQualifiedName(),
-                equalTo("PARENT." + ADAPTER_NAME));
+        Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"PARENT\"");
+        assertThat(createContentlessJavaAdapterScript().getFullyQualifiedName(),
+                equalTo("\"PARENT\".\"" + ADAPTER_NAME + "\""));
     }
 
     @Test
     void testGetType() {
         assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, LUA, "").getType(),
                 equalTo("adapter script"));
+    }
+
+    @Test
+    void testHasParent() {
+        assertThat(createContentlessJavaAdapterScript().hasParent(), equalTo(true));
+    }
+
+    @Test
+    void testGetParent() {
+        assertThat(createContentlessJavaAdapterScript().getParent(), sameInstance(this.schemaMock));
     }
 
     @Test

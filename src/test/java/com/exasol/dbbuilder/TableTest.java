@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.iterableWithSize;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,16 +32,27 @@ public class TableTest {
     }
 
     @Test
-    void testGetFullyQualifiedName() {
-        Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("THESCHEMA");
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "THETABLE").build();
-        assertThat(table.getFullyQualifiedName(), equalTo("THESCHEMA.THETABLE"));
-    }
-
-    @Test
     void testGetName() {
         final Table table = Table.builder(this.writerMock, this.schemaMock, "FOO").build();
         assertThat(table.getName(), equalTo("FOO"));
+    }
+
+    @Test
+    void testGetFullyQualifiedName() {
+        Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"THE_SCHEMA\"");
+        final Table table = Table.builder(this.writerMock, this.schemaMock, "THE_TABLE").build();
+        assertThat(table.getFullyQualifiedName(), equalTo("\"THE_SCHEMA\".\"THE_TABLE\""));
+    }
+
+    @Test
+    void testHasParent() {
+        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().hasParent(), equalTo(true));
+    }
+
+    @Test
+    void testGetParent() {
+        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().getParent(),
+                sameInstance(this.schemaMock));
     }
 
     @Test

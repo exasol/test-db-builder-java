@@ -4,8 +4,9 @@ package com.exasol.dbbuilder;
  * Exception for database object generation.
  */
 public class DatabaseObjectException extends RuntimeException {
-    private static final long serialVersionUID = -8044152273775485585L;
-    private final DatabaseObject object;
+    private static final long serialVersionUID = 1526690962275232472L;
+    private final String fullyQualifiedObjectName;
+    private final String objectType;
 
     /**
      * Create a new instance of a {@link DatabaseObjectException}
@@ -14,8 +15,9 @@ public class DatabaseObjectException extends RuntimeException {
      * @param message error message
      */
     public DatabaseObjectException(final DatabaseObject object, final String message) {
-        super("Unable to create " + object.getType() + " \"" + object.getName() + "\"");
-        this.object = object;
+        super(message);
+        this.fullyQualifiedObjectName = object.getFullyQualifiedName();
+        this.objectType = object.getType();
     }
 
     /**
@@ -25,20 +27,22 @@ public class DatabaseObjectException extends RuntimeException {
      * @param cause  reason we were unable to create the object
      */
     public DatabaseObjectException(final DatabaseObject object, final Exception cause) {
-        super("Unable to create " + object.getType() + " \"" + object.getFullyQualifiedName() + "\"", cause);
-        this.object = object;
+        super("Unable to create " + object.getType() + " " + object.getFullyQualifiedName(), cause);
+        this.fullyQualifiedObjectName = object.getFullyQualifiedName();
+        this.objectType = object.getType();
     }
 
     /**
      * Create a new instance of a {@link DatabaseObjectException}
      *
-     * @param message error message
      * @param object  database object
+     * @param message error message
      * @param cause   reason we were unable to create the object
      */
-    public DatabaseObjectException(final String message, final DatabaseObject object, final Exception cause) {
-        super(message + "In the context of " + object.getType() + " \"" + object.getFullyQualifiedName() + "\"", cause);
-        this.object = object;
+    public DatabaseObjectException(final DatabaseObject object, final String message, final Exception cause) {
+        super(message + " In the context of " + object.getType() + " " + object.getFullyQualifiedName(), cause);
+        this.fullyQualifiedObjectName = object.getFullyQualifiedName();
+        this.objectType = object.getType();
     }
 
     /**
@@ -47,7 +51,7 @@ public class DatabaseObjectException extends RuntimeException {
      * @return object type
      */
     public String getObjectType() {
-        return this.object.getType();
+        return this.objectType;
     }
 
     /**
@@ -55,7 +59,7 @@ public class DatabaseObjectException extends RuntimeException {
      *
      * @return object name
      */
-    public String getObjectName() {
-        return this.object.getFullyQualifiedName();
+    public String getFullyQualifiedObjectName() {
+        return this.fullyQualifiedObjectName;
     }
 }

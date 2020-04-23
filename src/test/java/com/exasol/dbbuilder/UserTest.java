@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,35 +14,42 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 
 @ExtendWith(MockitoExtension.class)
-public class UserTest {
+class UserTest {
     @Mock
     private DatabaseObjectWriter writerMock;
 
     @Test
-    public void getType() {
+    void getType() {
         assertThat(new User(this.writerMock, "A").getType(), equalTo("user"));
     }
 
     @Test
-    public void testName() {
-        final User user = new User(this.writerMock, "JANEDOE");
-        assertThat(user.getFullyQualifiedName(), equalTo("JANEDOE"));
+    void testName() {
+        assertThat(new User(this.writerMock, "JANEDOE").getName(), equalTo("JANEDOE"));
     }
 
     @Test
-    public void testGetFullyQualifiedName() {
-        final User user = new User(this.writerMock, "JOHNDOE");
-        assertThat(user.getFullyQualifiedName(), equalTo("JOHNDOE"));
+    void testGetFullyQualifiedName() {
+        assertThat(new User(this.writerMock, "JOHNDOE").getFullyQualifiedName(), equalTo("\"JOHNDOE\""));
     }
 
     @Test
-    public void testGetDefaultPassword() {
-        final User user = new User(this.writerMock, "SMITH");
-        assertThat(user.getPassword(), equalTo("SMITHPWD"));
+    void testHasParent() {
+        assertThat(new User(this.writerMock, "JOHNDOE").hasParent(), equalTo(false));
     }
 
     @Test
-    public void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
+    void testGetParentThrowsException() {
+        assertThrows(DatabaseObjectException.class, () -> new User(this.writerMock, "JOHNDOE").getParent());
+    }
+
+    @Test
+    void testGetDefaultPassword() {
+        assertThat(new User(this.writerMock, "SMITH").getPassword(), equalTo("SMITHPWD"));
+    }
+
+    @Test
+    void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { ObjectPrivilege.INSERT, ObjectPrivilege.DELETE };
         final User user = new User(this.writerMock, "OBJUSER") //
                 .grantAccess(objectMock, expectedObjectPrivileges);
@@ -49,14 +57,14 @@ public class UserTest {
     }
 
     @Test
-    public void testGetSystemPrivileges() {
+    void testGetSystemPrivileges() {
         final User user = new User(this.writerMock, "SYTEMUSER") //
                 .grantSystemPrivilege(SystemPrivilege.SESSION);
         assertThat(user.getSystemPrivileges(), contains(SystemPrivilege.SESSION));
     }
 
     @Test
-    public void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
+    void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
         final User user = new User(this.writerMock, "OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ObjectPrivilege.values()));
     }

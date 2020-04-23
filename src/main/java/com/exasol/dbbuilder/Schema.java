@@ -25,12 +25,18 @@ public class Schema extends AbstractDatabaseObject {
 
     @Override
     public String getType() {
-        return "table";
+        return "schema";
     }
 
     @Override
-    public String getFullyQualifiedName() {
-        return this.name;
+    public boolean hasParent() {
+        return false;
+    }
+
+    @Override
+    public DatabaseObject getParent() {
+        throw new DatabaseObjectException(this,
+                "Illegal attempt to access parent object of a SCHEMA which is a top-level object.");
     }
 
     /**
@@ -43,23 +49,84 @@ public class Schema extends AbstractDatabaseObject {
     }
 
     /**
+     * Create an adapter script.
+     *
+     * @param name     name of the adapter script
+     * @param language language the adapter script is implemented in
+     * @param content  implementation of the script
+     * @return adapter script
+     */
+    public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
+            final String content) {
+        return new AdapterScript(this.writer, this, name, language, content);
+    }
+
+    /**
+     * Create a table with one column.
+     *
+     * @param name        name of the table
+     * @param column1Name name of the first column
+     * @param column1Type type of the first column
+     * @return table
+     */
+    public Table createTable(final String name, final String column1Name, final String column1Type) {
+        return createTableWithColumns(name, column1Name, column1Type);
+    }
+
+    private Table createTableWithColumns(final String name, final String... columnPairs) {
+        assert ((columnPairs.length % 2) == 0);
+        final Table.Builder builder = Table.builder(this.writer, this, name);
+        for (int i = 0; i < columnPairs.length; i += 2) {
+            builder.column(columnPairs[i], columnPairs[i + 1]);
+        }
+        final Table table = builder.build();
+        this.tables.add(table);
+        return table;
+    }
+
+    /**
      * Create a table with two columns.
      *
-     * @param tableName   name of the table
-     * @param colum1Name  name of the first column
+     * @param name        name of the table
+     * @param column1Name name of the first column
      * @param column1Type type of the first column
      * @param column2Name name of the second column
      * @param column2Type type of the second column
      * @return table
      */
-    public Table createTable(final String tableName, final String colum1Name, final String column1Type,
+    public Table createTable(final String name, final String column1Name, final String column1Type,
             final String column2Name, final String column2Type) {
-        final Table table = Table.builder(this.writer, this, tableName) //
-                .column(colum1Name, column1Type) //
-                .column(column2Name, column2Type) //
-                .build();
-        this.tables.add(table);
-        return table;
+        return createTableWithColumns(name, column1Name, column1Type, column2Name, column2Type);
+    }
+
+    /**
+     * Create a table with three columns.
+     *
+     * @param name        name of the table
+     * @param column1Name name of the first column
+     * @param column1Type type of the first column
+     * @param column2Name name of the second column
+     * @param column2Type type of the second column
+     * @param column3Name name of the third column
+     * @param column3Type type of the third column
+     * @return table
+     */
+    public Table createTable(final String name, final String column1Name, final String column1Type,
+            final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
+        return createTableWithColumns(name, column1Name, column1Type, column2Name, column2Type);
+    }
+
+    /**
+     * Create a builder for a table.
+     * <p>
+     * In cases where you need a more complex table than can be created by the convenience methods {@code createTable},
+     * this method provides a builder.
+     *
+     * @param name table name
+     * @return builder for the table
+     */
+    public Table.Builder createTableBuilder(final String name) {
+        return Table.builder(this.writer, this, name);
     }
 
     /**

@@ -11,13 +11,13 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
  */
 public class Table extends AbstractDatabaseObject {
     private final List<Column> columns;
-    private final Schema partentSchema;
+    private final Schema parentSchema;
     private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
         super(builder.writer, builder.name);
         this.columns = builder.columns;
-        this.partentSchema = builder.partentSchema;
+        this.parentSchema = builder.parentSchema;
         this.writer.write(this);
     }
 
@@ -26,14 +26,14 @@ public class Table extends AbstractDatabaseObject {
         return "table";
     }
 
-    /**
-     * Get the table name including parent schema.
-     *
-     * @return fully qualified name
-     */
     @Override
-    public String getFullyQualifiedName() {
-        return this.partentSchema.getFullyQualifiedName() + "." + this.name;
+    public boolean hasParent() {
+        return true;
+    }
+
+    @Override
+    public DatabaseObject getParent() {
+        return this.parentSchema;
     }
 
     /**
@@ -99,7 +99,7 @@ public class Table extends AbstractDatabaseObject {
         private final DatabaseObjectWriter writer;
         private final String name;
         private final List<Column> columns = new ArrayList<>();
-        private final Schema partentSchema;
+        private final Schema parentSchema;
 
         /**
          * Create new instance of a builder for a database table.
@@ -110,7 +110,7 @@ public class Table extends AbstractDatabaseObject {
          */
         public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final String tableName) {
             this.writer = writer;
-            this.partentSchema = parentSchema;
+            this.parentSchema = parentSchema;
             this.name = tableName;
         }
 

@@ -24,6 +24,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
         this.connectionDefinition = builder.connectionDefinition;
         addReservedProperties(builder);
         this.properties.putAll(builder.properties);
+        this.writer.write(this);
     }
 
     private void addReservedProperties(final Builder builder) {
@@ -31,8 +32,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
             this.properties.put(VirtualSchema.SQL_DIALECT_KEY, builder.dialectName);
         }
         if (builder.connectionDefinition != null) {
-            this.properties.put(VirtualSchema.CONNECTION_NAME_KEY,
-                    builder.connectionDefinition.getFullyQualifiedName());
+            this.properties.put(VirtualSchema.CONNECTION_NAME_KEY, builder.connectionDefinition.getName());
         }
         if (builder.sourceSchemaName != null) {
             this.properties.put(VirtualSchema.SCHEMA_NAME_KEY, builder.sourceSchemaName);
@@ -45,8 +45,13 @@ public class VirtualSchema extends AbstractDatabaseObject {
     }
 
     @Override
-    public String getFullyQualifiedName() {
-        return this.parentSchema.getFullyQualifiedName() + "." + this.name;
+    public boolean hasParent() {
+        return true;
+    }
+
+    @Override
+    public DatabaseObject getParent() {
+        return this.parentSchema;
     }
 
     /**

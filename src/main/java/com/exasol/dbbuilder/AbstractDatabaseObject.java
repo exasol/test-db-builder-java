@@ -20,13 +20,21 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
         this.name = name;
     }
 
-    /**
-     * Get the name of the database object.
-     *
-     * @return name of the schema
-     */
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getFullyQualifiedName() {
+        if (hasParent()) {
+            return getParent().getFullyQualifiedName() + "." + quote(this.name);
+        } else {
+            return quote(this.name);
+        }
+    }
+
+    private String quote(final String name) {
+        return "\"" + name.replaceAll("\"", "\"\"") + "\"";
     }
 }
