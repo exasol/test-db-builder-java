@@ -7,6 +7,7 @@
     <version>0.1.0</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
+    <url>https://github.com/exasol/test-db-builder</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

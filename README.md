@@ -68,7 +68,7 @@ This is an open source project which is officially supported by Exasol. For any 
 
 ### Run Time Dependencies
 
-Running the Virtual Schema requires a Java Runtime version 11 or later.
+Running the Test Database Builder requires a Java Runtime version 11 or later.
 
 | Dependency                                                                          | Purpose                                                | License                          |
 |-------------------------------------------------------------------------------------|--------------------------------------------------------|----------------------------------|
