@@ -42,6 +42,11 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
+    public User createLoginUser(final String name) {
+        return createUser(name).grant(SystemPrivilege.CREATE_SESSION);
+    }
+
+    @Override
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
         return VirtualSchema.builder(this.writer, name);
     }

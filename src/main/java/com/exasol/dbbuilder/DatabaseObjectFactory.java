@@ -38,6 +38,14 @@ public interface DatabaseObjectFactory {
     public User createUser(String name);
 
     /**
+     * Create user that can log into the database.
+     * 
+     * @param name
+     * @return new {@link User} instance
+     */
+    public User createLoginUser(String name);
+
+    /**
      * Create a builder for a Virtual Schema.
      *
      * @param name name of the Virtual Schema

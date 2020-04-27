@@ -111,6 +111,14 @@ class DataObjectCreationIT {
     }
 
     @Test
+    void testCreateLoginUser() throws SQLException {
+        final User user = this.factory.createLoginUser("LOGIN_USER");
+        try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
+            assertThat(connection.isClosed(), equalTo(false));
+        }
+    }
+
+    @Test
     void testCreateVirtualSchema() {
         final ConnectionDefinition connectionDefinition = this.factory.createConnectionDefinition("THE_CONNECTION",
                 "destination");
