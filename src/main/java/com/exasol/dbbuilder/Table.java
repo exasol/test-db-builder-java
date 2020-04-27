@@ -76,7 +76,7 @@ public class Table extends AbstractDatabaseObject {
                             + this.getFullyQualifiedName() + "\" which has " + this.columns.size() + " columns");
         }
         this.rows.add(Arrays.asList(values));
-        this.writer.write(this, this.rows);
+        this.writer.write(this, values);
         return this;
     }
 

@@ -89,7 +89,7 @@ public class User extends AbstractDatabaseObject {
      * @param privileges privileges to grant the user
      * @return {@link User} instance for fluent programming
      */
-    public User grantAccess(final DatabaseObject object, final ObjectPrivilege... privileges) {
+    public User grant(final DatabaseObject object, final ObjectPrivilege... privileges) {
         this.objectPrivileges.put(object, privileges);
         this.writer.write(this, object, privileges);
         return this;
@@ -101,7 +101,7 @@ public class User extends AbstractDatabaseObject {
      * @param privileges system privileges
      * @return {@link User} instance for fluent programming
      */
-    public User grantSystemPrivilege(final SystemPrivilege... privileges) {
+    public User grant(final SystemPrivilege... privileges) {
         this.systemPrivileges.addAll(Set.of(privileges));
         this.writer.write(this, privileges);
         return this;

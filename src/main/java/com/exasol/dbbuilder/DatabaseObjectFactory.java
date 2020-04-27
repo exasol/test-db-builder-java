@@ -1,45 +1,6 @@
 package com.exasol.dbbuilder;
 
-import java.sql.Connection;
-
-import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
-import com.exasol.dbbuilder.objectwriter.ImmediateDatabaseObjectWriter;
-
-/**
- * Factory for top-level a database schema.
- */
-public final class DatabaseObjectFactory {
-    private final DatabaseObjectWriter writer;
-
-    /**
-     * Create a new {@link DatabaseObjectFactory} instance.
-     *
-     * @param connection JDBC connection
-     */
-    public DatabaseObjectFactory(final Connection connection) {
-        this.writer = new ImmediateDatabaseObjectWriter(connection);
-    }
-
-    /**
-     * Create a new database schema.
-     *
-     * @param name name of the schema
-     * @return new {@link Schema} instance.
-     */
-    public Schema createSchema(final String name) {
-        return new Schema(this.writer, name);
-    }
-
-    /**
-     * Create a new database user.
-     *
-     * @param name user name
-     * @return new {@link User} instance
-     */
-    public User createUser(final String name) {
-        return new User(this.writer, name);
-    }
-
+public interface DatabaseObjectFactory {
     /**
      * Create a connection without credentials.
      *
@@ -47,9 +8,7 @@ public final class DatabaseObjectFactory {
      * @param to   target the connection points to
      * @return new {@link User} instance
      */
-    public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
-        return new ConnectionDefinition(this.writer, name, to);
-    }
+    public ConnectionDefinition createConnectionDefinition(String name, String to);
 
     /**
      * Create a connection without credentials.
@@ -60,8 +19,29 @@ public final class DatabaseObjectFactory {
      * @param password password or password-like credential
      * @return new {@link User} instance
      */
-    public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
-            final String password) {
-        return new ConnectionDefinition(this.writer, name, to, userName, password);
-    }
+    public ConnectionDefinition createConnectionDefinition(String name, String to, String userName, String password);
+
+    /**
+     * Create a new database schema.
+     *
+     * @param name name of the schema
+     * @return new {@link Schema} instance.
+     */
+    public Schema createSchema(String name);
+
+    /**
+     * Create a new database user.
+     *
+     * @param name user name
+     * @return new {@link User} instance
+     */
+    public User createUser(String name);
+
+    /**
+     * Create a builder for a Virtual Schema.
+     *
+     * @param name name of the Virtual Schema
+     * @return builder
+     */
+    public VirtualSchema.Builder createVirtualSchemaBuilder(String name);
 }

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.Map;
@@ -21,13 +22,11 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 public class VirtualSchemaTest {
     @Mock
     private DatabaseObjectWriter writerMock;
-    @Mock
-    private Schema schemaMock;
     private VirtualSchema.Builder builder;
 
     @BeforeEach
     void beforeEach() {
-        this.builder = VirtualSchema.builder(this.writerMock, this.schemaMock, "VS");
+        this.builder = VirtualSchema.builder(this.writerMock, "VS");
     }
 
     @Test
@@ -37,8 +36,7 @@ public class VirtualSchemaTest {
 
     @Test
     void testGetFullyQuallifiedName() {
-        when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"PARENT\"");
-        assertThat(this.builder.build().getFullyQualifiedName(), equalTo("\"PARENT\".\"VS\""));
+        assertThat(this.builder.build().getFullyQualifiedName(), equalTo("\"VS\""));
     }
 
     @Test
@@ -48,12 +46,12 @@ public class VirtualSchemaTest {
 
     @Test
     void testHasParent() {
-        assertThat(this.builder.build().hasParent(), equalTo(true));
+        assertThat(this.builder.build().hasParent(), equalTo(false));
     }
 
     @Test
     void testGetParent() {
-        assertThat(this.builder.build().getParent(), sameInstance(this.schemaMock));
+        assertThrows(DatabaseObjectException.class, () -> this.builder.build().getParent());
     }
 
     @Test
@@ -65,8 +63,8 @@ public class VirtualSchemaTest {
 
     @Test
     void testBuilderWithSourceSchema(@Mock final Schema sourceSchemaMock) {
-        when(sourceSchemaMock.getFullyQualifiedName()).thenReturn("SRC");
-        assertThat(this.builder.sourceSchema(sourceSchemaMock).build().getSourceSchemaName(), equalTo("SRC"));
+        when(sourceSchemaMock.getFullyQualifiedName()).thenReturn("\"SRC\"");
+        assertThat(this.builder.sourceSchema(sourceSchemaMock).build().getSourceSchemaName(), equalTo("\"SRC\""));
     }
 
     @Test

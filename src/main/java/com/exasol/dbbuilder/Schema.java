@@ -128,14 +128,4 @@ public class Schema extends AbstractDatabaseObject {
     public Table.Builder createTableBuilder(final String name) {
         return Table.builder(this.writer, this, name);
     }
-
-    /**
-     * Create a builder for a Virtual Schema.
-     *
-     * @param name name of the Virtual Schema
-     * @return builder
-     */
-    public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
-        return VirtualSchema.builder(this.writer, this, name);
-    }
 }

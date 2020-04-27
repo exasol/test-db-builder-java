@@ -1,7 +1,5 @@
 package com.exasol.dbbuilder.objectwriter;
 
-import java.util.List;
-
 import com.exasol.dbbuilder.AdapterScript;
 import com.exasol.dbbuilder.ConnectionDefinition;
 import com.exasol.dbbuilder.DatabaseObject;
@@ -47,10 +45,10 @@ public interface DatabaseObjectWriter {
     /**
      * Write data to a database table.
      *
-     * @param table table to write to
-     * @param rows  rows to be written
+     * @param table  table to write to
+     * @param values values to be written
      */
-    public void write(final Table table, final List<List<Object>> rows);
+    public void write(final Table table, final Object... values);
 
     /**
      * Create a user in the database.

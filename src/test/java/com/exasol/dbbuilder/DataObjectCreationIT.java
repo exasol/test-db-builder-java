@@ -1,5 +1,14 @@
 package com.exasol.dbbuilder;
 
+import static com.exasol.dbbuilder.AdapterScript.Language.PYTHON;
+import static com.exasol.dbbuilder.ObjectPrivilege.DELETE;
+import static com.exasol.dbbuilder.ObjectPrivilege.UPDATE;
+import static com.exasol.dbbuilder.SystemPrivilege.CREATE_SESSION;
+import static com.exasol.dbbuilder.SystemPrivilege.KILL_ANY_SESSION;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,20 +35,21 @@ class DataObjectCreationIT {
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>(
             ExasolContainerConstants.EXASOL_DOCKER_IMAGE_REFERENCE) //
                     .withLogConsumer(new Slf4jLogConsumer(LOGGER));
+    private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):" //
+            + "    return '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'";
     private DatabaseObjectFactory factory;
     private Connection adminConnection;
 
     @BeforeEach
     void beforeEach() throws NoDriverFoundException, SQLException {
         this.adminConnection = container.createConnection("");
-        this.factory = new DatabaseObjectFactory(container.createConnection(""));
+        this.factory = new ExasolObjectFactory(container.createConnection(""));
     }
 
     @Test
     void testCreateAdapterScript() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT");
-        assertObjectExistsInDatabase(
-                schema.createAdapterScript("THE_ADAPTER_SCRIPT", AdapterScript.Language.JAVA, "the content"));
+        assertObjectExistsInDatabase(schema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON, ADAPTER_SCRIPT_CONTENT));
     }
 
     private void assertObjectExistsInDatabase(final DatabaseObject object) {
@@ -47,10 +57,8 @@ class DataObjectCreationIT {
                 "SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE " + getSysName(object) + "_NAME=?")) {
             objectExistenceStatement.setString(1, object.getName());
             final ResultSet resultSet = objectExistenceStatement.executeQuery();
-            if (!resultSet.next()) {
-                throw new AssertionError("Expected " + object.getType() + " " + object.getFullyQualifiedName()
-                        + " to exist in database, but could not find it.");
-            }
+            assertThat("Object" + object.getType() + " " + object.getFullyQualifiedName() + " exists in database",
+                    resultSet.next(), equalTo(true));
         } catch (final SQLException exception) {
             throw new AssertionError(
                     "Unable to determine existence of " + object.getType() + " " + object.getFullyQualifiedName() + ".",
@@ -107,9 +115,79 @@ class DataObjectCreationIT {
         final ConnectionDefinition connectionDefinition = this.factory.createConnectionDefinition("THE_CONNECTION",
                 "destination");
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_VIRTUAL_SCHEMA");
-        final AdapterScript adapterScript = schema.createAdapterScript("THE_ADAPTER_SCRIPT", AdapterScript.Language.R,
-                "some content");
-        assertObjectExistsInDatabase(schema.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA").dialectName("Exasol")
+        final AdapterScript adapterScript = schema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON,
+                ADAPTER_SCRIPT_CONTENT);
+        assertObjectExistsInDatabase(this.factory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA").dialectName("Exasol")
                 .adapterScript(adapterScript).connectionDefinition(connectionDefinition).build());
+    }
+
+    @Test
+    void testGrantSystemPrivilegeToUser() {
+        final User user = this.factory.createUser("SYSPRIVUSER").grant(CREATE_SESSION, KILL_ANY_SESSION);
+        assertAll(() -> assertUserHasSystemPrivilege(user, CREATE_SESSION),
+                () -> assertUserHasSystemPrivilege(user, KILL_ANY_SESSION));
+    }
+
+    private void assertUserHasSystemPrivilege(final User user, final SystemPrivilege expectedPrivilege)
+            throws AssertionError {
+        try (final PreparedStatement statement = this.adminConnection
+                .prepareStatement("SELECT 1 FROM SYS.EXA_DBA_SYS_PRIVS WHERE GRANTEE=? AND PRIVILEGE=?")) {
+            statement.setString(1, user.getName());
+            statement.setString(2, expectedPrivilege.toString());
+            final ResultSet result = statement.executeQuery();
+            assertThat("User " + user.getFullyQualifiedName() + " has system privilege " + expectedPrivilege,
+                    result.next(), equalTo(true));
+        } catch (final SQLException exception) {
+            throw new AssertionError("Unable to determine if user " + user.getFullyQualifiedName()
+                    + " has system privilege " + expectedPrivilege + ".", exception);
+        }
+    }
+
+    @Test
+    void testGrantObjectPrivilegeToUser() {
+        final DatabaseObject schema = this.factory.createSchema("OBJPRIVSCHEMA");
+        final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, UPDATE, DELETE);
+        assertAll(() -> assertUserHasObjectPrivilege(user, schema, UPDATE),
+                () -> assertUserHasObjectPrivilege(user, schema, DELETE));
+    }
+
+    private void assertUserHasObjectPrivilege(final User user, final DatabaseObject object,
+            final ObjectPrivilege expectedObjectPrivilege) {
+        try (final PreparedStatement statement = this.adminConnection.prepareStatement(
+                "SELECT 1 FROM SYS.EXA_DBA_OBJ_PRIVS WHERE GRANTEE=? AND OBJECT_NAME=? AND PRIVILEGE=?")) {
+            statement.setString(1, user.getName());
+            statement.setString(2, object.getName());
+            statement.setString(3, expectedObjectPrivilege.toString());
+            final ResultSet result = statement.executeQuery();
+            assertThat("User " + user.getFullyQualifiedName() + " has privilege " + expectedObjectPrivilege + " on "
+                    + object.getFullyQualifiedName(), result.next(), equalTo(true));
+        } catch (final Exception exception) {
+            throw new AssertionError("Unable to determine if user " + user.getFullyQualifiedName() + " has privilege "
+                    + expectedObjectPrivilege + " on " + object.getFullyQualifiedName() + ".", exception);
+        }
+    }
+
+    @Test
+    void testInsertIntoTable() {
+        final Schema schema = this.factory.createSchema("INSERTSCHEMA");
+        final Table table = schema.createTable("INSERTTABLE", "ID", "DECIMAL(3,0)", "NAME", "VARCHAR(10)");
+        table.insert(1, "FOO").insert(2, "BAR");
+        try {
+            final ResultSet result = this.adminConnection.createStatement()
+                    .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
+            assert (result.next());
+            final int id1 = result.getInt(1);
+            final String name1 = result.getString(2);
+            assert (result.next());
+            final int id2 = result.getInt(1);
+            final String name2 = result.getString(2);
+            assertAll(() -> assertThat("row 1, column 1", id1, equalTo(1)),
+                    () -> assertThat("row 1, column 2", name1, equalTo("FOO")),
+                    () -> assertThat("row 2, column 1", id2, equalTo(2)),
+                    () -> assertThat("row 2, column 2", name2, equalTo("BAR")));
+        } catch (final SQLException exception) {
+            throw new AssertionError("Unable to validate contents of table " + table.getFullyQualifiedName(),
+                    exception);
+        }
     }
 }

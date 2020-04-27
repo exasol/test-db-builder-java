@@ -52,15 +52,15 @@ class UserTest {
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { ObjectPrivilege.INSERT, ObjectPrivilege.DELETE };
         final User user = new User(this.writerMock, "OBJUSER") //
-                .grantAccess(objectMock, expectedObjectPrivileges);
+                .grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
     }
 
     @Test
     void testGetSystemPrivileges() {
         final User user = new User(this.writerMock, "SYTEMUSER") //
-                .grantSystemPrivilege(SystemPrivilege.SESSION);
-        assertThat(user.getSystemPrivileges(), contains(SystemPrivilege.SESSION));
+                .grant(SystemPrivilege.CREATE_SESSION);
+        assertThat(user.getSystemPrivileges(), contains(SystemPrivilege.CREATE_SESSION));
     }
 
     @Test

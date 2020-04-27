@@ -12,14 +12,12 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private static final String SCHEMA_NAME_KEY = "SCHEMA_NAME";
     private static final String CONNECTION_NAME_KEY = "CONNECTION_NAME";
     private static final String SQL_DIALECT_KEY = "SQL_DIALECT";
-    private final Schema parentSchema;
     private final AdapterScript adapterScript;
     private final ConnectionDefinition connectionDefinition;
     private final Map<String, String> properties = new HashMap<>();
 
     private VirtualSchema(final Builder builder) {
         super(builder.writer, builder.name);
-        this.parentSchema = builder.parentSchema;
         this.adapterScript = builder.adapterScript;
         this.connectionDefinition = builder.connectionDefinition;
         addReservedProperties(builder);
@@ -46,12 +44,13 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
     @Override
     public boolean hasParent() {
-        return true;
+        return false;
     }
 
     @Override
     public DatabaseObject getParent() {
-        return this.parentSchema;
+        throw new DatabaseObjectException(this,
+                "Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.");
     }
 
     /**
@@ -102,13 +101,12 @@ public class VirtualSchema extends AbstractDatabaseObject {
     /**
      * Create a new builder for a {@link VirtualSchema}.
      *
-     * @param writer       database object writer
-     * @param parentSchema parent schema the virtual schema belongs to
-     * @param name         name of the Virtual Schema to be built
+     * @param writer database object writer
+     * @param name   name of the Virtual Schema to be built
      * @return builder instance
      */
-    public static Builder builder(final DatabaseObjectWriter writer, final Schema parentSchema, final String name) {
-        return new Builder(writer, parentSchema, name);
+    public static Builder builder(final DatabaseObjectWriter writer, final String name) {
+        return new Builder(writer, name);
     }
 
     /**
@@ -116,7 +114,6 @@ public class VirtualSchema extends AbstractDatabaseObject {
      */
     public static class Builder {
         private final DatabaseObjectWriter writer;
-        private final Schema parentSchema;
         private final String name;
         private String sourceSchemaName;
         private AdapterScript adapterScript;
@@ -127,13 +124,11 @@ public class VirtualSchema extends AbstractDatabaseObject {
         /**
          * Create a new instance of a builder for a {@link VirtualSchema}.
          *
-         * @param writer       database object writer
-         * @param parentSchema parent schema the virtual schema belongs to
-         * @param name         name of the Virtual Schema
+         * @param writer database object writer
+         * @param name   name of the Virtual Schema
          */
-        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final String name) {
+        public Builder(final DatabaseObjectWriter writer, final String name) {
             this.writer = writer;
-            this.parentSchema = parentSchema;
             this.name = name;
         }
 

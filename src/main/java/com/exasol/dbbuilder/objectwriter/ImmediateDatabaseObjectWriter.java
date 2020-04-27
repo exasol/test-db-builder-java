@@ -3,7 +3,6 @@ package com.exasol.dbbuilder.objectwriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 import com.exasol.dbbuilder.AdapterScript;
@@ -46,7 +45,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectWriterException(object, sql, exception);
+            throw new DatabaseObjectException(object, "Failed to write to object: " + sql, exception);
         }
     }
 
@@ -102,18 +101,16 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     }
 
     @Override
-    public void write(final Table table, final List<List<Object>> rows) {
+    public void write(final Table table, final Object... values) {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
         try (final PreparedStatement insert = this.connection.prepareStatement(
                 "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")");) {
-            for (final List<Object> row : rows) {
-                int columnNumber = 1;
-                for (final Object value : row) {
-                    insert.setObject(columnNumber, value);
-                    ++columnNumber;
-                }
-                insert.execute();
+            int columnNumber = 1;
+            for (final Object value : values) {
+                insert.setObject(columnNumber, value);
+                ++columnNumber;
             }
+            insert.execute();
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(table, "Unable to insert rows into table.", exception);
         }
@@ -148,9 +145,8 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     @Override
     public void write(final User user, final DatabaseObject object, final ObjectPrivilege... privileges) {
         writeToObject(user, "GRANT " + createCommaSeparatedObjectPrivilegeList(privileges) //
-                + " ON ? " //
-                + " TO ?", //
-                privileges, object.getFullyQualifiedName(), user.getFullyQualifiedName(), privileges);
+                + " ON " + object.getFullyQualifiedName() //
+                + " TO " + user.getFullyQualifiedName());
     }
 
     private String createCommaSeparatedObjectPrivilegeList(final ObjectPrivilege[] privileges) {
@@ -171,14 +167,15 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     public void write(final VirtualSchema virtualSchema) {
         final StringBuilder builder = new StringBuilder("CREATE VIRTUAL SCHEMA ");
         builder.append(virtualSchema.getFullyQualifiedName());
-        builder.append(" USING ");
+        builder.append("\nUSING ");
         builder.append(virtualSchema.getAdapterScript().getFullyQualifiedName());
-        builder.append(" WITH\n");
+        builder.append(" WITH");
         for (final Map.Entry<String, String> property : virtualSchema.getProperties().entrySet()) {
+            builder.append("\n  ");
             builder.append(property.getKey());
             builder.append(" = '");
             builder.append(property.getValue());
-            builder.append("'\n");
+            builder.append("'");
         }
         writeToObject(virtualSchema, builder.toString());
     }
