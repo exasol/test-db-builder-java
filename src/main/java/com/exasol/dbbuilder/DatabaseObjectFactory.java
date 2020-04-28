@@ -13,7 +13,7 @@ public interface DatabaseObjectFactory {
      *
      * @param name name of the connection
      * @param to   target the connection points to
-     * @return new {@link User} instance
+     * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to);
 
@@ -24,7 +24,7 @@ public interface DatabaseObjectFactory {
      * @param target   target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
-     * @return new {@link User} instance
+     * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String target,
             final String userName, String password);
@@ -65,7 +65,7 @@ public interface DatabaseObjectFactory {
      * scope of testing for which the TDDB is made. Never use something like this in production code!
      * </p>
      *
-     * @param name
+     * @param name user name
      * @return new {@link User} instance
      */
     public User createLoginUser(final String name);

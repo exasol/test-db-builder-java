@@ -24,7 +24,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     private final Connection connection;
 
     /**
-     * Create a new instance of a {@link ImmediateDatabaseObjectWriter}.
+     * Create a new instance of an {@link ImmediateDatabaseObjectWriter}.
      *
      * @param connection JDBC connection
      */
@@ -61,14 +61,14 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
                 throw new DatabaseObjectException(definition,
                         "Password missing when trying to write connection definition "
                                 + definition.getFullyQualifiedName()
-                                + ". Please alway provide user name and password together or not at all.");
+                                + ". Please always provide user name and password together or not at all.");
             }
         } else {
             if (definition.hasPassword()) {
                 throw new DatabaseObjectException(definition,
                         "User name missing when trying to write connection definition "
                                 + definition.getFullyQualifiedName()
-                                + ". Please alway provide user name and password together or not at all.");
+                                + ". Please always provide user name and password together or not at all.");
             } else {
                 writeToObject(definition, "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '"
                         + definition.getTarget() + "'");
@@ -105,17 +105,6 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
         final String sql = "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")";
         writeToObject(table, sql, values);
-//        try (final PreparedStatement insert = this.connection.prepareStatement(
-//                sql);) {
-//            int columnNumber = 1;
-//            for (final Object value : values) {
-//                insert.setObject(columnNumber, value);
-//                ++columnNumber;
-//            }
-//            insert.execute();
-//        } catch (final SQLException exception) {
-//            throw new DatabaseObjectException(table, "Unable to insert rows into table.", exception);
-//        }
     }
 
     @Override

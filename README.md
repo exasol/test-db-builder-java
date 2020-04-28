@@ -1,6 +1,6 @@
 # Test Database Builder (Java)
 
-[![Build Status](https://travis-ci.com/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.com/exasol/virtual-schemas)
+[![Build Status](https://travis-ci.org/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.org/exasol/test-db-builder-java)
 
 SonarCloud results:
 
@@ -18,9 +18,9 @@ SonarCloud results:
 
 # Overview
 
-Exasol's **Test Database Builder for Java** (TDDB) is a library created to make writing integration tests for database applications easier.
+Exasol's **Test Database Builder for Java** (TDDB) is a library that makes writing integration tests for database applications easier.
 
-The main design goals were to make the code of the integration test compact and readable at the same time.
+The main design goals are to make the code of the integration test compact and readable at the same time.
 
 ## In a Nutshell
 
@@ -36,7 +36,7 @@ final User user = factory.createUser("KIMIKO")
         .grant(table, SELECT, UDPATE);
 ```
 
-For more details, please refer to the [user guide](user_guide/user_guide.md).
+For more details, please refer to the [user guide](doc/user_guide/user_guide.md).
 
 ## What it is
 
@@ -44,7 +44,7 @@ This module is designed to be used in test code. It helps you write tests, quick
 
 ## What it isn't
 
-TDDB is not suited for production code. We sacrificed speed and features for compactness and ease-of-use. If you are looking for code that helps writing production code, please refer to
+TDDB is not suited for production code. We sacrifice speed and features for compactness and ease-of-use. If you are looking for code that helps writing production code, please refer to
 
 * [SQL Statement Builder](https://github.com/exasol/sql-statement-builder)
  

@@ -75,7 +75,7 @@ public interface DatabaseObjectWriter {
     public void write(final User user, final DatabaseObject object, final ObjectPrivilege... objectPrivileges);
 
     /**
-     * Write an adapter script to the database
+     * Write a virtual schema to the database.
      *
      * @param virtualSchema
      */

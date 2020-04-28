@@ -6,7 +6,7 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 import com.exasol.dbbuilder.objectwriter.ImmediateDatabaseObjectWriter;
 
 /**
- * Factory for top-level a database schema.
+ * Factory for a top-level database object.
  */
 public final class ExasolObjectFactory implements DatabaseObjectFactory {
     private final DatabaseObjectWriter writer;
