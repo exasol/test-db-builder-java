@@ -42,8 +42,18 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
+    public User createUser(final String name, final String password) {
+        return new User(this.writer, name, password);
+    }
+
+    @Override
     public User createLoginUser(final String name) {
         return createUser(name).grant(SystemPrivilege.CREATE_SESSION);
+    }
+
+    @Override
+    public User createLoginUser(final String name, final String password) {
+        return createUser(name, password).grant(SystemPrivilege.CREATE_SESSION);
     }
 
     @Override

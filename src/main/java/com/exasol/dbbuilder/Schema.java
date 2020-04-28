@@ -62,6 +62,31 @@ public class Schema extends AbstractDatabaseObject {
     }
 
     /**
+     * Create a table with an arbitrary number of columns.
+     *
+     * @param name        name of the table
+     * @param columnNames list of column names
+     * @param columnTypes list of column types
+     * @return table
+     */
+    public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
+        if (columnNames.size() == columnTypes.size()) {
+            final Table.Builder builder = Table.builder(this.writer, this, name);
+            int index = 0;
+            for (final String columnName : columnNames) {
+                builder.column(columnName, columnTypes.get(index));
+                ++index;
+            }
+            final Table table = builder.build();
+            this.tables.add(table);
+            return table;
+        } else {
+            throw new IllegalArgumentException("Got " + columnNames.size() + " column names but " + columnTypes
+                    + " column types. Please provide the same number of parameters for both when creating a table.");
+        }
+    }
+
+    /**
      * Create a table with one column.
      *
      * @param name        name of the table
@@ -70,18 +95,7 @@ public class Schema extends AbstractDatabaseObject {
      * @return table
      */
     public Table createTable(final String name, final String column1Name, final String column1Type) {
-        return createTableWithColumns(name, column1Name, column1Type);
-    }
-
-    private Table createTableWithColumns(final String name, final String... columnPairs) {
-        assert ((columnPairs.length % 2) == 0);
-        final Table.Builder builder = Table.builder(this.writer, this, name);
-        for (int i = 0; i < columnPairs.length; i += 2) {
-            builder.column(columnPairs[i], columnPairs[i + 1]);
-        }
-        final Table table = builder.build();
-        this.tables.add(table);
-        return table;
+        return createTable(name, List.of(column1Name), List.of(column1Type));
     }
 
     /**
@@ -96,7 +110,7 @@ public class Schema extends AbstractDatabaseObject {
      */
     public Table createTable(final String name, final String column1Name, final String column1Type,
             final String column2Name, final String column2Type) {
-        return createTableWithColumns(name, column1Name, column1Type, column2Name, column2Type);
+        return createTable(name, List.of(column1Name, column2Name), List.of(column1Type, column2Type));
     }
 
     /**
@@ -113,7 +127,8 @@ public class Schema extends AbstractDatabaseObject {
      */
     public Table createTable(final String name, final String column1Name, final String column1Type,
             final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
-        return createTableWithColumns(name, column1Name, column1Type, column2Name, column2Type);
+        return createTable(name, List.of(column1Name, column2Name, column3Name),
+                List.of(column1Type, column2Type, column3Type));
     }
 
     /**

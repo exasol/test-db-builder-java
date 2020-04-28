@@ -16,7 +16,11 @@ public class User extends AbstractDatabaseObject {
     private final Set<SystemPrivilege> systemPrivileges = new HashSet<>();
 
     /**
-     * Create a new database user.
+     * Create a new database user with a default password.
+     * <p>
+     * This method creates a user with a password derived from the user name. Note that this is only acceptable in the
+     * scope of testing for which the TDDB is made. Never use something like this in production code!
+     * </p>
      *
      * @param writer database object writer
      * @param name   user name
@@ -24,6 +28,19 @@ public class User extends AbstractDatabaseObject {
     public User(final DatabaseObjectWriter writer, final String name) {
         super(writer, name);
         this.password = name + "PWD";
+        writer.write(this);
+    }
+
+    /**
+     * Create a new database user.
+     *
+     * @param writer   database object writer
+     * @param name     user name
+     * @param password login password
+     */
+    public User(final DatabaseObjectWriter writer, final String name, final String password) {
+        super(writer, name);
+        this.password = password;
         writer.write(this);
     }
 

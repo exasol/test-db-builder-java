@@ -10,20 +10,20 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
  * </p>
  */
 public class ConnectionDefinition extends AbstractDatabaseObject {
-    private final String to;
+    private final String target;
     private String userName;
     private String password;
 
     /**
      * Create a connection without credentials.
      *
-     * @param writer database object writer
-     * @param name   name of the connection
-     * @param to     target the connection points to
+     * @param writer      database object writer
+     * @param name        name of the connection
+     * @param target target the connection points to
      */
-    public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String to) {
+    public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String target) {
         super(writer, name);
-        this.to = to;
+        this.target = target;
         writer.write(this);
     }
 
@@ -32,14 +32,14 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      *
      * @param writer   database object writer
      * @param name     name of the connection
-     * @param to       target the connection points to
+     * @param target       target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
      */
-    public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String to,
+    public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String target,
             final String userName, final String password) {
         super(writer, name);
-        this.to = to;
+        this.target = target;
         this.userName = userName;
         this.password = password;
         writer.write(this);
@@ -55,8 +55,8 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      *
      * @return target of the connection
      */
-    public String getTo() {
-        return this.to;
+    public String getTarget() {
+        return this.target;
     }
 
     /**

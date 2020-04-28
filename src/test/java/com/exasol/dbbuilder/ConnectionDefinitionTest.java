@@ -37,8 +37,8 @@ class ConnectionDefinitionTest {
     }
 
     @Test
-    void testGetTo() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, "FOOBAR").getTo(), equalTo("FOOBAR"));
+    void testGetTarget() {
+        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, "FOOBAR").getTarget(), equalTo("FOOBAR"));
     }
 
     @Test

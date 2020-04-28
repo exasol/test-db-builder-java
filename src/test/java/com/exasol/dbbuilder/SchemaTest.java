@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -58,5 +60,12 @@ class SchemaTest {
         final Schema schema = new Schema(this.writerMock, "THE_SCHEMA");
         final Table table = schema.createTableBuilder("TABLE_D").column("A", "DATE").build();
         assertThat(table.getName(), equalTo("TABLE_D"));
+    }
+
+    @Test
+    void createTableThrowsExceptionIfNumberOfColumnNamesAndTypesDoNotMatch() {
+        final Schema schema = new Schema(this.writerMock, "COLUMN_PARAMTER_MISMATCH_SCHEMA");
+        assertThrows(IllegalArgumentException.class,
+                () -> schema.createTable("MISMATCH_TABLE", List.of("A"), List.of("DATE", "NUMBER")));
     }
 }

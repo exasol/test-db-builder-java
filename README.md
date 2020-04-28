@@ -56,7 +56,7 @@ TDDB is not suited for production code. We sacrificed speed and features for com
 
 ## Customer Support
 
-This is an open source project which is officially supported by Exasol. For any question, you can contact our support team.
+This is an open source project which is written by enthusiasts at Exasol and not officially supported. We will still try to help you as much as possible. So pleae create Github issue tickets when you want to request features or report bugs.
 
 # Table of Contents
 

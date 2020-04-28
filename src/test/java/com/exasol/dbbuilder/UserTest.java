@@ -68,4 +68,10 @@ class UserTest {
         final User user = new User(this.writerMock, "OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ObjectPrivilege.values()));
     }
+
+    @Test
+    void testCreateUserWithPassword() {
+        final User user = new User(this.writerMock, "USER_WITH_PASSWORD", "THE_PASSWORD");
+        assertThat(user.getPassword(), equalTo("THE_PASSWORD"));
+    }
 }

@@ -40,8 +40,8 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
 
     private void writeToObject(final DatabaseObject object, final String sql, final Object... parameters) {
         try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
-            for (int i = 1; i <= parameters.length; ++i) {
-                preparedStatement.setObject(i, parameters[i]);
+            for (int i = 0; i < parameters.length; ++i) {
+                preparedStatement.setObject(i + 1, parameters[i]);
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
@@ -54,7 +54,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         if (definition.hasUserName()) {
             if (definition.hasPassword()) {
                 writeToObject(definition,
-                        "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTo()
+                        "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTarget()
                                 + "' USER '" + definition.getUserName() + ("' IDENTIFIED BY '")
                                 + definition.getPassword() + "'");
             } else {
@@ -70,8 +70,8 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
                                 + definition.getFullyQualifiedName()
                                 + ". Please alway provide user name and password together or not at all.");
             } else {
-                writeToObject(definition,
-                        "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTo() + "'");
+                writeToObject(definition, "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '"
+                        + definition.getTarget() + "'");
             }
         }
     }
@@ -103,17 +103,19 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     @Override
     public void write(final Table table, final Object... values) {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
-        try (final PreparedStatement insert = this.connection.prepareStatement(
-                "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")");) {
-            int columnNumber = 1;
-            for (final Object value : values) {
-                insert.setObject(columnNumber, value);
-                ++columnNumber;
-            }
-            insert.execute();
-        } catch (final SQLException exception) {
-            throw new DatabaseObjectException(table, "Unable to insert rows into table.", exception);
-        }
+        final String sql = "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")";
+        writeToObject(table, sql, values);
+//        try (final PreparedStatement insert = this.connection.prepareStatement(
+//                sql);) {
+//            int columnNumber = 1;
+//            for (final Object value : values) {
+//                insert.setObject(columnNumber, value);
+//                ++columnNumber;
+//            }
+//            insert.execute();
+//        } catch (final SQLException exception) {
+//            throw new DatabaseObjectException(table, "Unable to insert rows into table.", exception);
+//        }
     }
 
     @Override
