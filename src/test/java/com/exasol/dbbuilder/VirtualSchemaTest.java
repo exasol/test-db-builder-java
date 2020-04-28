@@ -63,8 +63,8 @@ public class VirtualSchemaTest {
 
     @Test
     void testBuilderWithSourceSchema(@Mock final Schema sourceSchemaMock) {
-        when(sourceSchemaMock.getFullyQualifiedName()).thenReturn("\"SRC\"");
-        assertThat(this.builder.sourceSchema(sourceSchemaMock).build().getSourceSchemaName(), equalTo("\"SRC\""));
+        when(sourceSchemaMock.getName()).thenReturn("SRC");
+        assertThat(this.builder.sourceSchema(sourceSchemaMock).build().getSourceSchemaName(), equalTo("SRC"));
     }
 
     @Test

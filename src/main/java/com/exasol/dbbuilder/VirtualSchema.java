@@ -150,7 +150,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
          * @return {@code this} for fluent programming
          */
         public Builder sourceSchema(final Schema sourceSchema) {
-            this.sourceSchemaName = sourceSchema.getFullyQualifiedName();
+            this.sourceSchemaName = sourceSchema.getName();
             return this;
         }
 
