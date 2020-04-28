@@ -24,7 +24,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     private final Connection connection;
 
     /**
-     * Create a new instance of a {@link ImmediateDatabaseObjectWriter}.
+     * Create a new instance of an {@link ImmediateDatabaseObjectWriter}.
      *
      * @param connection JDBC connection
      */
@@ -41,7 +41,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     private void writeToObject(final DatabaseObject object, final String sql, final Object... parameters) {
         try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             for (int i = 1; i <= parameters.length; ++i) {
-                preparedStatement.setObject(i, parameters[i]);
+                preparedStatement.setObject(i, parameters[i - 1]);
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
@@ -61,14 +61,14 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
                 throw new DatabaseObjectException(definition,
                         "Password missing when trying to write connection definition "
                                 + definition.getFullyQualifiedName()
-                                + ". Please alway provide user name and password together or not at all.");
+                                + ". Please always provide user name and password together or not at all.");
             }
         } else {
             if (definition.hasPassword()) {
                 throw new DatabaseObjectException(definition,
                         "User name missing when trying to write connection definition "
                                 + definition.getFullyQualifiedName()
-                                + ". Please alway provide user name and password together or not at all.");
+                                + ". Please always provide user name and password together or not at all.");
             } else {
                 writeToObject(definition,
                         "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTo() + "'");

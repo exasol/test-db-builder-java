@@ -6,7 +6,7 @@ public interface DatabaseObjectFactory {
      *
      * @param name name of the connection
      * @param to   target the connection points to
-     * @return new {@link User} instance
+     * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(String name, String to);
 
@@ -17,7 +17,7 @@ public interface DatabaseObjectFactory {
      * @param to       target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
-     * @return new {@link User} instance
+     * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(String name, String to, String userName, String password);
 
@@ -40,7 +40,7 @@ public interface DatabaseObjectFactory {
     /**
      * Create user that can log into the database.
      * 
-     * @param name
+     * @param name user name
      * @return new {@link User} instance
      */
     public User createLoginUser(String name);
