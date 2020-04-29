@@ -17,8 +17,8 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
     /**
      * Create a connection without credentials.
      *
-     * @param writer      database object writer
-     * @param name        name of the connection
+     * @param writer database object writer
+     * @param name   name of the connection
      * @param target target the connection points to
      */
     public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String target) {
@@ -32,7 +32,7 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      *
      * @param writer   database object writer
      * @param name     name of the connection
-     * @param target       target the connection points to
+     * @param target   target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
      */
