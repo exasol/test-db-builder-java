@@ -77,7 +77,7 @@ public interface DatabaseObjectWriter {
     /**
      * Write a virtual schema to the database.
      *
-     * @param virtualSchema
+     * @param virtualSchema Virtual Schema to write
      */
     public void write(final VirtualSchema virtualSchema);
 

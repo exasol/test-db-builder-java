@@ -15,7 +15,7 @@ public class Schema extends AbstractDatabaseObject {
      * Create a new database schema.
      *
      * @param writer database object writer
-     * @param name
+     * @param name   name of the database schema
      */
     public Schema(final DatabaseObjectWriter writer, final String name) {
         super(writer, name);
