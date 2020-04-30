@@ -1,6 +1,7 @@
 # Test Database Builder (Java)
 
-[![Build Status](https://travis-ci.org/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.org/exasol/test-db-builder-java)
+[![Build Status](https://travis-ci.com/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.org/exasol/test-db-builder-java)
+[![Maven Central](https://img.shields.io/maven-central/v/com.exasol/sql-statement-builder)](https://search.maven.org/artifact/com.exasol/test-db-builder-java)
 
 SonarCloud results:
 
