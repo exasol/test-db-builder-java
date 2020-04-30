@@ -5,7 +5,9 @@ package com.exasol.dbbuilder;
  */
 public class DatabaseObjectException extends RuntimeException {
     private static final long serialVersionUID = 1526690962275232472L;
+    /** @serial fully qualified name of the database object that is the context of this exception */
     private final String fullyQualifiedObjectName;
+    /** @serial type of the database object that is the context of this exception */
     private final String objectType;
 
     /**
