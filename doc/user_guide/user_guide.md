@@ -1,18 +1,18 @@
 # Test DB Builder User Guide
 
-Exasol's Test Database Builder for Java (TDDB) is a framework that helps you write compact and readable integration tests which require setting up a database.
+Exasol's Test Database Builder for Java (TDDB) is a framework that helps you write compact and readable integration tests that require setting up a database.
 
 Instead of cluttering your test code with hundreds of lines of boilerplate code, TDDB reduces setup and population of your test database to a handful of easy to read statements. To further increase convenience TDDB supports the [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) programming style.
 
 ## Preparations
 
-The first step of any integration test involving a database is installing that database. In case of Exasol, we recommend you simplify your life by letting [Exasol Testcontainers](https://github.com/exasol/exasol-testcontainers) do that for you. This will give you a disposable Exasol installation running inside a [Docker](https://www.docker.com/) container. Just the thing you need for integration testing.
+The first step of any integration test involving a database is installing that database. In the case of Exasol, we recommend you simplify your life by letting [Exasol Testcontainers](https://github.com/exasol/exasol-testcontainers) do that for you. This will give you a disposable Exasol installation running inside a [Docker](https://www.docker.com/) container. Just the thing you need for integration testing.
 
 Check out the parent project [Test Containers](https://www.testcontainers.org/) to learn more about the framework itself and to see, for which other databases test container modules exist.
 
 ## Creating Database Objects
 
-After installing the database you need to setup the structure of your test database and that is the first point where TDDB comes into play.
+After installing the database you need to set up the structure of your test database and that is the first point where TDDB comes into play.
 
 ### The `DatabaseObjectFactory`
 
@@ -22,7 +22,7 @@ Top-level objects are objects in the database which are not scoped by any other 
 
 You create a `DatabaseObjectFactory` by choosing an implementation of the concrete database and feeding it with a JDBC connection.
 
-In the example below you see how to create a `ExasolObjectFactory` with a JDBC connection that you created earlier:
+In the example below you see how to create an `ExasolObjectFactory` with a JDBC connection that you created earlier:
 
 ```java
 final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
@@ -77,7 +77,7 @@ Of course you can use a static import of `SystemPrivilege` to make that code mor
 
 #### Granting Object Privileges
 
-All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on object level, follow this procedure:
+All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure:
 
 ```
 final Schema schema = factory.createSchema("SALES");
@@ -86,7 +86,7 @@ user.grant(schema, ObjectPrivilege.SELECT, ObjectPrivilege.INSERT)
 
 #### Creating an Exasol User who can log in
 
-In most integration tests you need need user accounts able to log in. In Exasol for example the user needs the system privilege `CREATE SESSION` in order to log in.
+In most integration tests you need user accounts able to log in. In Exasol for example the user needs the system privilege `CREATE SESSION` in order to log in.
 
 So the following code
 
@@ -119,7 +119,7 @@ As always the first parameter is the object name of the connection definition. T
 
 Adapter Scripts are what drive Virtual Schema adapters. They are scoped inside a schema. 
 
-An basic adapter script definition consists of three parts:
+A basic adapter script definition consists of three parts:
 
 * Adapter name
 * Programming language definition
@@ -133,7 +133,7 @@ final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "P
 
 ### Creating Virtual Schemas
 
-Virtual Schemas have lots of parameter when you create them. That's why you need a builder in order to make one via the TDDB.
+Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDDB.
 
 ```sql
 final VirtualSchema virtualSchema = factory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA")
@@ -158,4 +158,3 @@ table.insert("Monday", "Mon")
 ```
 
 One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for functional integration test, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
-
