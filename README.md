@@ -1,6 +1,7 @@
 # Test Database Builder (Java)
 
-[![Build Status](https://travis-ci.org/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.org/exasol/test-db-builder-java)
+[![Build Status](https://travis-ci.com/exasol/test-db-builder-java.svg?branch=master)](https://travis-ci.org/exasol/test-db-builder-java)
+[![Maven Central](https://img.shields.io/maven-central/v/com.exasol/test-db-builder-java)](https://search.maven.org/artifact/com.exasol/test-db-builder-java)
 
 SonarCloud results:
 
@@ -28,7 +29,7 @@ The main design goals are to make the code of the integration test compact and r
 // Precondition: Get a JDBC connection and store it in variable "connection"
 final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
 final Schema schema factory.createSchema("ONLINESHOP");
-final Table table = schema.create("ITEMS", "PRODUCT_ID", "DECIMAL(18,0)", "NAME", "VARCHAR(40)")
+final Table table = schema.createTable("ITEMS", "PRODUCT_ID", "DECIMAL(18,0)", "NAME", "VARCHAR(40)")
         .insert("1", "Cat food")
         .insert("2", "Toy mouse");
 final User user = factory.createUser("KIMIKO")
