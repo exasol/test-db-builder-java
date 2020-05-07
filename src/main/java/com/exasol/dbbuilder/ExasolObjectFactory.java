@@ -36,6 +36,13 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
         return new Schema(this.writer, name);
     }
 
+    // [impl->dsn~creating-scripts~1]
+    @Override
+    public Script createScript(final String name, final String content) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @Override
     public User createUser(final String name) {
         return new User(this.writer, name);

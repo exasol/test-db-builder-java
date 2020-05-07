@@ -100,6 +100,11 @@ class DataObjectCreationIT {
     }
 
     @Test
+    void testCreateScript() {
+        assertObjectExistsInDatabase(this.factory.createScript("THE_SCRIPT", "print(\"Hello World\")"));
+    }
+
+    @Test
     void testCreateTable() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
         assertObjectExistsInDatabase(schema.createTable("THE_TABLE", "COL1", "DATE", "COL2", "NUMBER"));
