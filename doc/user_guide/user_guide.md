@@ -157,4 +157,4 @@ table.insert("Monday", "Mon")
      .insert("Sunday", "Sun");
 ```
 
-One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for functional integration test, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
+One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
