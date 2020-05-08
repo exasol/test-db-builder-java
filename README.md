@@ -63,7 +63,7 @@ This is an open source project which is written by enthusiasts at Exasol and not
 
 ## Information for Users
 
-* [User Guide](doc/user-guide/user_guide.md)
+* [User Guide](doc/user_guide/user_guide.md)
 
 ## Dependencies
 
