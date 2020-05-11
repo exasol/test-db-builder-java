@@ -68,7 +68,7 @@ public class Schema extends AbstractDatabaseObject {
      * @return script
      */
     // [impl->dsn~creating-scripts~1]
-    public Script createScript(final String name, final String content) {
+    public AbstractSchemaChild createScript(final String name, final String content) {
         return Script.builder(this.writer, this, name).content(content).build();
     }
 

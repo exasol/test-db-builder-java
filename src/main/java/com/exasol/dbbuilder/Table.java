@@ -9,31 +9,19 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 /**
  * Database table.
  */
-public class Table extends AbstractDatabaseObject {
+public class Table extends AbstractSchemaChild {
     private final List<Column> columns;
-    private final Schema parentSchema;
     private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
-        super(builder.writer, builder.name);
+        super(builder.writer, builder.parentSchema, builder.name);
         this.columns = builder.columns;
-        this.parentSchema = builder.parentSchema;
         this.writer.write(this);
     }
 
     @Override
     public String getType() {
         return "table";
-    }
-
-    @Override
-    public boolean hasParent() {
-        return true;
-    }
-
-    @Override
-    public DatabaseObject getParent() {
-        return this.parentSchema;
     }
 
     /**

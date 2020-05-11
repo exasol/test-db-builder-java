@@ -8,15 +8,13 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 /**
  * Database (Lua) Script.
  */
-public class Script extends AbstractDatabaseObject {
-    private final Schema parentSchema;
+public class Script extends AbstractSchemaChild {
     private final String content;
     private final List<ScriptParameter> parameters;
     private final ScriptReturnType returnType;
 
     private Script(final Builder builder) {
-        super(builder.writer, builder.name);
-        this.parentSchema = builder.parentSchema;
+        super(builder.writer, builder.parentSchema, builder.name);
         this.content = builder.content;
         this.parameters = builder.parameters;
         this.returnType = builder.returnType;
@@ -26,16 +24,6 @@ public class Script extends AbstractDatabaseObject {
     @Override
     public String getType() {
         return "script";
-    }
-
-    @Override
-    public boolean hasParent() {
-        return true;
-    }
-
-    @Override
-    public DatabaseObject getParent() {
-        return this.parentSchema;
     }
 
     /**
