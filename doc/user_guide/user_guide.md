@@ -125,7 +125,7 @@ As always the first parameter is the object name of the connection definition. T
 
 Scripts are the main extension point for end-users. In Exasol you can for example define a Lua script like this:
 
-```sql
+```java
 final Script script = schema.createScript("HELLO_LUA", "print(\"Hello World\")");
 ```
 

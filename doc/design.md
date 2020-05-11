@@ -30,7 +30,7 @@ This section introduces the building blocks of the software. Together those buil
 ## `DatabaseObjectFactory`
 `dsn~database-object-factory~1`
 
-The `DatabaseObjectFactory` is the factory top-level database objects.
+The `DatabaseObjectFactory` is the factory for top-level database objects.
 
 Needs: impl
 
