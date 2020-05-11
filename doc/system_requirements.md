@@ -14,7 +14,7 @@ The target audience are end-users, requirement engineers, software designers and
 
 ### Goal
 
-TDDB It is targeted at functional testing mainly with the central design goal to make writing and reading the test code as convenient as possible for developers.
+TDDB is targeted at functional testing mainly with the central design goal to make writing and reading the test code as convenient as possible for developers.
 
 ### Quality Goals
 
