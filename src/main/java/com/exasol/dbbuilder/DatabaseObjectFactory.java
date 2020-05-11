@@ -7,7 +7,7 @@ package com.exasol.dbbuilder;
  * for.
  * </p>
  */
-// [impl->req~database-object-factory~1]
+// [impl->dsn~database-object-factory~1]
 public interface DatabaseObjectFactory {
     /**
      * Create a connection without credentials.
@@ -37,15 +37,6 @@ public interface DatabaseObjectFactory {
      * @return new {@link Schema} instance
      */
     public Schema createSchema(final String name);
-
-    /**
-     * Create a new script.
-     *
-     * @param name    name of the script
-     * @param content the implementation of the script
-     * @return new {@link Script} instance
-     */
-    public Script createScript(final String name, String content);
 
     /**
      * /** Create a new database user with a default password.

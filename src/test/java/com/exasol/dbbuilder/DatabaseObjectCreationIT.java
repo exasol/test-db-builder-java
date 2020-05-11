@@ -26,7 +26,7 @@ import com.exasol.containers.ExasolContainerConstants;
 
 @Tag("integration")
 @Testcontainers
-class DataObjectCreationIT {
+class DatabaseObjectCreationIT {
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>(
             ExasolContainerConstants.EXASOL_DOCKER_IMAGE_REFERENCE);
@@ -95,8 +95,10 @@ class DataObjectCreationIT {
     }
 
     @Test
+    // [itest->dsn~creating-scripts~1]
     void testCreateScript() {
-        assertObjectExistsInDatabase(this.factory.createScript("THE_SCRIPT", "print(\"Hello World\")"));
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT");
+        assertObjectExistsInDatabase(schema.createScript("THE_SCRIPT", "print(\"Hello World\")"));
     }
 
     @Test

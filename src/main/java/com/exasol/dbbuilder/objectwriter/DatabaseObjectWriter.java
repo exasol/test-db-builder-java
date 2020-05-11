@@ -5,6 +5,7 @@ import com.exasol.dbbuilder.ConnectionDefinition;
 import com.exasol.dbbuilder.DatabaseObject;
 import com.exasol.dbbuilder.ObjectPrivilege;
 import com.exasol.dbbuilder.Schema;
+import com.exasol.dbbuilder.Script;
 import com.exasol.dbbuilder.SystemPrivilege;
 import com.exasol.dbbuilder.Table;
 import com.exasol.dbbuilder.User;
@@ -34,6 +35,13 @@ public interface DatabaseObjectWriter {
      * @param schema schema to be written
      */
     public void write(final Schema schema);
+
+    /**
+     * Create a script in the database.
+     * 
+     * @param script script to be written
+     */
+    public void write(Script script);
 
     /**
      * Create a table in the database.

@@ -12,6 +12,7 @@ import com.exasol.dbbuilder.DatabaseObject;
 import com.exasol.dbbuilder.DatabaseObjectException;
 import com.exasol.dbbuilder.ObjectPrivilege;
 import com.exasol.dbbuilder.Schema;
+import com.exasol.dbbuilder.Script;
 import com.exasol.dbbuilder.SystemPrivilege;
 import com.exasol.dbbuilder.Table;
 import com.exasol.dbbuilder.User;
@@ -82,22 +83,33 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     }
 
     @Override
+    public void write(final Script script) {
+        final StringBuilder builder = new StringBuilder("CREATE SCRIPT " + script.getFullyQualifiedName());
+        builder.append(" AS\n");
+        builder.append(script.getContent());
+        builder.append("\n/");
+        writeToObject(script, builder.toString());
+    }
+
+    @Override
     public void write(final Table table) {
-        final StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE " + table.getFullyQualifiedName() + " (");
+        final StringBuilder builder = new StringBuilder("CREATE TABLE ");
+        builder.append(table.getFullyQualifiedName());
+        builder.append(" (");
         boolean first = true;
         for (final Column column : table.getColumns()) {
             if (first) {
                 first = false;
             } else {
-                sqlBuilder.append(", ");
+                builder.append(", ");
             }
-            sqlBuilder.append("\"");
-            sqlBuilder.append(column.getName());
-            sqlBuilder.append("\" ");
-            sqlBuilder.append(column.getType());
+            builder.append("\"");
+            builder.append(column.getName());
+            builder.append("\" ");
+            builder.append(column.getType());
         }
-        sqlBuilder.append(")");
-        writeToObject(table, sqlBuilder.toString());
+        builder.append(")");
+        writeToObject(table, builder.toString());
     }
 
     @Override

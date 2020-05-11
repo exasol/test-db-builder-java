@@ -27,10 +27,10 @@ Please refer to the [System Requirement Specification](system_requirements.md) f
 
 This section introduces the building blocks of the software. Together those building blocks make up the big picture of the software structure.
 
-## `DataObjectFactory`
-`dsn~data-object-factory~1`
+## `DatabaseObjectFactory`
+`dsn~database-object-factory~1`
 
-The `DataObjectFactory` is the factory top-level database objects.
+The `DatabaseObjectFactory` is the factory top-level database objects.
 
 Needs: impl
 
@@ -43,7 +43,7 @@ This section describes the runtime behavior of the software.
 ### Creating Scripts
 `dsn~creating-scripts~1`
 
-The `DataObjectFactory` creates Script objects.
+Users can create script objects from inside schema objects.
 
 Covers:
 

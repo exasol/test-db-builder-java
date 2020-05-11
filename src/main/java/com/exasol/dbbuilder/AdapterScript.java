@@ -6,7 +6,7 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
  * Virtual Schema Adapter Script
  */
 public class AdapterScript extends AbstractDatabaseObject {
-    private final Schema schema;
+    private final Schema parentSchema;
     private final Language language;
     private final String content;
 
@@ -22,7 +22,7 @@ public class AdapterScript extends AbstractDatabaseObject {
     public AdapterScript(final DatabaseObjectWriter writer, final Schema parentSchema, final String name,
             final Language language, final String content) {
         super(writer, name);
-        this.schema = parentSchema;
+        this.parentSchema = parentSchema;
         this.language = language;
         this.content = content;
         writer.write(this);
@@ -40,7 +40,7 @@ public class AdapterScript extends AbstractDatabaseObject {
 
     @Override
     public DatabaseObject getParent() {
-        return this.schema;
+        return this.parentSchema;
     }
 
     /**

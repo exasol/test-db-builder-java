@@ -61,6 +61,18 @@ public class Schema extends AbstractDatabaseObject {
     }
 
     /**
+     * Create a script that does not return anything.
+     *
+     * @param name    name of the script
+     * @param content implementation of the script
+     * @return script
+     */
+    // [impl->dsn~creating-scripts~1]
+    public Script createScript(final String name, final String content) {
+        return Script.builder(this.writer, this, name).content(content).build();
+    }
+
+    /**
      * Create a table with an arbitrary number of columns.
      *
      * @param name        name of the table

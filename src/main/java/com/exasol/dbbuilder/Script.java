@@ -20,6 +20,7 @@ public class Script extends AbstractDatabaseObject {
         this.content = builder.content;
         this.parameters = builder.parameters;
         this.returnType = builder.returnType;
+        this.writer.write(this);
     }
 
     @Override

@@ -115,6 +115,14 @@ final Connection connectionB = factory.createConnection("PRIVILEGED_CONNECTION",
 
 As always the first parameter is the object name of the connection definition. Then there is the URL (e.g. a JDBC URL) and optionally username and password.
 
+### Creating Scripts
+
+Scripts are the main extension point for end-users. In Exasol you can for example define a Lua script like this:
+
+```sql
+final Script script = schema.createScript("HELLO_LUA", "print(\"Hello World\")");
+```
+
 ### Creating Adapter Scripts
 
 Adapter Scripts are what drive Virtual Schema adapters. They are scoped inside a schema. 
