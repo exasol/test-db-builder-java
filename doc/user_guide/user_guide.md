@@ -30,6 +30,12 @@ final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
 
 That is about as much configuration as you need to get started.
 
+### When are Object Written to the Database?
+
+When an object is written to the database depends on the implementation of the `DatabaseObjectWriter` that you use. Currently there is only one and it is not configurable.
+
+The `ImmediateDatabaseObjectWriter` writes any object to the database immediately when you create the representing Java object. For functional integration tests this is what you want to keep your code simple and readable.
+
 ### Creating Schemas
 
 In almost all your integration tests, you will need a schema to hold other objects. At least if you are testing against and Exasol database, so let's start with that.
