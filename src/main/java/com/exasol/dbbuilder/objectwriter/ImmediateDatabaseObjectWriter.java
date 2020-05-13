@@ -94,11 +94,9 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         final List<ScriptParameter> parameters = script.getParameters();
         if (!parameters.isEmpty()) {
             builder.append(" (");
-            boolean first = true;
+            int i = 0;
             for (final ScriptParameter parameter : parameters) {
-                if (first) {
-                    first = false;
-                } else {
+                if (i++ > 0) {
                     builder.append(", ");
                 }
                 if (parameter.isArray()) {
@@ -111,28 +109,25 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         if (script.returnsTable()) {
             builder.append(" RETURNS TABLE");
         }
-        builder.append(" AS\n");
-        builder.append(script.getContent());
-        builder.append("\n/");
+        builder.append(" AS\n") //
+                .append(script.getContent()) //
+                .append("\n/");
         writeToObject(script, builder.toString());
     }
 
     @Override
     public void write(final Table table) {
         final StringBuilder builder = new StringBuilder("CREATE TABLE ");
-        builder.append(table.getFullyQualifiedName());
-        builder.append(" (");
-        boolean first = true;
+        builder.append(table.getFullyQualifiedName()).append(" (");
+        int i = 0;
         for (final Column column : table.getColumns()) {
-            if (first) {
-                first = false;
-            } else {
+            if (i++ > 0) {
                 builder.append(", ");
             }
-            builder.append("\"");
-            builder.append(column.getName());
-            builder.append("\" ");
-            builder.append(column.getType());
+            builder.append("\"") //
+                    .append(column.getName()) //
+                    .append("\" ") //
+                    .append(column.getType());
         }
         builder.append(")");
         writeToObject(table, builder.toString());
@@ -159,11 +154,9 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
 
     private String createCommaSeparatedSystemPrivilegeList(final SystemPrivilege[] privileges) {
         final StringBuilder builder = new StringBuilder();
-        boolean first = true;
+        int i = 0;
         for (final SystemPrivilege privilege : privileges) {
-            if (first) {
-                first = false;
-            } else {
+            if (i++ > 0) {
                 builder.append(", ");
             }
             builder.append(privilege);
@@ -194,11 +187,11 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
 
     @Override
     public void write(final VirtualSchema virtualSchema) {
-        final StringBuilder builder = new StringBuilder("CREATE VIRTUAL SCHEMA ");
-        builder.append(virtualSchema.getFullyQualifiedName());
-        builder.append("\nUSING ");
-        builder.append(virtualSchema.getAdapterScript().getFullyQualifiedName());
-        builder.append(" WITH");
+        final StringBuilder builder = new StringBuilder("CREATE VIRTUAL SCHEMA ")
+                .append(virtualSchema.getFullyQualifiedName()) //
+                .append("\nUSING ") //
+                .append(virtualSchema.getAdapterScript().getFullyQualifiedName()) //
+                .append(" WITH");
         for (final Map.Entry<String, String> property : virtualSchema.getProperties().entrySet()) {
             builder.append("\n  ");
             builder.append(property.getKey());
@@ -242,11 +235,9 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     private void appendScriptParamterValue(final StringBuilder builder, final Object parameter) {
         if (parameter instanceof Collection) {
             builder.append(" ARRAY(");
-            boolean first = true;
+            int i = 0;
             for (final Object arrayItem : (Collection<?>) parameter) {
-                if (first) {
-                    first = false;
-                } else {
+                if (i++ > 0) {
                     builder.append(", ");
                 }
                 appendScriptScalarParameter(builder, arrayItem);
@@ -259,9 +250,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
 
     private void appendScriptScalarParameter(final StringBuilder builder, final Object value) {
         if (value instanceof String) {
-            builder.append("'");
-            builder.append(value);
-            builder.append("'");
+            builder.append("'").append(value).append("'");
         } else {
             builder.append(value);
         }
