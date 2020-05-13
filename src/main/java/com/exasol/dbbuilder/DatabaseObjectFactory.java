@@ -7,6 +7,7 @@ package com.exasol.dbbuilder;
  * for.
  * </p>
  */
+// [impl->dsn~database-object-factory~1]
 public interface DatabaseObjectFactory {
     /**
      * Create a connection without credentials.
@@ -33,7 +34,7 @@ public interface DatabaseObjectFactory {
      * Create a new database schema.
      *
      * @param name name of the schema
-     * @return new {@link Schema} instance.
+     * @return new {@link Schema} instance
      */
     public Schema createSchema(final String name);
 

@@ -30,6 +30,12 @@ final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
 
 That is about as much configuration as you need to get started.
 
+### When are Object Written to the Database?
+
+When an object is written to the database depends on the implementation of the `DatabaseObjectWriter` that you use. Currently there is only one and it is not configurable.
+
+The `ImmediateDatabaseObjectWriter` writes any object to the database immediately when you create the representing Java object. For functional integration tests this is what you want to keep your code simple and readable.
+
 ### Creating Schemas
 
 In almost all your integration tests, you will need a schema to hold other objects. At least if you are testing against and Exasol database, so let's start with that.
@@ -115,6 +121,43 @@ final Connection connectionB = factory.createConnection("PRIVILEGED_CONNECTION",
 
 As always the first parameter is the object name of the connection definition. Then there is the URL (e.g. a JDBC URL) and optionally username and password.
 
+### Creating Scripts
+
+Scripts are the main extension point for end-users. In Exasol you can for example define a Lua script like this:
+
+```java
+final Script script = schema.createScript("HELLO_LUA", "print(\"Hello World\")");
+```
+
+You can also load the script implementation from a file.
+
+```java
+final Path path = "src/main/lua/hello.lua";
+final Script script = schema.createScript("HELLO_LUA", path);
+```
+
+Scripts can have zero or more parameters.
+
+```java
+final Script script = schema.createScript("REPEAT", "...", "text", "times");
+```
+
+If you need to create a more complex script, use the builder.
+
+```
+final Script script = schema.createScriptBuilder("CALENDAR")
+        .parameters("year", "month")
+        .content("...")
+        .returnsTable()
+        .build()
+```
+
+By default Exasol Scripts return a row count &mdash; even those scripts where you do not explicitly state this. You can of course ignore the value if you don't need it.
+
+Add `returnsTable()` to the builder if you want the script to return a table.
+
+See section ["Running Scripts"](#running-scripts) for information about executing scripts.
+
 ### Creating Adapter Scripts
 
 Adapter Scripts are what drive Virtual Schema adapters. They are scoped inside a schema. 
@@ -158,3 +201,40 @@ table.insert("Monday", "Mon")
 ```
 
 One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
+
+## Running Executable Database Content
+
+### Running Scripts
+
+Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
+
+The TDDB offers two methods for executing scripts, depending on which result you expect.
+
+Let's assume you have a script that fills a table with random data and returns the row count. You would call it like this:
+
+```java
+final int rowCount = insertRandomDataScript.execute();
+```
+
+If a script returns a table though, you have to call it with `executeQuery()` instead.
+
+```java
+final List<List<Object>> = createCalendarScript.execute(2020, 5);
+```
+
+In the second example you also see that you can add parameters to the script call. Obviously the number of parameters must match the parameters defined when you created the script.
+
+Parameters in scripts can be arrays. When you want to execute a script with an array parameter, use a collection like a `List` or `Set`.
+
+In the example below, you see a script that creates entries in a dimension table for months which expects a year as a simple scalar parameter and a list of months as an array parameter. 
+
+```java
+final Script createMonthEntries = schema.createScriptBuilder("month_entries")
+        .parameter("year")
+        .arrayParameter("months")
+        .content("-- script implementation ...")
+        .build();
+script.execute(2020, List.of(1, 2, 3, 4));
+```
+
+As you can see, the `execute(...)` method takes a scalar followed by a collection as parameters.
