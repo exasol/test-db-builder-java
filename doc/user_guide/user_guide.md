@@ -156,7 +156,7 @@ By default Exasol Scripts return a row count &mdash; even those scripts where yo
 
 Add `returnsTable()` to the builder if you want the script to return a table.
 
-See section 
+See section ["Running Scripts"](#running-scripts) for information about executing scripts.
 
 ### Creating Adapter Scripts
 
@@ -204,7 +204,7 @@ One thing to keep in mind here is that the TDDB's main design goal is expressive
 
 ## Running Executable Database Content
 
-### Running scripts
+### Running Scripts
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
