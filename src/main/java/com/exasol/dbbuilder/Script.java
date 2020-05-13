@@ -1,5 +1,8 @@
 package com.exasol.dbbuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +14,13 @@ import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 public class Script extends AbstractSchemaChild {
     private final String content;
     private final List<ScriptParameter> parameters;
-    private final ScriptReturnType returnType;
+    private final boolean returnsTable;
 
     private Script(final Builder builder) {
         super(builder.writer, builder.parentSchema, builder.name);
         this.content = builder.content;
         this.parameters = builder.parameters;
-        this.returnType = builder.returnType;
+        this.returnsTable = builder.returnsTable;
         this.writer.write(this);
     }
 
@@ -45,12 +48,34 @@ public class Script extends AbstractSchemaChild {
     }
 
     /**
-     * Get the type of return of the script.
+     * Check if the script returns a table.
      *
-     * @return return type
+     * @return {@code true} if the script returns a table, {@code false} if it returns a row count.
      */
-    public ScriptReturnType getReturnType() {
-        return this.returnType;
+    public boolean returnsTable() {
+        return this.returnsTable;
+    }
+
+    /**
+     * Execute the script ignoring potential return values.
+     *
+     * @param parameterValues script parameters
+     * @return row count
+     */
+    // [impl->dsn~running-scripts-that-have-no-return~1]
+    public int execute(final Object... parameterValues) {
+        return this.writer.execute(this, parameterValues);
+    }
+
+    /**
+     * Execute a script returning a table.
+     * 
+     * @param parameterValues script parameter values
+     *
+     * @return script result as table
+     */
+    public List<List<Object>> executeQuery(final Object... parameterValues) {
+        return this.writer.executeQuery(this, parameterValues);
     }
 
     /**
@@ -74,7 +99,7 @@ public class Script extends AbstractSchemaChild {
         private final String name;
         private final List<ScriptParameter> parameters = new ArrayList<>();
         private String content;
-        private ScriptReturnType returnType;
+        private boolean returnsTable = false;
 
         private Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final String name) {
             this.writer = writer;
@@ -120,13 +145,24 @@ public class Script extends AbstractSchemaChild {
         }
 
         /**
-         * Set the return type of the script.
+         * Load the script content from a file.
          *
-         * @param returnType type of returned value
+         * @param path path to file containing the script content
+         * @return {@code this} for fluent programming
+         * @throws IOException in case the file could not be read
+         */
+        public Builder content(final Path path) throws IOException {
+            this.content = Files.readString(path);
+            return this;
+        }
+
+        /**
+         * Set the return type of the script to a table.
+         *
          * @return {@code this} for fluent programming
          */
-        public Builder returnType(final ScriptReturnType returnType) {
-            this.returnType = returnType;
+        public Builder returnsTable() {
+            this.returnsTable = true;
             return this;
         }
 

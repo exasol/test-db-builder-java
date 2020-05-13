@@ -1,5 +1,7 @@
 package com.exasol.dbbuilder.objectwriter;
 
+import java.util.List;
+
 import com.exasol.dbbuilder.AdapterScript;
 import com.exasol.dbbuilder.ConnectionDefinition;
 import com.exasol.dbbuilder.DatabaseObject;
@@ -38,7 +40,7 @@ public interface DatabaseObjectWriter {
 
     /**
      * Create a script in the database.
-     * 
+     *
      * @param script script to be written
      */
     public void write(Script script);
@@ -89,4 +91,21 @@ public interface DatabaseObjectWriter {
      */
     public void write(final VirtualSchema virtualSchema);
 
+    /**
+     * Execute a script.
+     *
+     * @param script     script to execute
+     * @param parameters script parameters
+     * @return row count
+     */
+    public int execute(Script script, Object... parameters);
+
+    /**
+     * Execute a script returning a table.
+     *
+     * @param script     script to execute
+     * @param parameters script parameters
+     * @return table
+     */
+    public List<List<Object>> executeQuery(Script script, Object... parameters);
 }

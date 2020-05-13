@@ -2,7 +2,12 @@ package com.exasol.dbbuilder.objectwriter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.exasol.dbbuilder.AdapterScript;
@@ -13,6 +18,7 @@ import com.exasol.dbbuilder.DatabaseObjectException;
 import com.exasol.dbbuilder.ObjectPrivilege;
 import com.exasol.dbbuilder.Schema;
 import com.exasol.dbbuilder.Script;
+import com.exasol.dbbuilder.ScriptParameter;
 import com.exasol.dbbuilder.SystemPrivilege;
 import com.exasol.dbbuilder.Table;
 import com.exasol.dbbuilder.User;
@@ -85,6 +91,26 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     @Override
     public void write(final Script script) {
         final StringBuilder builder = new StringBuilder("CREATE SCRIPT " + script.getFullyQualifiedName());
+        final List<ScriptParameter> parameters = script.getParameters();
+        if (!parameters.isEmpty()) {
+            builder.append(" (");
+            boolean first = true;
+            for (final ScriptParameter parameter : parameters) {
+                if (first) {
+                    first = false;
+                } else {
+                    builder.append(", ");
+                }
+                if (parameter.isArray()) {
+                    builder.append("ARRAY ");
+                }
+                builder.append(parameter.getName());
+            }
+            builder.append(")");
+        }
+        if (script.returnsTable()) {
+            builder.append(" RETURNS TABLE");
+        }
         builder.append(" AS\n");
         builder.append(script.getContent());
         builder.append("\n/");
@@ -181,5 +207,85 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
             builder.append("'");
         }
         writeToObject(virtualSchema, builder.toString());
+    }
+
+    @Override
+    public int execute(final Script script, final Object... parameterValues) {
+        try (final Statement statement = this.connection.createStatement()) {
+            statement.execute(getScriptExecutionSql(script, parameterValues));
+            return statement.getUpdateCount();
+        } catch (final SQLException exception) {
+            throw new DatabaseObjectException(script, "Failed to execute script " + script.getFullyQualifiedName(),
+                    exception);
+        }
+    }
+
+    private String getScriptExecutionSql(final Script script, final Object[] parameterValues) {
+        final StringBuilder builder = new StringBuilder("EXECUTE SCRIPT ");
+        builder.append(script.getFullyQualifiedName());
+        if (parameterValues.length > 0) {
+            builder.append(" (");
+            boolean first = true;
+            for (final Object parameter : parameterValues) {
+                if (first) {
+                    first = false;
+                } else {
+                    builder.append(", ");
+                }
+                appendScriptParamterValue(builder, parameter);
+            }
+            builder.append(")");
+        }
+        return builder.toString();
+    }
+
+    private void appendScriptParamterValue(final StringBuilder builder, final Object parameter) {
+        if (parameter instanceof Collection) {
+            builder.append(" ARRAY(");
+            boolean first = true;
+            for (final Object arrayItem : (Collection<?>) parameter) {
+                if (first) {
+                    first = false;
+                } else {
+                    builder.append(", ");
+                }
+                appendScriptScalarParameter(builder, arrayItem);
+            }
+            builder.append(")");
+        } else {
+            appendScriptScalarParameter(builder, parameter);
+        }
+    }
+
+    private void appendScriptScalarParameter(final StringBuilder builder, final Object value) {
+        if (value instanceof String) {
+            builder.append("'");
+            builder.append(value);
+            builder.append("'");
+        } else {
+            builder.append(value);
+        }
+    }
+
+    @Override
+    public List<List<Object>> executeQuery(final Script script, final Object... parameterValues) {
+        final String sql = getScriptExecutionSql(script, parameterValues);
+        try (final Statement statement = this.connection.createStatement();
+                final ResultSet result = statement.executeQuery(sql)) {
+            final int columnCount = result.getMetaData().getColumnCount();
+            final List<List<Object>> table = new ArrayList<>();
+            while (result.next()) {
+                final List<Object> row = new ArrayList<>(columnCount);
+                for (int columnIndex = 1; columnIndex <= columnCount; ++columnIndex) {
+                    final Object value = result.getObject(columnIndex);
+                    row.add(value);
+                }
+                table.add(row);
+            }
+            return table;
+        } catch (final SQLException exception) {
+            throw new DatabaseObjectException(script,
+                    "Failed to execute script returning table" + script.getFullyQualifiedName(), exception);
+        }
     }
 }

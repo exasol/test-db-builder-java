@@ -6,17 +6,24 @@ import static com.exasol.dbbuilder.ObjectPrivilege.UPDATE;
 import static com.exasol.dbbuilder.SystemPrivilege.CREATE_SESSION;
 import static com.exasol.dbbuilder.SystemPrivilege.KILL_ANY_SESSION;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -99,6 +106,74 @@ class DatabaseObjectCreationIT {
     void testCreateScript() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT");
         assertObjectExistsInDatabase(schema.createScript("THE_SCRIPT", "print(\"Hello World\")"));
+    }
+
+    @Test
+    // [itest->dsn~creating-scripts-from-files~1]
+    // [itest->dsn~running-scripts-that-have-no-return~1]
+    void testCreateScriptFromFile(@TempDir final Path tempDir) throws IOException, SQLException {
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_FILE");
+        final Table table = schema.createTable("LUA_RESULT", "CHECK", "BOOLEAN");
+        final Path tempFile = tempDir.resolve("script.lua");
+        final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (true)]])";
+        Files.write(tempFile, content.getBytes());
+        final Script script = schema.createScript("LUA_SCRIPT", tempFile);
+        script.execute();
+        final Statement statement = this.adminConnection.createStatement();
+        final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
+        assertThat(result.next(), equalTo(true));
+    }
+
+    @Test
+    // [itest->dsn~running-scripts-that-have-no-return~1]
+    void testExecuteScriptWithParameters() throws SQLException {
+        final String param1 = "foobar";
+        final double param2 = 3.1415;
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_PARAMETERS");
+        final Table table = schema.createTable("LUA_RESULT", "A", "VARCHAR(20)", "B", "DOUBLE");
+        final String content = "query([[INSERT INTO " + table.getFullyQualifiedName()
+                + " VALUES (:p1, :p2)]], {p1=param1, p2=param2})";
+        final Script script = schema.createScript("LUA_SCRIPT", content, "param1", "param2");
+        script.execute(param1, param2);
+        final Statement statement = this.adminConnection.createStatement();
+        final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
+        assertAll(() -> assertThat("Result has entry", result.next(), equalTo(true)),
+                () -> assertThat(result.getString(1), equalTo(param1)),
+                () -> assertThat(result.getDouble(2), equalTo(param2)));
+    }
+
+    @Test
+    void testExecuteScriptReturningRowCount() {
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_RETURNING_ROW_COUNT");
+        final Script script = schema.createScriptBuilder("LUA_SCRIPT").content("exit({rows_affected=42})").build();
+        final int rowCount = script.execute();
+        assertThat(rowCount, equalTo(42));
+    }
+
+    @Test
+    void testExecuteScriptReturningTable() {
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_RETURNING_TABLE");
+        final Script script = schema.createScriptBuilder("LUA_SCRIPT") //
+                .content("exit({{\"foo\", true}, {\"bar\", false}}, \"C CHAR(3), B BOOLEAN\")") //
+                .returnsTable() //
+                .build();
+        final List<List<Object>> result = script.executeQuery();
+        assertThat(result, contains(contains("foo", true), contains("bar", false)));
+    }
+
+    @Test
+    void testExecuteScriptWithArrayParameter() {
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_ARRAY_PARAMETER");
+        final Script script = schema.createScriptBuilder("SUM_UP") //
+                .arrayParameter("operands") //
+                .content("s = 0\n" //
+                        + "for i=1, #operands do\n" //
+                        + "    s = s + operands[i]\n" //
+                        + "end\n" //
+                        + "exit({rows_affected=s})") //
+                .build();
+        final int sum = script.execute(List.of(1, 2, 3, 4, 5));
+        assertThat(sum, equalTo(15));
     }
 
     @Test

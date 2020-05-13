@@ -5,13 +5,16 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testcontainers.shaded.com.google.common.io.Files;
 
 import com.exasol.dbbuilder.Script.Builder;
 import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
@@ -67,9 +70,16 @@ class ScriptTest {
                 contains(new ScriptParameter("foo", false), new ScriptParameter("bar", true)));
     }
 
-    @EnumSource(ScriptReturnType.class)
-    @ParameterizedTest
-    void testGetReturnType(final ScriptReturnType returnType) {
-        assertThat(this.builder.returnType(returnType).build().getReturnType(), equalTo(returnType));
+    @Test
+    void testReturnsTableFalseByDefault() {
+        assertThat(this.builder.build().returnsTable(), equalTo(false));
+    }
+
+    @Test
+    void testLoadConntentFromFile(@TempDir final Path tempDir) throws IOException {
+        final String expected_content = "-- this is a comment";
+        final Path tempFile = tempDir.resolve("script.lua");
+        Files.write(expected_content.getBytes(), tempFile.toFile());
+        assertThat(this.builder.content(tempFile).build().getContent(), equalTo(expected_content));
     }
 }

@@ -1,5 +1,7 @@
 package com.exasol.dbbuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,15 +63,16 @@ public class Schema extends AbstractDatabaseObject {
     }
 
     /**
-     * Create a script that does not return anything.
+     * Create a builder for a table.
+     * <p>
+     * In cases where you need a more complex table than can be created by the convenience methods {@code createTable},
+     * this method provides a builder.
      *
-     * @param name    name of the script
-     * @param content implementation of the script
-     * @return script
+     * @param name table name
+     * @return builder for the table
      */
-    // [impl->dsn~creating-scripts~1]
-    public AbstractSchemaChild createScript(final String name, final String content) {
-        return Script.builder(this.writer, this, name).content(content).build();
+    public Table.Builder createTableBuilder(final String name) {
+        return Table.builder(this.writer, this, name);
     }
 
     /**
@@ -143,15 +146,43 @@ public class Schema extends AbstractDatabaseObject {
     }
 
     /**
-     * Create a builder for a table.
-     * <p>
-     * In cases where you need a more complex table than can be created by the convenience methods {@code createTable},
-     * this method provides a builder.
+     * Create a script that does not return anything.
      *
-     * @param name table name
-     * @return builder for the table
+     * @param name           name of the script
+     * @param content        implementation of the script
+     * @param parameterNames names of the parameters of the script
+     * @return script
      */
-    public Table.Builder createTableBuilder(final String name) {
-        return Table.builder(this.writer, this, name);
+    // [impl->dsn~creating-scripts~1]
+    public Script createScript(final String name, final String content, final String... parameterNames) {
+        return createScriptBuilder(name).parameter(parameterNames).content(content).build();
+    }
+
+    /**
+     * Create a script and load its implementation from a file.
+     *
+     * @param name           name of the script
+     * @param path           path to file containing the script implementation
+     * @param parameterNames names of the parameters of the script
+     * @return script
+     */
+    // [impl->dsn~creating-scripts-from-files~1]
+    public Script createScript(final String name, final Path path, final String... parameterNames) {
+        try {
+            return createScriptBuilder(name).parameter(parameterNames).content(path).build();
+        } catch (final IOException exception) {
+            throw new DatabaseObjectException(this,
+                    "Unable to create script \"" + name + "\" from file \"" + path + "\".", exception);
+        }
+    }
+
+    /**
+     * Create a builder for a database script.
+     *
+     * @param name name of the script
+     * @return builder
+     */
+    public Script.Builder createScriptBuilder(final String name) {
+        return Script.builder(this.writer, this, name);
     }
 }

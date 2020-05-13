@@ -53,14 +53,23 @@ TDDB allows populating the database with test data.
 
 <!-- Needs: req --><!-- See https://github.com/exasol/test-db-builder-java/issues/10 -->
 
+### Running Executable Database Content
+`feat~Running-executable-database-content~1`
+
+TDDB allows developers to programmatically running database content that is executable (like scripts).
+
+Needs: req
+
 ## Functional Requirements
 
 In this section lists functional requirements from the user's perspective. The requirements are grouped by feature where they belong to a single feature.
 
-### Creating Scripts
+### Creating Database Objects
+
+#### Creating Scripts
 `req~creating-scripts~1`
 
-TDDB creates Scripts.
+Users can create scripts where the script content is as part of the test code.
 
 Rationale:
 
@@ -72,6 +81,39 @@ Covers:
 
 Needs: dsn
 
-### Creating Database Objects
+#### Creating Scripts From Files
+`req~creating-scripts-from-files~1`
+
+Users can create scripts where the content is loaded from a file.
+
+Rationale:
+
+Longer scripts are usually not kept directly in the test source code. Also this allows integration testing existing scripts.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+#### Executing Scripts Without Returns
+`req~executing-scripts-without-returns~1`
 
 ### Populating the Database With Test Data
+
+### Running Executable Database Content
+
+#### Running Scripts That Have no Return
+`req~running-scripts-that-have-no-return~1`
+
+Users can execute scripts that have no return.
+
+Rationale:
+
+This allows testing scripts and using scripts for more complex test preparation.
+
+Covers:
+
+* [feat~Running-executable-database-content~1](#running-executable-database-content)
+
+Needs: dsn

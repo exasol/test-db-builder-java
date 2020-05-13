@@ -43,7 +43,7 @@ This section describes the runtime behavior of the software.
 ### Creating Scripts
 `dsn~creating-scripts~1`
 
-Users can create script objects from inside schema objects.
+Users can create script objects from inside schema objects by providing the script content programmatically.
 
 Covers:
 
@@ -51,7 +51,31 @@ Covers:
 
 Needs: impl, itest
 
+### Creating Scripts from Files
+`dsn~creating-scripts-from-files~1`
+
+Users can create scripts from inside a schema object by loading the script contents from a file.
+
+Covers:
+
+* `req~creating-scripts-from-files~1`
+
+Needs: impl, itest
+
 ## Populating Database With Test Data
+
+## Running Executable Database Content
+
+### Running Scripts That Have no Return
+`dsn~running-scripts-that-have-no-return~1`
+
+Users can execute scripts directly from a script Java object.
+
+Covers:
+
+* `req~running-scripts-that-have-no-return~1`
+
+Needs: impl, itest
 
 # Cross-cutting Concerns
 
