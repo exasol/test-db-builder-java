@@ -129,7 +129,7 @@ Scripts are the main extension point for end-users. In Exasol you can for exampl
 final Script script = schema.createScript("HELLO_LUA", "print(\"Hello World\")");
 ```
 
-You can also load the script implementation form a file.
+You can also load the script implementation from a file.
 
 ```java
 final Path path = "src/main/lua/hello.lua";
@@ -226,7 +226,7 @@ In the second example you also see that you can add parameters to the script cal
 
 Parameters in scripts can be arrays. When you want to execute a script with an array parameter, use a collection like a `List` or `Set`.
 
-In the example below, you see a script that creates entries in a dimension table for months which expects a year as simple scalar parameter and a list of months as an array parameter. 
+In the example below, you see a script that creates entries in a dimension table for months which expects a year as a simple scalar parameter and a list of months as an array parameter. 
 
 ```java
 final Script createMonthEntries = schema.createScriptBuilder("month_entries")
