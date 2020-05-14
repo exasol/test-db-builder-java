@@ -2,6 +2,7 @@ package com.exasol.dbbuilder.objectwriter;
 
 import java.util.List;
 
+import com.exasol.dbbuilder.AbstractDatabaseObject;
 import com.exasol.dbbuilder.AdapterScript;
 import com.exasol.dbbuilder.ConnectionDefinition;
 import com.exasol.dbbuilder.DatabaseObject;
@@ -98,7 +99,7 @@ public interface DatabaseObjectWriter {
      * @param parameters script parameters
      * @return row count
      */
-    public int execute(Script script, Object... parameters);
+    public int execute(AbstractDatabaseObject script, Object... parameters);
 
     /**
      * Execute a script returning a table.
@@ -107,5 +108,5 @@ public interface DatabaseObjectWriter {
      * @param parameters script parameters
      * @return table
      */
-    public List<List<Object>> executeQuery(Script script, Object... parameters);
+    public List<List<Object>> executeQuery(AbstractDatabaseObject script, Object... parameters);
 }

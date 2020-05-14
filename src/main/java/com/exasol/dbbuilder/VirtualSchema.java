@@ -17,7 +17,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private final Map<String, String> properties = new HashMap<>();
 
     private VirtualSchema(final Builder builder) {
-        super(builder.writer, builder.name);
+        super(builder.writer, builder.name, false);
         this.adapterScript = builder.adapterScript;
         this.connectionDefinition = builder.connectionDefinition;
         addReservedProperties(builder);

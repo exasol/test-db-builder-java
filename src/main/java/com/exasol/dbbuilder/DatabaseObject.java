@@ -34,8 +34,15 @@ public interface DatabaseObject {
 
     /**
      * Get the parent object.
-     * 
+     *
      * @return parent object
      */
     public DatabaseObject getParent();
+
+    /**
+     * Check whether the script is a control object for a database object that already existed in the database.
+     *
+     * @return {@code true} if this is a control object attached to an existing database object
+     */
+    boolean isAttached();
 }

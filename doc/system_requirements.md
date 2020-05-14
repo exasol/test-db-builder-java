@@ -54,9 +54,16 @@ TDDB allows populating the database with test data.
 <!-- Needs: req --><!-- See https://github.com/exasol/test-db-builder-java/issues/10 -->
 
 ### Running Executable Database Content
-`feat~Running-executable-database-content~1`
+`feat~running-executable-database-content~1`
 
 TDDB allows developers to programmatically running database content that is executable (like scripts).
+
+Needs: req
+
+### Controlling Existing Database Objects
+`feat~controlling-existing-database-objects~1`
+
+TDDB allows developers to attach to existing database objects to control them programmatically.
 
 Needs: req
 
@@ -114,6 +121,27 @@ This allows testing scripts and using scripts for more complex test preparation.
 
 Covers:
 
-* [feat~Running-executable-database-content~1](#running-executable-database-content)
+* [feat~running-executable-database-content~1](#running-executable-database-content)
+
+Needs: dsn
+
+### Controlling Existing Database Objects
+
+In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
+
+TDDB lets users attach to existing objects to control them.
+
+#### Controlling Existing Scripts
+`req~controlling-existing-scripts~1`
+
+Users can control an existing script through TDDB.
+
+Rationale:
+
+Scripts that are part of the implementation are often loaded from files. In integration tests users need to be able to run those pre-existing scripts.
+
+Covers:
+
+* [feat~controlling-existing-database-objects~1](#controlling-existing-database-objects)
 
 Needs: dsn

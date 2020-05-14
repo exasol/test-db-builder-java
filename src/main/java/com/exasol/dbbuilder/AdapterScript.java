@@ -20,7 +20,7 @@ public class AdapterScript extends AbstractSchemaChild {
      */
     public AdapterScript(final DatabaseObjectWriter writer, final Schema parentSchema, final String name,
             final Language language, final String content) {
-        super(writer, parentSchema, name);
+        super(writer, parentSchema, name, false);
         this.language = language;
         this.content = content;
         writer.write(this);

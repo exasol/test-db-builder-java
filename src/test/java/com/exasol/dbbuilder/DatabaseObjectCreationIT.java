@@ -29,14 +29,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.exasol.containers.ExasolContainer;
-import com.exasol.containers.ExasolContainerConstants;
 
 @Tag("integration")
 @Testcontainers
 class DatabaseObjectCreationIT {
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>(
-            ExasolContainerConstants.EXASOL_DOCKER_IMAGE_REFERENCE);
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):" //
             + "    return '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'";
     private DatabaseObjectFactory factory;

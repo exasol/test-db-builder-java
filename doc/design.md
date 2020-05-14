@@ -77,9 +77,60 @@ Covers:
 
 Needs: impl, itest
 
+## Controlling Existing Database Objects
+
+### Controlling Existing Scripts
+`dsn~controlling-existing-scripts~1`
+
+Users get a control object for a script from within a schema by specifying the existing scripts name.
+
+Covers:
+
+* `req~controlling-existing-scripts~1`
+* `dsn~attaching-to-existing-database-object-by-name~1`
+
+Needs: impl, itest
+
 # Cross-cutting Concerns
 
 # Design Decisions
+
+## How Do we Let Users Attach to Existing Database Object
+
+As explained in [the system requirements section "Controlling Existing Database Objects"](system_requirements#Controlling-existing-database-objects), sometimes users need to control existing database objects in integration tests.
+
+The decision on how to do this is architecture relevant because it impacts usability, code maintainability (both of the TDDB and integration tests written with it) and safety of the created code.
+
+### Alternatives Considered
+
+#### Creating a Complete Control Object but not Writing it
+
+While this gives TDDB the best possible information about the contents of the object and also works without administrative privileges for all object types, it requires users to provide the same information twice, which is inconvenient and error prone.
+
+#### Reading the Object Metadata from the Database
+
+Depending on the type of the object this can require administrative privileges. It is also a complex operation that generates a lot of development effort in the TDDB. We still will keep this in mind as a backup plan for selected object types when the current simple solution turns out to be insufficient.
+
+### Decisions
+
+#### Attaching to Existing Database Object by Name
+`dsn~attaching-to-existing-database-object-by-name~1`
+
+When users attach to existing database object, all they need is the fully-qualified name. The control object holds no metadata of that object.
+
+Comment:
+
+The downside of this approach is that TDDB cannot do any validation on an object that it only knows the name of. For this metadata would be required. This means for example that TDDB cannot check whether the number of arguments passed to a script is in line with the script definition.
+
+This is not necessary though since the database itself implements those checks and the error messages are good enough to present them to the users.
+
+On the upside this makes the implementation comparably simple and using the API convenient.
+
+Covers:
+
+* `req~controlling-existing-scripts~1`
+
+Needs: dsn
 
 # Quality Scenarios
 

@@ -14,7 +14,7 @@ public class Table extends AbstractSchemaChild {
     private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
-        super(builder.writer, builder.parentSchema, builder.name);
+        super(builder.writer, builder.parentSchema, builder.name, false);
         this.columns = builder.columns;
         this.writer.write(this);
     }

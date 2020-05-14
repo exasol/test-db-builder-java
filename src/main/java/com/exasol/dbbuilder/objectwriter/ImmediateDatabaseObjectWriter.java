@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.exasol.dbbuilder.AbstractDatabaseObject;
 import com.exasol.dbbuilder.AdapterScript;
 import com.exasol.dbbuilder.Column;
 import com.exasol.dbbuilder.ConnectionDefinition;
@@ -203,7 +204,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     }
 
     @Override
-    public int execute(final Script script, final Object... parameterValues) {
+    public int execute(final AbstractDatabaseObject script, final Object... parameterValues) {
         try (final Statement statement = this.connection.createStatement()) {
             statement.execute(getScriptExecutionSql(script, parameterValues));
             return statement.getUpdateCount();
@@ -213,7 +214,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         }
     }
 
-    private String getScriptExecutionSql(final Script script, final Object[] parameterValues) {
+    private String getScriptExecutionSql(final AbstractDatabaseObject script, final Object[] parameterValues) {
         final StringBuilder builder = new StringBuilder("EXECUTE SCRIPT ");
         builder.append(script.getFullyQualifiedName());
         if (parameterValues.length > 0) {
@@ -257,7 +258,7 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     }
 
     @Override
-    public List<List<Object>> executeQuery(final Script script, final Object... parameterValues) {
+    public List<List<Object>> executeQuery(final AbstractDatabaseObject script, final Object... parameterValues) {
         final String sql = getScriptExecutionSql(script, parameterValues);
         try (final Statement statement = this.connection.createStatement();
                 final ResultSet result = statement.executeQuery(sql)) {
