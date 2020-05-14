@@ -103,6 +103,21 @@ Covers:
 
 Needs: dsn
 
+#### Creating Objects Through SQL From Files
+`req~creating-objects-through-sql-files~1`
+
+Users can execute SQL files to create objects in the database.
+
+Rationale:
+
+Especially when scripts are part of the implementation under test, they often come in form of SQL files. In order to test them, TDDB must be able to execute the SQL files that create them.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
 #### Executing Scripts Without Returns
 `req~executing-scripts-without-returns~1`
 

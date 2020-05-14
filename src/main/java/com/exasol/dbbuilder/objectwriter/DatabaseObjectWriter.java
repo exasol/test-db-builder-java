@@ -1,5 +1,6 @@
 package com.exasol.dbbuilder.objectwriter;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import com.exasol.dbbuilder.AbstractDatabaseObject;
@@ -109,4 +110,11 @@ public interface DatabaseObjectWriter {
      * @return table
      */
     public List<List<Object>> executeQuery(AbstractDatabaseObject script, Object... parameters);
+
+    /**
+     * Execute the contents of a SQL script file.
+     *
+     * @param sqlFile path to the script file
+     */
+    public void executeSql(Path sqlFile);
 }

@@ -3,10 +3,14 @@ package com.exasol.dbbuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -33,5 +37,20 @@ class AttachToExistingObjectIT {
         final Script existingScriptHandle = schema.getScript(scriptName);
         final int result = existingScriptHandle.execute();
         assertThat(result, equalTo(1337));
+    }
+
+    // [itest->dsn~creating-objects-through-sql-files~1]
+    @Test
+    void testAttachToScriptFromSqlFile(@TempDir final Path tempDir) throws IOException {
+        final Schema schema = factory.createSchema("SCHEMA_FOR_ATTACHING_TO_SCRIPT_FROM_SQL_FILE");
+        final String scriptName = "THE_SCRIPT";
+        final Path scriptFile = tempDir.resolve("script.sql");
+        Files.writeString(scriptFile, "CREATE SCRIPT " + schema.name + "." + scriptName + " AS\n" //
+                + "exit({rows_affected=314})\n" //
+                + "/");
+        factory.executeSql(scriptFile);
+        final Script existingScriptHandle = schema.getScript(scriptName);
+        final int result = existingScriptHandle.execute();
+        assertThat(result, equalTo(314));
     }
 }

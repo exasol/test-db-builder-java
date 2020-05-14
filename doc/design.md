@@ -62,6 +62,17 @@ Covers:
 
 Needs: impl, itest
 
+### Creating Object Through SQL Files
+`dsn~creating-objects-through-sql-files~1`
+
+Users can create database objects by executing the statements in an SQL file. 
+
+Covers:
+
+* `req~creating-objects-through-sql-files~1`
+
+Needs: impl, itest
+
 ## Populating Database With Test Data
 
 ## Running Executable Database Content

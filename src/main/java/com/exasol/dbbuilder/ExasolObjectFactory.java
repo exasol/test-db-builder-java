@@ -1,5 +1,6 @@
 package com.exasol.dbbuilder;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 
 import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
@@ -59,5 +60,11 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     @Override
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
         return VirtualSchema.builder(this.writer, name);
+    }
+
+    @Override
+    // [impl->dsn~creating-objects-through-sql-files~1]
+    public void executeSql(final Path scriptFile) {
+        this.writer.executeSql(scriptFile);
     }
 }

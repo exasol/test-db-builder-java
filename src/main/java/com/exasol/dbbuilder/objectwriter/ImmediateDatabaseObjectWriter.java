@@ -1,5 +1,8 @@
 package com.exasol.dbbuilder.objectwriter;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -276,6 +279,16 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(script,
                     "Failed to execute script returning table" + script.getFullyQualifiedName(), exception);
+        }
+    }
+
+    @Override
+    public void executeSql(final Path sqlFile) {
+        try (final Statement statement = this.connection.createStatement()) {
+            final String sql = Files.readString(sqlFile);
+            statement.execute(sql);
+        } catch (final IOException | SQLException exception) {
+            throw new DatabaseObjectException("Unable to execute SQL from file: " + sqlFile, exception);
         }
     }
 }
