@@ -204,7 +204,7 @@ One thing to keep in mind here is that the TDDB's main design goal is expressive
 
 ## Running Executable Database Content
 
-### Running Scripts
+### Executing Scripts
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
@@ -238,3 +238,19 @@ script.execute(2020, List.of(1, 2, 3, 4));
 ```
 
 As you can see, the `execute(...)` method takes a scalar followed by a collection as parameters.
+
+## Controlling Existing Database Objects
+
+In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
+
+TDDB lets users attach to existing objects to control them.
+
+### Controlling Existing Scripts
+
+Imagine you loaded a couple of scripts from a SQL file and you want to write an integration test for them. You can attach to an existing script in the database like this:
+
+```java
+final Script script = schema.getScript("THE_EXISTING_SCRIPT");
+```
+
+Given that a script of that name exists, you can then [execute the script](#executing-scripts) as if you had [created it using the TDDB](#creating-scripts).
