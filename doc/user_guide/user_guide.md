@@ -190,7 +190,7 @@ final VirtualSchema virtualSchema = factory.createVirtualSchemaBuilder("THE_VIRT
 
 ### Running SQL From Files to Create Objects
 
-Implementation often come with SQL files that users need to execute as a preparation. Since those files contain production code, it needs to be tested &mdash; but first you need to run those SQL scripts.
+Implementation often comes with SQL files that users need to execute as a preparation. Since those files contain production code, it needs to be tested &mdash; but first you need to run those SQL scripts.
 
 Running an SQL script is easy:
 

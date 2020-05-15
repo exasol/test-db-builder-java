@@ -127,7 +127,7 @@ Depending on the type of the object this can require administrative privileges. 
 #### Attaching to Existing Database Object by Name
 `dsn~attaching-to-existing-database-object-by-name~1`
 
-When users attach to existing database object, all they need is the fully-qualified name. The control object holds no metadata of that object.
+When users attach to an existing database object, all they need is a fully-qualified name. The control object holds no metadata of that object.
 
 Comment:
 
