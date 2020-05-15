@@ -2,6 +2,7 @@ package com.exasol.dbbuilder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,9 +49,15 @@ class AttachToExistingObjectIT {
         Files.writeString(scriptFile, "CREATE SCRIPT " + schema.name + "." + scriptName + " AS\n" //
                 + "exit({rows_affected=314})\n" //
                 + "/");
-        factory.executeSql(scriptFile);
+        factory.executeSqlFile(scriptFile);
         final Script existingScriptHandle = schema.getScript(scriptName);
         final int result = existingScriptHandle.execute();
         assertThat(result, equalTo(314));
+    }
+
+    // [itest->dsn~creating-objects-through-sql-files~1]
+    @Test
+    void testAttachToScriptThrowsExecptionOnNonExistingFile() {
+        assertThrows(DatabaseObjectException.class, () -> factory.executeSqlFile(Path.of("non/existent/file.sql")));
     }
 }

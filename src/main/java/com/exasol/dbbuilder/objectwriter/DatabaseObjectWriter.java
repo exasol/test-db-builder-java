@@ -114,7 +114,7 @@ public interface DatabaseObjectWriter {
     /**
      * Execute the contents of a SQL script file.
      *
-     * @param sqlFile path to the script file
+     * @param sqlFiles path(s) to the script file(s)
      */
-    public void executeSql(Path sqlFile);
+    public void executeSqlFile(Path... sqlFiles);
 }

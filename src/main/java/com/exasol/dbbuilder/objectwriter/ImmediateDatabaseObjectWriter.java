@@ -283,12 +283,14 @@ public class ImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
     }
 
     @Override
-    public void executeSql(final Path sqlFile) {
-        try (final Statement statement = this.connection.createStatement()) {
-            final String sql = Files.readString(sqlFile);
-            statement.execute(sql);
-        } catch (final IOException | SQLException exception) {
-            throw new DatabaseObjectException("Unable to execute SQL from file: " + sqlFile, exception);
+    public void executeSqlFile(final Path... sqlFiles) {
+        for (final Path sqlFile : sqlFiles) {
+            try (final Statement statement = this.connection.createStatement()) {
+                final String sql = Files.readString(sqlFile);
+                statement.execute(sql);
+            } catch (final IOException | SQLException exception) {
+                throw new DatabaseObjectException("Unable to execute SQL from file: " + sqlFile, exception);
+            }
         }
     }
 }

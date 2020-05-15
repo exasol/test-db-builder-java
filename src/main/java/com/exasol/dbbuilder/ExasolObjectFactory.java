@@ -64,7 +64,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
 
     @Override
     // [impl->dsn~creating-objects-through-sql-files~1]
-    public void executeSql(final Path scriptFile) {
-        this.writer.executeSql(scriptFile);
+    public void executeSqlFile(final Path... sqlFiles) {
+        this.writer.executeSqlFile(sqlFiles);
     }
 }

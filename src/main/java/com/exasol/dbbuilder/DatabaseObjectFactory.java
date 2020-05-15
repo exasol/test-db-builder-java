@@ -93,7 +93,7 @@ public interface DatabaseObjectFactory {
     /**
      * Execute the contents of a SQL script file.
      *
-     * @param sqlFile path to the script file
+     * @param sqlFiles path to the script file
      */
-    public void executeSql(final Path sqlFile);
+    public void executeSqlFile(final Path... sqlFiles);
 }
