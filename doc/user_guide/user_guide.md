@@ -196,7 +196,13 @@ Running an SQL script is easy:
 
 ```java
 final Path pathToSqlFile = Path.of("src/main/sql/init.sql");
-factory.executeSql(pathToSqlFile);
+factory.executeSqlFile(pathToSqlFile);
+```
+
+You can also run multiple SQL files in a row. They are executed in the order they are listed in the `executeSqlFile(...)` call.
+
+```java
+factory.executeSqlFile(file1, file2, file3);
 ```
 
 ## Populating Tables
