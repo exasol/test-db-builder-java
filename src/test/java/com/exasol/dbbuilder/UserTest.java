@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.dbbuilder.objectwriter.DatabaseObjectWriter;
 
+// [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)
 class UserTest {
     @Mock
@@ -57,6 +58,7 @@ class UserTest {
     }
 
     @Test
+    // [utest->dsn~granting-system-privileges-to-users~1]
     void testGetSystemPrivileges() {
         final User user = new User(this.writerMock, "SYTEMUSER") //
                 .grant(SystemPrivilege.CREATE_SESSION);

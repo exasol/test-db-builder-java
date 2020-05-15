@@ -38,6 +38,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
+    // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
         return new User(this.writer, name);
     }

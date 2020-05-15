@@ -73,6 +73,17 @@ In this section lists functional requirements from the user's perspective. The r
 
 ### Creating Database Objects
 
+#### Creating Users
+`req~creating-users~1`
+
+Users can create database users through TDDB.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
 #### Creating Scripts
 `req~creating-scripts~1`
 
