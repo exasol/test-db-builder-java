@@ -9,6 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,19 +25,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.exasol.containers.ExasolContainer;
-import com.exasol.containers.ExasolContainerConstants;
 
 @Tag("integration")
 @Testcontainers
 class DatabaseObjectCreationIT {
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>(
-            ExasolContainerConstants.EXASOL_DOCKER_IMAGE_REFERENCE);
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):" //
             + "    return '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'";
     private DatabaseObjectFactory factory;
@@ -159,6 +160,18 @@ class DatabaseObjectCreationIT {
                 .build();
         final List<List<Object>> result = script.executeQuery();
         assertThat(result, contains(contains("foo", true), contains("bar", false)));
+    }
+
+    @ValueSource(booleans = { true, false })
+    @ParameterizedTest
+    void testExecuteScriptThrowsException(final boolean returnsTable) {
+        final Schema schema = this.factory.createSchema(
+                "PARENT_SCHEMA_FOR_SCRIPT" + (returnsTable ? "_RETURING_TABLE" : "") + "_THROWING_EXCEPTION");
+        final Script.Builder builder = schema.createScriptBuilder("LUA_SCRIPT").content("error()");
+        if (returnsTable) {
+            builder.returnsTable();
+        }
+        assertThrows(DatabaseObjectException.class, () -> builder.build().executeQuery());
     }
 
     @Test

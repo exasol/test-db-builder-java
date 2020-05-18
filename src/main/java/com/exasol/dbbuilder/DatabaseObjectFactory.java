@@ -1,5 +1,7 @@
 package com.exasol.dbbuilder;
 
+import java.nio.file.Path;
+
 /**
  * Interface for database object factories.
  * <p>
@@ -87,4 +89,11 @@ public interface DatabaseObjectFactory {
      * @return builder
      */
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name);
+
+    /**
+     * Execute the contents of a SQL script file.
+     *
+     * @param sqlFiles path to the script file
+     */
+    public void executeSqlFile(final Path... sqlFiles);
 }

@@ -20,7 +20,7 @@ public class Schema extends AbstractDatabaseObject {
      * @param name   name of the database schema
      */
     public Schema(final DatabaseObjectWriter writer, final String name) {
-        super(writer, name);
+        super(writer, name, false);
         writer.write(this);
     }
 
@@ -184,5 +184,15 @@ public class Schema extends AbstractDatabaseObject {
      */
     public Script.Builder createScriptBuilder(final String name) {
         return Script.builder(this.writer, this, name);
+    }
+
+    /**
+     * Attach to a script that already exists in the database.
+     *
+     * @param name name of the script to attach to
+     * @return control object for the existing script
+     */
+    public Script getScript(final String name) {
+        return createScriptBuilder(name).attach();
     }
 }

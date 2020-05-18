@@ -22,7 +22,7 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      * @param target target the connection points to
      */
     public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String target) {
-        super(writer, name);
+        super(writer, name, false);
         this.target = target;
         writer.write(this);
     }
@@ -38,7 +38,7 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      */
     public ConnectionDefinition(final DatabaseObjectWriter writer, final String name, final String target,
             final String userName, final String password) {
-        super(writer, name);
+        super(writer, name, false);
         this.target = target;
         this.userName = userName;
         this.password = password;

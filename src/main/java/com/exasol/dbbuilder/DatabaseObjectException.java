@@ -11,7 +11,7 @@ public class DatabaseObjectException extends RuntimeException {
     private final String objectType;
 
     /**
-     * Create a new instance of a {@link DatabaseObjectException}
+     * Create a new instance of a {@link DatabaseObjectException}.
      *
      * @param object  database object
      * @param message error message
@@ -23,28 +23,40 @@ public class DatabaseObjectException extends RuntimeException {
     }
 
     /**
-     * Create a new instance of a {@link DatabaseObjectException}
+     * Create a new instance of a {@link DatabaseObjectException}.
      *
      * @param object database object
      * @param cause  reason we were unable to create the object
      */
-    public DatabaseObjectException(final DatabaseObject object, final Exception cause) {
+    public DatabaseObjectException(final DatabaseObject object, final Throwable cause) {
         super("Unable to create " + object.getType() + " " + object.getFullyQualifiedName(), cause);
         this.fullyQualifiedObjectName = object.getFullyQualifiedName();
         this.objectType = object.getType();
     }
 
     /**
-     * Create a new instance of a {@link DatabaseObjectException}
+     * Create a new instance of a {@link DatabaseObjectException}.
      *
      * @param object  database object
      * @param message error message
      * @param cause   reason we were unable to create the object
      */
-    public DatabaseObjectException(final DatabaseObject object, final String message, final Exception cause) {
+    public DatabaseObjectException(final DatabaseObject object, final String message, final Throwable cause) {
         super(message + " In the context of " + object.getType() + " " + object.getFullyQualifiedName(), cause);
         this.fullyQualifiedObjectName = object.getFullyQualifiedName();
         this.objectType = object.getType();
+    }
+
+    /**
+     * Create a new instance of a {@link DatabaseObjectException}.
+     *
+     * @param message error message
+     * @param cause   reason the error is thrown
+     */
+    public DatabaseObjectException(final String message, final Throwable cause) {
+        super(message, cause);
+        this.fullyQualifiedObjectName = null;
+        this.objectType = null;
     }
 
     /**

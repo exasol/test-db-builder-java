@@ -144,7 +144,7 @@ final Script script = schema.createScript("REPEAT", "...", "text", "times");
 
 If you need to create a more complex script, use the builder.
 
-```
+```java
 final Script script = schema.createScriptBuilder("CALENDAR")
         .parameters("year", "month")
         .content("...")
@@ -156,7 +156,7 @@ By default Exasol Scripts return a row count &mdash; even those scripts where yo
 
 Add `returnsTable()` to the builder if you want the script to return a table.
 
-See section ["Running Scripts"](#running-scripts) for information about executing scripts.
+See section ["Running Scripts"](#executing-scripts) for information about executing scripts.
 
 ### Creating Adapter Scripts
 
@@ -170,7 +170,7 @@ A basic adapter script definition consists of three parts:
 
 Accordingly the creation of an adapter script looks like this:
 
-```sql
+```java
 final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "PYTHON", "print \"Hello World\"");
 ```
 
@@ -178,7 +178,7 @@ final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "P
 
 Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDDB.
 
-```sql
+```java
 final VirtualSchema virtualSchema = factory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA")
         .dialectName("Exasol")
         .adapterScript(adapterScript)
@@ -186,6 +186,23 @@ final VirtualSchema virtualSchema = factory.createVirtualSchemaBuilder("THE_VIRT
         .properties(Map.of("IS_LOCAL", "true"
                            "LOG_LEVEL", "ALL"))
         .build();
+```
+
+### Running SQL From Files to Create Objects
+
+Implementation often comes with SQL files that users need to execute as a preparation. Since those files contain production code, it needs to be tested &mdash; but first you need to run those SQL scripts.
+
+Running an SQL script is easy:
+
+```java
+final Path pathToSqlFile = Path.of("src/main/sql/init.sql");
+factory.executeSqlFile(pathToSqlFile);
+```
+
+You can also run multiple SQL files in a row. They are executed in the order they are listed in the `executeSqlFile(...)` call.
+
+```java
+factory.executeSqlFile(file1, file2, file3);
 ```
 
 ## Populating Tables
@@ -204,7 +221,7 @@ One thing to keep in mind here is that the TDDB's main design goal is expressive
 
 ## Running Executable Database Content
 
-### Running Scripts
+### Executing Scripts
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
@@ -238,3 +255,19 @@ script.execute(2020, List.of(1, 2, 3, 4));
 ```
 
 As you can see, the `execute(...)` method takes a scalar followed by a collection as parameters.
+
+## Controlling Existing Database Objects
+
+In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
+
+TDDB lets users attach to existing objects to control them.
+
+### Controlling Existing Scripts
+
+Imagine you loaded a couple of scripts from a SQL file and you want to write an integration test for them. You can attach to an existing script in the database like this:
+
+```java
+final Script script = schema.getScript("THE_EXISTING_SCRIPT");
+```
+
+Given that a script of that name exists, you can then [execute the script](#executing-scripts) as if you had [created it using the TDDB](#creating-scripts).

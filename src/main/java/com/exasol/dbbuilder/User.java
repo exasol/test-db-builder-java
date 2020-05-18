@@ -26,7 +26,7 @@ public class User extends AbstractDatabaseObject {
      * @param name   user name
      */
     public User(final DatabaseObjectWriter writer, final String name) {
-        super(writer, name);
+        super(writer, name, false);
         this.password = name + "PWD";
         writer.write(this);
     }
@@ -39,7 +39,7 @@ public class User extends AbstractDatabaseObject {
      * @param password login password
      */
     public User(final DatabaseObjectWriter writer, final String name, final String password) {
-        super(writer, name);
+        super(writer, name, false);
         this.password = password;
         writer.write(this);
     }
