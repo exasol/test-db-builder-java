@@ -54,11 +54,11 @@ Needs: impl, utest, itest
 ### Granting System Privileges to Database Users
 `dsn~granting-system-privileges-to-database-users~1`
 
-Users can grant System Privileges to created database users.
+Users can select and grant System Privileges to created database users from the list of supported System Privileges.
 
 Covers:
 
-* `req~creating-users~1`
+* `req~granting-system-privileges-to-users~1`
 
 Needs: impl, utest, itest
 

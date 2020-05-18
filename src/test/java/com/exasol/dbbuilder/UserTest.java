@@ -58,7 +58,7 @@ class UserTest {
     }
 
     @Test
-    // [utest->dsn~granting-system-privileges-to-users~1]
+    // [utest->dsn~granting-system-privileges-to-database-users~1]
     void testGetSystemPrivileges() {
         final User user = new User(this.writerMock, "SYTEMUSER") //
                 .grant(SystemPrivilege.CREATE_SESSION);

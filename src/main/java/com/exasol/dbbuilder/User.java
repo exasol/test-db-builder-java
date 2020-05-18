@@ -118,7 +118,7 @@ public class User extends AbstractDatabaseObject {
      * @param privileges system privileges
      * @return {@link User} instance for fluent programming
      */
-    // [dsn~granting-system-privileges-to-database-users~1]
+    // [impl->dsn~granting-system-privileges-to-database-users~1]
     public User grant(final SystemPrivilege... privileges) {
         this.systemPrivileges.addAll(Set.of(privileges));
         this.writer.write(this, privileges);

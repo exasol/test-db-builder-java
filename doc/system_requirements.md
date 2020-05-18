@@ -84,6 +84,17 @@ Covers:
 
 Needs: dsn
 
+### Granting System Privileges to Users
+`req~granting-system-privileges-to-users~1`
+
+Users can grant System Privileges to created database users.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
 #### Creating Scripts
 `req~creating-scripts~1`
 
