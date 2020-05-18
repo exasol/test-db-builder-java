@@ -196,11 +196,13 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
+    // [itest->dsn~creating-database-users~1]
     void testCreateUser() {
         assertObjectExistsInDatabase(this.factory.createUser("THE_USER"));
     }
 
     @Test
+    // [itest->dsn~creating-database-users~1]
     void testCreateLoginUser() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -209,6 +211,7 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
+    // [itest->dsn~creating-database-users~1]
     void testCreateLoginUserWithPassword() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER_WITH_PASSWORD", "THE_PASSWORD");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -228,6 +231,7 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
+    // [itest->dsn~granting-system-privileges-to-database-users~1]
     void testGrantSystemPrivilegeToUser() {
         final User user = this.factory.createUser("SYSPRIVUSER").grant(CREATE_SESSION, KILL_ANY_SESSION);
         assertAll(() -> assertUserHasSystemPrivilege(user, CREATE_SESSION),

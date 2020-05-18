@@ -40,6 +40,28 @@ This section describes the runtime behavior of the software.
 
 ## Creating Database Objects
 
+### Creating Database Users
+`dsn~creating-database-users~1`
+
+Users can create database users by providing a username and a password.
+
+Covers:
+
+* `req~creating-users~1`
+
+Needs: impl, utest, itest
+
+### Granting System Privileges to Database Users
+`dsn~granting-system-privileges-to-database-users~1`
+
+Users can select and grant System Privileges to created database users from the list of supported System Privileges.
+
+Covers:
+
+* `req~granting-system-privileges-to-users~1`
+
+Needs: impl, utest, itest
+
 ### Creating Scripts
 `dsn~creating-scripts~1`
 
