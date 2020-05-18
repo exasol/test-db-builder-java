@@ -17,7 +17,7 @@ public class Script extends AbstractSchemaChild {
     private final boolean returnsTable;
 
     private Script(final Builder builder) {
-        super(builder.writer, builder.parentSchema, builder.name, builder.attached);
+        super(builder.writer, builder.parentSchema, builder.name, builder.owned);
         this.content = builder.content;
         this.parameters = builder.parameters;
         this.returnsTable = builder.returnsTable;
@@ -99,7 +99,7 @@ public class Script extends AbstractSchemaChild {
         private final List<ScriptParameter> parameters = new ArrayList<>();
         private String content;
         private boolean returnsTable = false;
-        private boolean attached = false;
+        private boolean owned = true;
 
         private Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final String name) {
             this.writer = writer;
@@ -184,7 +184,7 @@ public class Script extends AbstractSchemaChild {
          */
         // [impl->dsn~controlling-existing-scripts~1]
         public Script attach() {
-            this.attached = true;
+            this.owned = false;
             return new Script(this);
         }
     }
