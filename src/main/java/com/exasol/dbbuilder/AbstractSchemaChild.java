@@ -14,12 +14,13 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
      * @param writer       database object writer to use
      * @param parentSchema parent schema
      * @param name         name of the database object
-     * @param attached     {@code true} if the object is a control object for a previously existing database object
+     * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
+     *                     database object that already existed
      *
      */
     public AbstractSchemaChild(final DatabaseObjectWriter writer, final Schema parentSchema, final String name,
-            final boolean attached) {
-        super(writer, name, attached);
+            final boolean owned) {
+        super(writer, name, owned);
         this.parentSchema = parentSchema;
     }
 

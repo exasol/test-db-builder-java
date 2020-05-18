@@ -44,5 +44,5 @@ public interface DatabaseObject {
      *
      * @return {@code true} if this is a control object attached to an existing database object
      */
-    boolean isAttached();
+    boolean isOwned();
 }
