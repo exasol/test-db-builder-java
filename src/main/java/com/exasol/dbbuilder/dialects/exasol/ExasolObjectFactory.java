@@ -1,10 +1,9 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
+import com.exasol.dbbuilder.dialects.*;
+
 import java.nio.file.Path;
 import java.sql.Connection;
-
-import com.exasol.dbbuilder.dialects.DatabaseObjectFactory;
-import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Factory for a top-level database object.
@@ -42,7 +41,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
-            final String password) {
+                                                           final String password) {
         return new ConnectionDefinition(this.writer, name, to, userName, password);
     }
 

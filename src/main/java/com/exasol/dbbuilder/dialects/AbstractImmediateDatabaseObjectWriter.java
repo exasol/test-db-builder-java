@@ -68,7 +68,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             if (i++ > 0) {
                 builder.append(", ");
             }
-            builder.append(privilege);
+            builder.append(privilege.renderedName());
         }
         return builder.toString();
     }
@@ -89,7 +89,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             } else {
                 builder.append(", ");
             }
-            builder.append(privilege);
+            builder.append(privilege.renderedName());
         }
         return builder.toString();
     }

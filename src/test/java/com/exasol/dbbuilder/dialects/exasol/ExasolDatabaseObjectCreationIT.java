@@ -30,7 +30,7 @@ import com.exasol.dbbuilder.dialects.*;
 
 @Tag("integration")
 @Testcontainers
-class DatabaseObjectCreationIT {
+class ExasolDatabaseObjectCreationIT {
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):" //
@@ -39,7 +39,7 @@ class DatabaseObjectCreationIT {
     private Connection adminConnection;
 
     @BeforeEach
-    void beforeEach() throws NoDriverFoundException, SQLException {
+    void beforeEach() throws SQLException {
         this.adminConnection = container.createConnection("");
         this.factory = new ExasolObjectFactory(container.createConnection(""));
     }
@@ -99,15 +99,15 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
-    // [itest->dsn~creating-scripts~1]
+        // [itest->dsn~creating-scripts~1]
     void testCreateScript() {
         final ExasolSchema exasolSchema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT");
         assertObjectExistsInDatabase(exasolSchema.createScript("THE_SCRIPT", "print(\"Hello World\")"));
     }
 
     @Test
-    // [itest->dsn~creating-scripts-from-files~1]
-    // [itest->dsn~running-scripts-that-have-no-return~1]
+        // [itest->dsn~creating-scripts-from-files~1]
+        // [itest->dsn~running-scripts-that-have-no-return~1]
     void testCreateScriptFromFile(@TempDir final Path tempDir) throws IOException, SQLException {
         final ExasolSchema exasolSchema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_FILE");
         final Table table = exasolSchema.createTable("LUA_RESULT", "CHECK", "BOOLEAN");
@@ -122,7 +122,7 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
-    // [itest->dsn~running-scripts-that-have-no-return~1]
+        // [itest->dsn~running-scripts-that-have-no-return~1]
     void testExecuteScriptWithParameters() throws SQLException {
         final String param1 = "foobar";
         final double param2 = 3.1415;
@@ -159,7 +159,7 @@ class DatabaseObjectCreationIT {
         assertThat(result, contains(contains("foo", true), contains("bar", false)));
     }
 
-    @ValueSource(booleans = { true, false })
+    @ValueSource(booleans = {true, false})
     @ParameterizedTest
     void testExecuteScriptThrowsException(final boolean returnsTable) {
         final ExasolSchema exasolSchema = this.factory.createSchema(
@@ -193,13 +193,13 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
-    // [itest->dsn~creating-database-users~1]
+        // [itest->dsn~creating-database-users~1]
     void testCreateUser() {
         assertObjectExistsInDatabase(this.factory.createUser("THE_USER"));
     }
 
     @Test
-    // [itest->dsn~creating-database-users~1]
+        // [itest->dsn~creating-database-users~1]
     void testCreateLoginUser() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -208,7 +208,7 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
-    // [itest->dsn~creating-database-users~1]
+        // [itest->dsn~creating-database-users~1]
     void testCreateLoginUserWithPassword() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER_WITH_PASSWORD", "THE_PASSWORD");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -228,7 +228,7 @@ class DatabaseObjectCreationIT {
     }
 
     @Test
-    // [itest->dsn~granting-system-privileges-to-database-users~1]
+        // [itest->dsn~granting-system-privileges-to-database-users~1]
     void testGrantSystemPrivilegeToUser() {
         final User user = this.factory.createUser("SYSPRIVUSER").grant(CREATE_SESSION, KILL_ANY_SESSION);
         assertAll(() -> assertUserHasSystemPrivilege(user, CREATE_SESSION),
@@ -259,7 +259,7 @@ class DatabaseObjectCreationIT {
     }
 
     private void assertUserHasObjectPrivilege(final User user, final DatabaseObject object,
-            final ObjectPrivilege expectedObjectPrivilege) {
+                                              final ObjectPrivilege expectedObjectPrivilege) {
         try (final PreparedStatement statement = this.adminConnection.prepareStatement(
                 "SELECT 1 FROM SYS.EXA_DBA_OBJ_PRIVS WHERE GRANTEE=? AND OBJECT_NAME=? AND PRIVILEGE=?")) {
             statement.setString(1, user.getName());

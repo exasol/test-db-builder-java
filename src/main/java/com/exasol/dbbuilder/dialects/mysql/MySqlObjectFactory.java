@@ -1,10 +1,11 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import java.nio.file.Path;
-import java.sql.Connection;
-
 import com.exasol.dbbuilder.dialects.DatabaseObjectFactory;
 import com.exasol.dbbuilder.dialects.User;
+import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
+
+import java.nio.file.Path;
+import java.sql.Connection;
 
 /**
  * Factory for a top-level database object.
@@ -40,6 +41,16 @@ public final class MySqlObjectFactory implements DatabaseObjectFactory {
     @Override
     public User createLoginUser(final String name, final String password) {
         return createUser(name);
+    }
+
+    /**
+     * Create a new database schema.
+     *
+     * @param name name of the schema
+     * @return new {@link ExasolSchema} instance
+     */
+    public MySqlSchema createSchema(final String name) {
+        return new MySqlSchema(this.writer, name);
     }
 
     @Override
