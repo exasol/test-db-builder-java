@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>test-db-builder-java</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder</url>
@@ -240,7 +240,7 @@
             <plugin>
                 <groupId>org.itsallcode</groupId>
                 <artifactId>openfasttrace-maven-plugin</artifactId>
-                <version>0.0.3</version>
+                <version>0.1.0</version>
                 <executions>
                     <execution>
                         <id>trace-requirements</id>
