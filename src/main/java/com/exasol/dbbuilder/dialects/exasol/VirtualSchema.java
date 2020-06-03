@@ -18,7 +18,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private final Map<String, String> properties = new HashMap<>();
 
     private VirtualSchema(final Builder builder) {
-        super(builder.name, false);
+        super(builder.quoteApplier, builder.name, false);
         this.writer = builder.writer;
         this.adapterScript = builder.adapterScript;
         this.connectionDefinition = builder.connectionDefinition;
@@ -103,12 +103,14 @@ public class VirtualSchema extends AbstractDatabaseObject {
     /**
      * Create a new builder for a {@link VirtualSchema}.
      *
-     * @param writer database object writer
-     * @param name   name of the Virtual Schema to be built
+     * @param writer       database object writer
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         name of the Virtual Schema to be built
      * @return builder instance
      */
-    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        return new Builder(writer, name);
+    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+            final String name) {
+        return new Builder(writer, quoteApplier, name);
     }
 
     /**
@@ -122,15 +124,19 @@ public class VirtualSchema extends AbstractDatabaseObject {
         private String dialectName;
         private ConnectionDefinition connectionDefinition;
         private Map<String, String> properties = new HashMap<>();
+        private final QuoteApplier quoteApplier;
 
         /**
          * Create a new instance of a builder for a {@link VirtualSchema}.
          *
-         * @param writer database object writer
-         * @param name   name of the Virtual Schema
+         * @param writer       database object writer
+         * @param quoteApplier instance of {@link QuoteApplier}
+         * @param name         name of the Virtual Schema
          */
-        public Builder(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
+        public Builder(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+                final String name) {
             this.writer = writer;
+            this.quoteApplier = quoteApplier;
             this.name = name;
         }
 

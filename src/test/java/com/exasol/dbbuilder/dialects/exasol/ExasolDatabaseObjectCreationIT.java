@@ -21,7 +21,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -99,15 +98,15 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     @Test
-        // [itest->dsn~creating-scripts~1]
+    // [itest->dsn~creating-scripts~1]
     void testCreateScript() {
         final ExasolSchema exasolSchema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT");
         assertObjectExistsInDatabase(exasolSchema.createScript("THE_SCRIPT", "print(\"Hello World\")"));
     }
 
     @Test
-        // [itest->dsn~creating-scripts-from-files~1]
-        // [itest->dsn~running-scripts-that-have-no-return~1]
+    // [itest->dsn~creating-scripts-from-files~1]
+    // [itest->dsn~running-scripts-that-have-no-return~1]
     void testCreateScriptFromFile(@TempDir final Path tempDir) throws IOException, SQLException {
         final ExasolSchema exasolSchema = this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_FILE");
         final Table table = exasolSchema.createTable("LUA_RESULT", "CHECK", "BOOLEAN");
@@ -122,7 +121,7 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     @Test
-        // [itest->dsn~running-scripts-that-have-no-return~1]
+    // [itest->dsn~running-scripts-that-have-no-return~1]
     void testExecuteScriptWithParameters() throws SQLException {
         final String param1 = "foobar";
         final double param2 = 3.1415;
@@ -159,7 +158,7 @@ class ExasolDatabaseObjectCreationIT {
         assertThat(result, contains(contains("foo", true), contains("bar", false)));
     }
 
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     @ParameterizedTest
     void testExecuteScriptThrowsException(final boolean returnsTable) {
         final ExasolSchema exasolSchema = this.factory.createSchema(
@@ -193,13 +192,13 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     @Test
-        // [itest->dsn~creating-database-users~1]
+    // [itest->dsn~creating-database-users~1]
     void testCreateUser() {
         assertObjectExistsInDatabase(this.factory.createUser("THE_USER"));
     }
 
     @Test
-        // [itest->dsn~creating-database-users~1]
+    // [itest->dsn~creating-database-users~1]
     void testCreateLoginUser() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -208,7 +207,7 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     @Test
-        // [itest->dsn~creating-database-users~1]
+    // [itest->dsn~creating-database-users~1]
     void testCreateLoginUserWithPassword() throws SQLException {
         final User user = this.factory.createLoginUser("LOGIN_USER_WITH_PASSWORD", "THE_PASSWORD");
         try (final Connection connection = container.createConnectionForUser(user.getName(), user.getPassword())) {
@@ -228,25 +227,25 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     @Test
-        // [itest->dsn~granting-system-privileges-to-database-users~1]
-    void testGrantSystemPrivilegeToUser() {
+    // [itest->dsn~granting-system-privileges-to-database-users~1]
+    void testGrantGlobalPrivilegeToUser() {
         final User user = this.factory.createUser("SYSPRIVUSER").grant(CREATE_SESSION, KILL_ANY_SESSION);
-        assertAll(() -> assertUserHasSystemPrivilege(user, CREATE_SESSION),
-                () -> assertUserHasSystemPrivilege(user, KILL_ANY_SESSION));
+        assertAll(() -> assertUserHasGlobalPrivilege(user, CREATE_SESSION),
+                () -> assertUserHasGlobalPrivilege(user, KILL_ANY_SESSION));
     }
 
-    private void assertUserHasSystemPrivilege(final User user, final GlobalPrivilege expectedPrivilege)
+    private void assertUserHasGlobalPrivilege(final User user, final GlobalPrivilege expectedPrivilege)
             throws AssertionError {
         try (final PreparedStatement statement = this.adminConnection
                 .prepareStatement("SELECT 1 FROM SYS.EXA_DBA_SYS_PRIVS WHERE GRANTEE=? AND PRIVILEGE=?")) {
             statement.setString(1, user.getName());
             statement.setString(2, expectedPrivilege.renderedName());
             final ResultSet result = statement.executeQuery();
-            assertThat("User " + user.getFullyQualifiedName() + " has system privilege " + expectedPrivilege,
+            assertThat("User " + user.getFullyQualifiedName() + " has global privilege " + expectedPrivilege,
                     result.next(), equalTo(true));
         } catch (final SQLException exception) {
             throw new AssertionError("Unable to determine if user " + user.getFullyQualifiedName()
-                    + " has system privilege " + expectedPrivilege + ".", exception);
+                    + " has global privilege " + expectedPrivilege + ".", exception);
         }
     }
 
@@ -259,7 +258,7 @@ class ExasolDatabaseObjectCreationIT {
     }
 
     private void assertUserHasObjectPrivilege(final User user, final DatabaseObject object,
-                                              final ObjectPrivilege expectedObjectPrivilege) {
+            final ObjectPrivilege expectedObjectPrivilege) {
         try (final PreparedStatement statement = this.adminConnection.prepareStatement(
                 "SELECT 1 FROM SYS.EXA_DBA_OBJ_PRIVS WHERE GRANTEE=? AND OBJECT_NAME=? AND PRIVILEGE=?")) {
             statement.setString(1, user.getName());
@@ -276,8 +275,8 @@ class ExasolDatabaseObjectCreationIT {
 
     @Test
     void testInsertIntoTable() {
-        final ExasolSchema exasolSchema = this.factory.createSchema("INSERTSCHEMA");
-        final Table table = exasolSchema.createTable("INSERTTABLE", "ID", "DECIMAL(3,0)", "NAME", "VARCHAR(10)");
+        final Schema schema = this.factory.createSchema("INSERTSCHEMA");
+        final Table table = schema.createTable("INSERTTABLE", "ID", "DECIMAL(3,0)", "NAME", "VARCHAR(10)");
         table.insert(1, "FOO").insert(2, "BAR");
         try {
             final ResultSet result = this.adminConnection.createStatement()

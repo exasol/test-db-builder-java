@@ -13,8 +13,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.exasol.dbbuilder.dialects.exasol.ExasolQuoteApplier;
+
 @ExtendWith(MockitoExtension.class)
 public class TableTest {
+    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private DatabaseObjectWriter writerMock;
     @Mock
@@ -22,36 +25,38 @@ public class TableTest {
 
     @Test
     void testGetType() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().getType(), equalTo("table"));
+        assertThat(Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "A").build().getType(),
+                equalTo("table"));
     }
 
     @Test
     void testGetName() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "FOO").build();
+        final Table table = Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "FOO").build();
         assertThat(table.getName(), equalTo("FOO"));
     }
 
     @Test
     void testGetFullyQualifiedName() {
         Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"THE_SCHEMA\"");
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "THE_TABLE").build();
+        final Table table = Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "THE_TABLE").build();
         assertThat(table.getFullyQualifiedName(), equalTo("\"THE_SCHEMA\".\"THE_TABLE\""));
     }
 
     @Test
     void testHasParent() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().hasParent(), equalTo(true));
+        assertThat(Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "A").build().hasParent(),
+                equalTo(true));
     }
 
     @Test
     void testGetParent() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, "A").build().getParent(),
+        assertThat(Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "A").build().getParent(),
                 sameInstance(this.schemaMock));
     }
 
     @Test
     void testGetColumns() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "BAR") //
+        final Table table = Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "BAR") //
                 .column("COL1", "VARCHAR(40)") //
                 .column("COL2", "DATE") //
                 .build();
@@ -64,7 +69,7 @@ public class TableTest {
 
     @Test
     void testInsert() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "TABLEWITHCONTENT") //
+        final Table table = Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "TABLEWITHCONTENT") //
                 .column("NAME", "VARCHAR(40)") //
                 .column("BIRTHDAY", "DATE") //
                 .build() //
@@ -76,7 +81,7 @@ public class TableTest {
 
     @Test
     void testInsertThrowsExceptionOnValueCountMismatch() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, "ONECOLUMNTABLE") //
+        final Table table = Table.builder(this.writerMock, this.quoteApplier, this.schemaMock, "ONECOLUMNTABLE") //
                 .column("FOO", "DATE") //
                 .build();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,

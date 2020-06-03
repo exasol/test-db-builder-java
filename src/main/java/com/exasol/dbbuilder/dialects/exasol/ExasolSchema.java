@@ -14,11 +14,13 @@ public class ExasolSchema extends AbstractSchema {
     /**
      * Create a new database schema.
      *
-     * @param writer database object writer
-     * @param name   name of the database schema
+     * @param writer       database object writer
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         name of the database schema
      */
-    public ExasolSchema(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        super(name);
+    public ExasolSchema(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+            final String name) {
+        super(quoteApplier, name);
         this.writer = writer;
         writer.write(this);
     }
@@ -33,7 +35,7 @@ public class ExasolSchema extends AbstractSchema {
      */
     public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
             final String content) {
-        return new AdapterScript(this.writer, this, name, language, content);
+        return new AdapterScript(this.writer, this.quoteApplier, this, name, language, content);
     }
 
     /**
@@ -74,7 +76,7 @@ public class ExasolSchema extends AbstractSchema {
      * @return builder
      */
     public Script.Builder createScriptBuilder(final String name) {
-        return Script.builder(this.writer, this, name);
+        return Script.builder(this.writer, this.quoteApplier, this, name);
     }
 
     /**

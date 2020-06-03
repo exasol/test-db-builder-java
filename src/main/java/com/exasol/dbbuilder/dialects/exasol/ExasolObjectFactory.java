@@ -1,15 +1,16 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import com.exasol.dbbuilder.dialects.*;
-
 import java.nio.file.Path;
 import java.sql.Connection;
+
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * Factory for a top-level database object.
  */
 public final class ExasolObjectFactory implements DatabaseObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
+    private final QuoteApplier quoteApplier;
 
     /**
      * Create a new {@link ExasolObjectFactory} instance.
@@ -18,6 +19,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      */
     public ExasolObjectFactory(final Connection connection) {
         this.writer = new ExasolImmediateDatabaseObjectWriter(connection);
+        this.quoteApplier = new ExasolQuoteApplier();
     }
 
     /**
@@ -28,7 +30,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
-        return new ConnectionDefinition(this.writer, name, to);
+        return new ConnectionDefinition(this.writer, this.quoteApplier, name, to);
     }
 
     /**
@@ -41,8 +43,8 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
-                                                           final String password) {
-        return new ConnectionDefinition(this.writer, name, to, userName, password);
+            final String password) {
+        return new ConnectionDefinition(this.writer, this.quoteApplier, name, to, userName, password);
     }
 
     /**
@@ -52,18 +54,18 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      * @return new {@link ExasolSchema} instance
      */
     public ExasolSchema createSchema(final String name) {
-        return new ExasolSchema(this.writer, name);
+        return new ExasolSchema(this.writer, this.quoteApplier, name);
     }
 
     @Override
     // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
-        return new ExasolUser(this.writer, name);
+        return new ExasolUser(this.writer, this.quoteApplier, name);
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new ExasolUser(this.writer, name, password);
+        return new ExasolUser(this.writer, this.quoteApplier, name, password);
     }
 
     @Override
@@ -83,7 +85,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
      * @return builder
      */
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
-        return VirtualSchema.builder(this.writer, name);
+        return VirtualSchema.builder(this.writer, this.quoteApplier, name);
     }
 
     @Override

@@ -12,15 +12,16 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     /**
      * Create a new database schema.
      *
-     * @param name name of the database schema
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         name of the database schema
      */
-    public AbstractSchema(final String name) {
-        super(name, false);
+    public AbstractSchema(final QuoteApplier quoteApplier, final String name) {
+        super(quoteApplier, name, false);
     }
 
     /**
      * Get a {@link DatabaseObjectWriter}.
-     * 
+     *
      * @return {@link DatabaseObjectWriter}
      */
     protected abstract DatabaseObjectWriter getWriter();
@@ -58,13 +59,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      * @return builder for the table
      */
     public Table.Builder createTableBuilder(final String name) {
-        return Table.builder(getWriter(), this, name);
+        return Table.builder(getWriter(), this.quoteApplier, this, name);
     }
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
-            final Table.Builder builder = Table.builder(getWriter(), this, name);
+            final Table.Builder builder = Table.builder(getWriter(), this.quoteApplier, this, name);
             int index = 0;
             for (final String columnName : columnNames) {
                 builder.column(columnName, columnTypes.get(index));

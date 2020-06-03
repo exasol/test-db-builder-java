@@ -14,11 +14,13 @@ public class ExasolUser extends AbstractUser {
      * Create a new database user with a default password.
      * <p>
      * 
-     * @param writer database object writer
-     * @param name   user name
+     * @param writer       database object writer
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         user name
      */
-    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        super(name);
+    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+            final String name) {
+        super(quoteApplier, name);
         this.writer = writer;
         this.writer.write(this);
     }
@@ -26,12 +28,14 @@ public class ExasolUser extends AbstractUser {
     /**
      * Create a new database user.
      *
-     * @param writer   database object writer
-     * @param name     user name
-     * @param password login password
+     * @param writer       database object writer
+     * @param quoteApplier instance of {@link QuoteApplier}*
+     * @param name         user name
+     * @param password     login password
      */
-    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final String name, final String password) {
-        super(name, password);
+    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+            final String name, final String password) {
+        super(quoteApplier, name, password);
         this.writer = writer;
         writer.write(this);
     }

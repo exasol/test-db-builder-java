@@ -16,44 +16,47 @@ import com.exasol.dbbuilder.dialects.*;
 // [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)
 class ExasolUserTest {
+    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
 
     @Test
     void getType() {
-        assertThat(new ExasolUser(this.writerMock, "A").getType(), equalTo("user"));
+        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "A").getType(), equalTo("user"));
     }
 
     @Test
     void testName() {
-        assertThat(new ExasolUser(this.writerMock, "JANEDOE").getName(), equalTo("JANEDOE"));
+        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JANEDOE").getName(), equalTo("JANEDOE"));
     }
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new ExasolUser(this.writerMock, "JOHNDOE").getFullyQualifiedName(), equalTo("\"JOHNDOE\""));
+        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").getFullyQualifiedName(),
+                equalTo("\"JOHNDOE\""));
     }
 
     @Test
     void testHasParent() {
-        assertThat(new ExasolUser(this.writerMock, "JOHNDOE").hasParent(), equalTo(false));
+        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").hasParent(), equalTo(false));
     }
 
     @Test
     void testGetParentThrowsException() {
-        assertThrows(DatabaseObjectException.class, () -> new ExasolUser(this.writerMock, "JOHNDOE").getParent());
+        assertThrows(DatabaseObjectException.class,
+                () -> new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").getParent());
     }
 
     @Test
     void testGetDefaultPassword() {
-        assertThat(new ExasolUser(this.writerMock, "SMITH").getPassword(), equalTo("SMITHPWD"));
+        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "SMITH").getPassword(), equalTo("SMITHPWD"));
     }
 
     @Test
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { ExasolObjectPrivilege.INSERT,
                 ExasolObjectPrivilege.DELETE };
-        final User user = new ExasolUser(this.writerMock, "OBJUSER") //
+        final User user = new ExasolUser(this.writerMock, this.quoteApplier, "OBJUSER") //
                 .grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
     }
@@ -61,20 +64,20 @@ class ExasolUserTest {
     @Test
     // [utest->dsn~granting-system-privileges-to-database-users~1]
     void testGetSystemPrivileges() {
-        final User user = new ExasolUser(this.writerMock, "SYTEMUSER") //
+        final User user = new ExasolUser(this.writerMock, this.quoteApplier, "SYTEMUSER") //
                 .grant(ExasolGlobalPrivilege.CREATE_SESSION);
         assertThat(user.getGlobalPrivileges(), contains(ExasolGlobalPrivilege.CREATE_SESSION));
     }
 
     @Test
     void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
-        final User user = new ExasolUser(this.writerMock, "OBJSUPERUSER").grantAllAccess(objectMock);
+        final User user = new ExasolUser(this.writerMock, this.quoteApplier, "OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ExasolObjectPrivilege.values()));
     }
 
     @Test
     void testCreateUserWithPassword() {
-        final User user = new ExasolUser(this.writerMock, "USER_WITH_PASSWORD", "THE_PASSWORD");
+        final User user = new ExasolUser(this.writerMock, this.quoteApplier, "USER_WITH_PASSWORD", "THE_PASSWORD");
         assertThat(user.getPassword(), equalTo("THE_PASSWORD"));
     }
 }

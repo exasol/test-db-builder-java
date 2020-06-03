@@ -12,17 +12,20 @@ package com.exasol.dbbuilder.dialects;
  * </p>
  */
 public abstract class AbstractDatabaseObject implements DatabaseObject {
+    protected QuoteApplier quoteApplier;
     protected String name;
     protected final boolean owned;
 
     /**
      * Create a database object.
      *
-     * @param name  name of the database object
-     * @param owned {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a database
-     *              object that already existed
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         name of the database object
+     * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
+     *                     database object that already existed
      */
-    public AbstractDatabaseObject(final String name, final boolean owned) {
+    public AbstractDatabaseObject(final QuoteApplier quoteApplier, final String name, final boolean owned) {
+        this.quoteApplier = quoteApplier;
         this.name = name;
         this.owned = owned;
     }
@@ -35,14 +38,10 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
     @Override
     public String getFullyQualifiedName() {
         if (hasParent()) {
-            return getParent().getFullyQualifiedName() + "." + quote(this.name);
+            return getParent().getFullyQualifiedName() + "." + this.quoteApplier.quote(this.name);
         } else {
-            return quote(this.name);
+            return this.quoteApplier.quote(this.name);
         }
-    }
-
-    private String quote(final String name) {
-        return "\"" + name.replaceAll("\"", "\"\"") + "\"";
     }
 
     @Override

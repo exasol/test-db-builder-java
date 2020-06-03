@@ -1,7 +1,6 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import com.exasol.dbbuilder.dialects.AbstractSchema;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * MySQL database schema.
@@ -12,11 +11,13 @@ public class MySqlSchema extends AbstractSchema {
     /**
      * Create a new database schema.
      *
-     * @param writer database object writer
-     * @param name   name of the database schema
+     * @param writer       database object writer
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         name of the database schema
      */
-    public MySqlSchema(final MySqlImmediateDatabaseObjectWriter writer, final String name) {
-        super(name);
+    public MySqlSchema(final MySqlImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
+            final String name) {
+        super(quoteApplier, name);
         this.writer = writer;
         this.writer.write(this);
     }

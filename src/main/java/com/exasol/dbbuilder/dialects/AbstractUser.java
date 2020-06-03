@@ -17,21 +17,23 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
      * scope of testing for which the TDDB is made. Never use something like this in production code!
      * </p>
      *
-     * @param name user name
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         user name
      */
-    public AbstractUser(final String name) {
-        super(name, false);
+    public AbstractUser(final QuoteApplier quoteApplier, final String name) {
+        super(quoteApplier, name, false);
         this.password = name + "PWD";
     }
 
     /**
      * Create a new database user.
      *
-     * @param name     user name
-     * @param password login password
+     * @param quoteApplier instance of {@link QuoteApplier}
+     * @param name         user name
+     * @param password     login password
      */
-    public AbstractUser(final String name, final String password) {
-        super(name, false);
+    public AbstractUser(final QuoteApplier quoteApplier, final String name, final String password) {
+        super(quoteApplier, name, false);
         this.password = password;
     }
 

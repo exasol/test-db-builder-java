@@ -1,17 +1,17 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import com.exasol.dbbuilder.dialects.DatabaseObjectFactory;
-import com.exasol.dbbuilder.dialects.User;
-import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
-
 import java.nio.file.Path;
 import java.sql.Connection;
+
+import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
 
 /**
  * Factory for a top-level database object.
  */
 public final class MySqlObjectFactory implements DatabaseObjectFactory {
     private final MySqlImmediateDatabaseObjectWriter writer;
+    private final QuoteApplier quoteApplier;
 
     /**
      * Create a new {@link MySqlObjectFactory} instance.
@@ -20,17 +20,17 @@ public final class MySqlObjectFactory implements DatabaseObjectFactory {
      */
     public MySqlObjectFactory(final Connection connection) {
         this.writer = new MySqlImmediateDatabaseObjectWriter(connection);
+        this.quoteApplier = new MySqlQuoteApplier();
     }
 
     @Override
-    // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
-        return new MySqlUser(this.writer, name);
+        return new MySqlUser(this.writer, this.quoteApplier, name);
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new MySqlUser(this.writer, name, password);
+        return new MySqlUser(this.writer, this.quoteApplier, name, password);
     }
 
     @Override
@@ -40,7 +40,7 @@ public final class MySqlObjectFactory implements DatabaseObjectFactory {
 
     @Override
     public User createLoginUser(final String name, final String password) {
-        return createUser(name);
+        return createUser(name, password);
     }
 
     /**
@@ -50,11 +50,10 @@ public final class MySqlObjectFactory implements DatabaseObjectFactory {
      * @return new {@link ExasolSchema} instance
      */
     public MySqlSchema createSchema(final String name) {
-        return new MySqlSchema(this.writer, name);
+        return new MySqlSchema(this.writer, this.quoteApplier, name);
     }
 
     @Override
-    // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles) {
         this.writer.executeSqlFile(sqlFiles);
     }

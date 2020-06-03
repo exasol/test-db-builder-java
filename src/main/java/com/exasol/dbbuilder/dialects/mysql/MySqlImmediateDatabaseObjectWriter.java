@@ -21,12 +21,28 @@ public class MySqlImmediateDatabaseObjectWriter extends AbstractImmediateDatabas
     @Override
     public void write(final User user) {
         writeToObject(user,
-                "CREATE USER '" + user.getFullyQualifiedName() + "' IDENTIFIED BY '" + user.getPassword() + "'");
+                "CREATE USER " + user.getFullyQualifiedName() + " IDENTIFIED BY '" + user.getPassword() + "'");
     }
 
     @Override
     public void write(final User user, final GlobalPrivilege... privileges) {
-        writeToObject(user,
-                "GRANT " + createCommaSeparatedSystemPrivilegeList(privileges) + " ON *.* TO " + user.getFullyQualifiedName());
+        writeToObject(user, "GRANT " + createCommaSeparatedSystemPrivilegeList(privileges) + " ON *.* TO "
+                + user.getFullyQualifiedName());
+    }
+
+    @Override
+    protected String getQuotedColumnName(final String columnName) {
+        return "`" + columnName + "`";
+    }
+
+    @Override
+    public void write(final User user, final DatabaseObject object, final ObjectPrivilege... privileges) {
+        if (object instanceof Schema) {
+            writeToObject(user, "GRANT " + createCommaSeparatedObjectPrivilegeList(privileges) //
+                    + " ON " + object.getFullyQualifiedName() //
+                    + ".* TO " + user.getFullyQualifiedName());
+        } else {
+            super.write(user, object, privileges);
+        }
     }
 }

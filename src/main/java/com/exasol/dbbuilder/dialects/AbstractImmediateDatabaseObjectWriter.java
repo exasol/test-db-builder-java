@@ -45,14 +45,21 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             if (i++ > 0) {
                 builder.append(", ");
             }
-            builder.append("\"") //
-                    .append(column.getName()) //
-                    .append("\" ") //
+            builder.append(getQuotedColumnName(column.getName())) //
+                    .append(" ") //
                     .append(column.getType());
         }
         builder.append(")");
         writeToObject(table, builder.toString());
     }
+
+    /**
+     * Get a quoted column name.
+     * 
+     * @param columnName name of a column
+     * @return quoted column name
+     */
+    protected abstract String getQuotedColumnName(String columnName);
 
     @Override
     public void write(final Table table, final Object... values) {
@@ -80,7 +87,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
                 + " TO " + user.getFullyQualifiedName());
     }
 
-    private String createCommaSeparatedObjectPrivilegeList(final ObjectPrivilege[] privileges) {
+    protected String createCommaSeparatedObjectPrivilegeList(final ObjectPrivilege[] privileges) {
         final StringBuilder builder = new StringBuilder();
         boolean first = true;
         for (final ObjectPrivilege privilege : privileges) {

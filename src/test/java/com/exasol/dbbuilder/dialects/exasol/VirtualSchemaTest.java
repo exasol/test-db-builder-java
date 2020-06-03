@@ -14,18 +14,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.DatabaseObjectException;
-import com.exasol.dbbuilder.dialects.Schema;
+import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VirtualSchemaTest {
+    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
     private VirtualSchema.Builder builder;
 
     @BeforeEach
     void beforeEach() {
-        this.builder = VirtualSchema.builder(this.writerMock, "VS");
+        this.builder = VirtualSchema.builder(this.writerMock, this.quoteApplier, "VS");
     }
 
     @Test

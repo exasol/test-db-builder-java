@@ -53,6 +53,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         }
     }
 
+    @Override
+    protected String getQuotedColumnName(final String columnName) {
+        return "\"" + columnName + "\"";
+    }
+
     /**
      * Create a script in the database.
      *

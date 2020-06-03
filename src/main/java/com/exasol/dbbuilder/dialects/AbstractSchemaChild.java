@@ -9,14 +9,15 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
     /**
      * Create a new child object of a database schema.
      *
+     * @param quoteApplier instance of {@link QuoteApplier}
      * @param parentSchema parent schema
      * @param name         name of the database object
      * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
      *                     database object that already existed
-     *
      */
-    public AbstractSchemaChild(final Schema parentSchema, final String name, final boolean owned) {
-        super(name, owned);
+    public AbstractSchemaChild(final QuoteApplier quoteApplier, final Schema parentSchema, final String name,
+            final boolean owned) {
+        super(quoteApplier, name, owned);
         this.parentSchema = parentSchema;
     }
 
