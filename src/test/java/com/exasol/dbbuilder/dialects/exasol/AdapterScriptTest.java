@@ -11,13 +11,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.QuoteApplier;
 import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
 class AdapterScriptTest {
     private static final String ADAPTER_NAME = "ADAPTER";
-    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
     @Mock
@@ -29,7 +27,7 @@ class AdapterScriptTest {
     }
 
     private AdapterScript createContentlessJavaAdapterScript() {
-        return new AdapterScript(this.writerMock, this.quoteApplier, this.schemaMock, ADAPTER_NAME, JAVA, "");
+        return new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "");
     }
 
     @Test
@@ -41,8 +39,7 @@ class AdapterScriptTest {
 
     @Test
     void testGetType() {
-        assertThat(
-                new AdapterScript(this.writerMock, this.quoteApplier, this.schemaMock, ADAPTER_NAME, LUA, "").getType(),
+        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, LUA, "").getType(),
                 equalTo("adapter script"));
     }
 
@@ -59,16 +56,15 @@ class AdapterScriptTest {
     @Test
     void testGetLaguage() {
         final String expectedContent = "content";
-        assertThat(
-                new AdapterScript(this.writerMock, this.quoteApplier, this.schemaMock, ADAPTER_NAME, R, expectedContent)
-                        .getLanguage(),
+        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, R, expectedContent).getLanguage(),
                 equalTo(R));
     }
 
     @Test
     void testGetContent() {
         final String expectedContent = "content";
-        assertThat(new AdapterScript(this.writerMock, this.quoteApplier, this.schemaMock, ADAPTER_NAME, PYTHON,
-                expectedContent).getContent(), equalTo(expectedContent));
+        assertThat(
+                new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, PYTHON, expectedContent).getContent(),
+                equalTo(expectedContent));
     }
 }

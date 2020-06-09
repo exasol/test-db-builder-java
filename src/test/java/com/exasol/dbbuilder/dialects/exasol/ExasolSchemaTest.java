@@ -12,13 +12,12 @@ import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 class ExasolSchemaTest extends AbstractSchemaTest {
-    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
 
     @Override
     protected Schema createSchema(final String name) {
-        return new ExasolSchema(this.writerMock, this.quoteApplier, name);
+        return new ExasolSchema(this.writerMock, name);
     }
 
     @Test
@@ -29,7 +28,7 @@ class ExasolSchemaTest extends AbstractSchemaTest {
 
     @Test
     void testCreateTableBuilder() {
-        final ExasolSchema exasolSchema = new ExasolSchema(this.writerMock, this.quoteApplier, "THE_SCHEMA");
+        final ExasolSchema exasolSchema = new ExasolSchema(this.writerMock, "THE_SCHEMA");
         final Table table = exasolSchema.createTableBuilder("TABLE_D").column("A", "DATE").build();
         assertThat(table.getName(), equalTo("TABLE_D"));
     }

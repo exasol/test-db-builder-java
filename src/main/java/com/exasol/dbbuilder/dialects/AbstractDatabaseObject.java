@@ -1,5 +1,7 @@
 package com.exasol.dbbuilder.dialects;
 
+import com.exasol.db.Identifier;
+
 /**
  * Base class for database objects.
  * <p>
@@ -12,35 +14,32 @@ package com.exasol.dbbuilder.dialects;
  * </p>
  */
 public abstract class AbstractDatabaseObject implements DatabaseObject {
-    protected QuoteApplier quoteApplier;
-    protected String name;
+    protected Identifier name;
     protected final boolean owned;
 
     /**
      * Create a database object.
      *
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         name of the database object
-     * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
-     *                     database object that already existed
+     * @param name  name of the database object
+     * @param owned {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a database
+     *              object that already existed
      */
-    public AbstractDatabaseObject(final QuoteApplier quoteApplier, final String name, final boolean owned) {
-        this.quoteApplier = quoteApplier;
+    public AbstractDatabaseObject(final Identifier name, final boolean owned) {
         this.name = name;
         this.owned = owned;
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return this.name.toString();
     }
 
     @Override
     public String getFullyQualifiedName() {
         if (hasParent()) {
-            return getParent().getFullyQualifiedName() + "." + this.quoteApplier.quote(this.name);
+            return getParent().getFullyQualifiedName() + "." + this.name.quote();
         } else {
-            return this.quoteApplier.quote(this.name);
+            return this.name.quote();
         }
     }
 

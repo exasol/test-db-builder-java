@@ -2,6 +2,8 @@ package com.exasol.dbbuilder.dialects;
 
 import java.util.*;
 
+import com.exasol.db.Identifier;
+
 /**
  * This class contains common logic for a database user.
  */
@@ -17,23 +19,21 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
      * scope of testing for which the TDDB is made. Never use something like this in production code!
      * </p>
      *
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         user name
+     * @param name user name
      */
-    public AbstractUser(final QuoteApplier quoteApplier, final String name) {
-        super(quoteApplier, name, false);
+    public AbstractUser(final Identifier name) {
+        super(name, false);
         this.password = name + "PWD";
     }
 
     /**
      * Create a new database user.
      *
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         user name
-     * @param password     login password
+     * @param name     user name
+     * @param password login password
      */
-    public AbstractUser(final QuoteApplier quoteApplier, final String name, final String password) {
-        super(quoteApplier, name, false);
+    public AbstractUser(final Identifier name, final String password) {
+        super(name, false);
         this.password = password;
     }
 

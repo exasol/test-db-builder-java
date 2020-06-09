@@ -1,6 +1,8 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.db.ExasolIdentifier;
+import com.exasol.dbbuilder.dialects.AbstractSchemaChild;
+import com.exasol.dbbuilder.dialects.Schema;
 
 /**
  * Virtual Schema Adapter Script.
@@ -14,15 +16,14 @@ public class AdapterScript extends AbstractSchemaChild {
      * Create a new instance of an {@link AdapterScript}.
      *
      * @param writer       database object writer
-     * @param quoteApplier instance of {@link QuoteApplier}
      * @param parentSchema parent schema
      * @param name         name of the adapter script
      * @param language     language the the script is implemented in
      * @param content      the actual script
      */
-    public AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-            final Schema parentSchema, final String name, final Language language, final String content) {
-        super(quoteApplier, parentSchema, name, false);
+    public AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema, final String name,
+            final Language language, final String content) {
+        super(parentSchema, ExasolIdentifier.of(name), false);
         this.writer = writer;
         this.language = language;
         this.content = content;

@@ -9,7 +9,6 @@ import com.exasol.dbbuilder.dialects.*;
  */
 public final class MySqlObjectFactory extends AbstractObjectFactory {
     private final MySqlImmediateDatabaseObjectWriter writer;
-    private final QuoteApplier quoteApplier;
 
     /**
      * Create a new {@link MySqlObjectFactory} instance.
@@ -18,17 +17,16 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
      */
     public MySqlObjectFactory(final Connection connection) {
         this.writer = new MySqlImmediateDatabaseObjectWriter(connection);
-        this.quoteApplier = new MySqlQuoteApplier();
     }
 
     @Override
     public User createUser(final String name) {
-        return new MySqlUser(this.writer, this.quoteApplier, name);
+        return new MySqlUser(this.writer, name);
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new MySqlUser(this.writer, this.quoteApplier, name, password);
+        return new MySqlUser(this.writer, name, password);
     }
 
     @Override
@@ -43,7 +41,7 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public MySqlSchema createSchema(final String name) {
-        return new MySqlSchema(this.writer, this.quoteApplier, name);
+        return new MySqlSchema(this.writer, name);
     }
 
     @Override

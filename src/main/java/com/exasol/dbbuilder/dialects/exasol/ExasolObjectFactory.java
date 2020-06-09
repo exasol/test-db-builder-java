@@ -9,7 +9,6 @@ import com.exasol.dbbuilder.dialects.*;
  */
 public final class ExasolObjectFactory extends AbstractObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
-    private final QuoteApplier quoteApplier;
 
     /**
      * Create a new {@link ExasolObjectFactory} instance.
@@ -18,7 +17,6 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     public ExasolObjectFactory(final Connection connection) {
         this.writer = new ExasolImmediateDatabaseObjectWriter(connection);
-        this.quoteApplier = new ExasolQuoteApplier();
     }
 
     /**
@@ -29,7 +27,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * @return new {@link ConnectionDefinition} instance
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
-        return new ConnectionDefinition(this.writer, this.quoteApplier, name, to);
+        return new ConnectionDefinition(this.writer, name, to);
     }
 
     /**
@@ -43,23 +41,23 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
             final String password) {
-        return new ConnectionDefinition(this.writer, this.quoteApplier, name, to, userName, password);
+        return new ConnectionDefinition(this.writer, name, to, userName, password);
     }
 
     @Override
     public ExasolSchema createSchema(final String name) {
-        return new ExasolSchema(this.writer, this.quoteApplier, name);
+        return new ExasolSchema(this.writer, name);
     }
 
     @Override
     // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
-        return new ExasolUser(this.writer, this.quoteApplier, name);
+        return new ExasolUser(this.writer, name);
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new ExasolUser(this.writer, this.quoteApplier, name, password);
+        return new ExasolUser(this.writer, name, password);
     }
 
     @Override
@@ -79,7 +77,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * @return builder
      */
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
-        return VirtualSchema.builder(this.writer, this.quoteApplier, name);
+        return VirtualSchema.builder(this.writer, name);
     }
 
     @Override

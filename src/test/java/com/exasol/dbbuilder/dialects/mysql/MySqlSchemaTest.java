@@ -12,13 +12,12 @@ import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 class MySqlSchemaTest extends AbstractSchemaTest {
-    private final QuoteApplier quoteApplier = new MySqlQuoteApplier();
     @Mock
     private MySqlImmediateDatabaseObjectWriter writerMock;
 
     @Override
     protected Schema createSchema(final String name) {
-        return new MySqlSchema(this.writerMock, this.quoteApplier, name);
+        return new MySqlSchema(this.writerMock, name);
     }
 
     @Test
@@ -29,7 +28,7 @@ class MySqlSchemaTest extends AbstractSchemaTest {
 
     @Test
     void testCreateTableBuilder() {
-        final MySqlSchema mySqlSchema = new MySqlSchema(this.writerMock, this.quoteApplier, "THE_SCHEMA");
+        final MySqlSchema mySqlSchema = new MySqlSchema(this.writerMock, "THE_SCHEMA");
         final Table table = mySqlSchema.createTableBuilder("TABLE_D").column("A", "DATE").build();
         assertThat(table.getName(), equalTo("TABLE_D"));
     }

@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.db.ExasolIdentifier;
+import com.exasol.db.Identifier;
+import com.exasol.dbbuilder.dialects.AbstractSchemaChild;
+import com.exasol.dbbuilder.dialects.Schema;
 
 /**
  * Exasol database (Lua) Script.
@@ -18,7 +21,7 @@ public class Script extends AbstractSchemaChild {
     private final boolean returnsTable;
 
     private Script(final Builder builder) {
-        super(builder.quoteApplier, builder.parentSchema, builder.name, builder.owned);
+        super(builder.parentSchema, builder.name, builder.owned);
         this.writer = builder.writer;
         this.content = builder.content;
         this.parameters = builder.parameters;
@@ -83,14 +86,13 @@ public class Script extends AbstractSchemaChild {
      * Create a builder for a {@link Script}.
      *
      * @param writer       data object writer
-     * @param quoteApplier instance of {@link QuoteApplier}
      * @param parentSchema parent schema
      * @param name         name of the script
      * @return builder
      */
-    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-            final Schema parentSchema, final String name) {
-        return new Builder(writer, quoteApplier, parentSchema, name);
+    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
+            final String name) {
+        return new Builder(writer, parentSchema, ExasolIdentifier.of(name));
     }
 
     /**
@@ -99,17 +101,15 @@ public class Script extends AbstractSchemaChild {
     public static class Builder {
         private final ExasolImmediateDatabaseObjectWriter writer;
         private final Schema parentSchema;
-        private final String name;
+        private final Identifier name;
         private final List<ScriptParameter> parameters = new ArrayList<>();
         private String content;
         private boolean returnsTable = false;
         private boolean owned = true;
-        private final QuoteApplier quoteApplier;
 
-        private Builder(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-                final Schema parentSchema, final String name) {
+        private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
+                final Identifier name) {
             this.writer = writer;
-            this.quoteApplier = quoteApplier;
             this.parentSchema = parentSchema;
             this.name = name;
         }

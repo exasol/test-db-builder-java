@@ -14,44 +14,42 @@ import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 class MySqlUserTest extends AbstractUserTest {
-    private final QuoteApplier quoteApplier = new MySqlQuoteApplier();
     @Mock
     private MySqlImmediateDatabaseObjectWriter writerMock;
 
     @Override
     protected User createUser(final String name) {
-        return new MySqlUser(this.writerMock, this.quoteApplier, name);
+        return new MySqlUser(this.writerMock, name);
     }
 
     @Override
     protected User createUser(final String name, final String password) {
-        return new MySqlUser(this.writerMock, this.quoteApplier, name, password);
+        return new MySqlUser(this.writerMock, name, password);
     }
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new MySqlUser(this.writerMock, this.quoteApplier, "JOHNDOE").getFullyQualifiedName(),
-                equalTo("`JOHNDOE`"));
+        assertThat(new MySqlUser(this.writerMock, "JOHNDOE").getFullyQualifiedName(), equalTo("`JOHNDOE`"));
     }
 
     @Test
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { MySqlObjectPrivilege.INSERT, MySqlObjectPrivilege.DELETE };
-        final User user = new MySqlUser(this.writerMock, this.quoteApplier, "OBJUSER") //
+        final User user = new MySqlUser(this.writerMock, "OBJUSER") //
                 .grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
     }
 
     @Test
     void testGetSystemPrivileges() {
-        final User user = new MySqlUser(this.writerMock, this.quoteApplier, "SYTEMUSER") //
+        final User user = new MySqlUser(this.writerMock, "SYTEMUSER") //
                 .grant(MySqlGlobalPrivilege.CREATE_ROLE);
         assertThat(user.getGlobalPrivileges(), contains(MySqlGlobalPrivilege.CREATE_ROLE));
     }
 
     @Test
     void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
-        final User user = new MySqlUser(this.writerMock, this.quoteApplier, "OBJSUPERUSER").grantAllAccess(objectMock);
+        final User user = new MySqlUser(this.writerMock, "OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, MySqlObjectPrivilege.values()));
     }
 }

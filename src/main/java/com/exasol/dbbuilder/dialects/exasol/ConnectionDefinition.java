@@ -1,5 +1,6 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
+import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.*;
 
 /**
@@ -18,14 +19,13 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
     /**
      * Create a connection without credentials.
      *
-     * @param writer       database object writer
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         name of the connection
-     * @param target       target the connection points to
+     * @param writer database object writer
+     * @param name   name of the connection
+     * @param target target the connection points to
      */
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-            final String name, final String target) {
-        super(quoteApplier, name, false);
+    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final String name,
+            final String target) {
+        super(ExasolIdentifier.of(name), false);
         this.writer = writer;
         this.target = target;
         this.writer.write(this);
@@ -34,16 +34,15 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
     /**
      * Create a connection with credentials.
      *
-     * @param writer       database object writer
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         name of the connection
-     * @param target       target the connection points to
-     * @param userName     user as which to connect
-     * @param password     password or password-like credential
+     * @param writer   database object writer
+     * @param name     name of the connection
+     * @param target   target the connection points to
+     * @param userName user as which to connect
+     * @param password password or password-like credential
      */
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-            final String name, final String target, final String userName, final String password) {
-        super(quoteApplier, name, false);
+    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final String name,
+            final String target, final String userName, final String password) {
+        super(ExasolIdentifier.of(name), false);
         this.target = target;
         this.writer = writer;
         this.userName = userName;
