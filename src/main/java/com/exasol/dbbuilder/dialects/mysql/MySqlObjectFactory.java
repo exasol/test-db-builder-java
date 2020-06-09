@@ -1,15 +1,13 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import java.nio.file.Path;
 import java.sql.Connection;
 
 import com.exasol.dbbuilder.dialects.*;
-import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
 
 /**
- * Factory for a top-level database object.
+ * Factory for MySQL top-level database objects.
  */
-public final class MySqlObjectFactory implements DatabaseObjectFactory {
+public final class MySqlObjectFactory extends AbstractObjectFactory {
     private final MySqlImmediateDatabaseObjectWriter writer;
     private final QuoteApplier quoteApplier;
 
@@ -43,18 +41,13 @@ public final class MySqlObjectFactory implements DatabaseObjectFactory {
         return createUser(name, password);
     }
 
-    /**
-     * Create a new database schema.
-     *
-     * @param name name of the schema
-     * @return new {@link ExasolSchema} instance
-     */
+    @Override
     public MySqlSchema createSchema(final String name) {
         return new MySqlSchema(this.writer, this.quoteApplier, name);
     }
 
     @Override
-    public void executeSqlFile(final Path... sqlFiles) {
-        this.writer.executeSqlFile(sqlFiles);
+    protected DatabaseObjectWriter getWriter() {
+        return this.writer;
     }
 }

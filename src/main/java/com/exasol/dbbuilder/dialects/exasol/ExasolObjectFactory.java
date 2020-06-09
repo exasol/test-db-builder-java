@@ -1,14 +1,13 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import java.nio.file.Path;
 import java.sql.Connection;
 
 import com.exasol.dbbuilder.dialects.*;
 
 /**
- * Factory for a top-level database object.
+ * Factory for Exasol top-level database objects.
  */
-public final class ExasolObjectFactory implements DatabaseObjectFactory {
+public final class ExasolObjectFactory extends AbstractObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final QuoteApplier quoteApplier;
 
@@ -47,12 +46,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
         return new ConnectionDefinition(this.writer, this.quoteApplier, name, to, userName, password);
     }
 
-    /**
-     * Create a new database schema.
-     *
-     * @param name name of the schema
-     * @return new {@link ExasolSchema} instance
-     */
+    @Override
     public ExasolSchema createSchema(final String name) {
         return new ExasolSchema(this.writer, this.quoteApplier, name);
     }
@@ -89,8 +83,7 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
-    // [impl->dsn~creating-objects-through-sql-files~1]
-    public void executeSqlFile(final Path... sqlFiles) {
-        this.writer.executeSqlFile(sqlFiles);
+    protected DatabaseObjectWriter getWriter() {
+        return this.writer;
     }
 }

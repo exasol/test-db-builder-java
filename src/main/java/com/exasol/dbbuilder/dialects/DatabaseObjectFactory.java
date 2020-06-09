@@ -59,4 +59,12 @@ public interface DatabaseObjectFactory {
      * @param sqlFiles path to the script file
      */
     public void executeSqlFile(final Path... sqlFiles);
+
+    /**
+     * Create a new database schema.
+     *
+     * @param name name of the schema
+     * @return new {@link Schema}
+     */
+    public Schema createSchema(String name);
 }

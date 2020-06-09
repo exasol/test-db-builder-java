@@ -4,6 +4,9 @@ import com.exasol.dbbuilder.dialects.GlobalPrivilege;
 
 /**
  * Exasol global privilege as used in a {@code GRANT}.
+ * 
+ * @see <a href="https://docs.exasol.com/database_concepts/privileges/details_rights_management.htm#List">Exasol
+ *      documentation</a>*
  */
 public enum ExasolGlobalPrivilege implements GlobalPrivilege {
     GRANT_ANY_OBJECT_PRIVILEGE, GRANT_ANY_PRIVILEGE, GRANT_ANY_PRIORITY_GROUP, MANAGE_PRIORITY_GROUPS, CREATE_SESSION,

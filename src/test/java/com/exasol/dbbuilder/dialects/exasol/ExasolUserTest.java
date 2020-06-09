@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,41 +14,25 @@ import com.exasol.dbbuilder.dialects.*;
 
 // [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)
-class ExasolUserTest {
+class ExasolUserTest extends AbstractUserTest {
     private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
 
-    @Test
-    void getType() {
-        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "A").getType(), equalTo("user"));
+    @Override
+    protected User createUser(String name) {
+        return new ExasolUser(this.writerMock, this.quoteApplier, name);
     }
 
-    @Test
-    void testName() {
-        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JANEDOE").getName(), equalTo("JANEDOE"));
+    @Override
+    protected User createUser(String name, String password) {
+        return new ExasolUser(this.writerMock, this.quoteApplier, name, password);
     }
 
     @Test
     void testGetFullyQualifiedName() {
         assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").getFullyQualifiedName(),
                 equalTo("\"JOHNDOE\""));
-    }
-
-    @Test
-    void testHasParent() {
-        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").hasParent(), equalTo(false));
-    }
-
-    @Test
-    void testGetParentThrowsException() {
-        assertThrows(DatabaseObjectException.class,
-                () -> new ExasolUser(this.writerMock, this.quoteApplier, "JOHNDOE").getParent());
-    }
-
-    @Test
-    void testGetDefaultPassword() {
-        assertThat(new ExasolUser(this.writerMock, this.quoteApplier, "SMITH").getPassword(), equalTo("SMITHPWD"));
     }
 
     @Test
@@ -73,11 +56,5 @@ class ExasolUserTest {
     void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
         final User user = new ExasolUser(this.writerMock, this.quoteApplier, "OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ExasolObjectPrivilege.values()));
-    }
-
-    @Test
-    void testCreateUserWithPassword() {
-        final User user = new ExasolUser(this.writerMock, this.quoteApplier, "USER_WITH_PASSWORD", "THE_PASSWORD");
-        assertThat(user.getPassword(), equalTo("THE_PASSWORD"));
     }
 }
