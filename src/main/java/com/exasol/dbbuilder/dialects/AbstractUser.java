@@ -66,7 +66,6 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
         return this;
     }
 
-    // [impl->dsn~granting-system-privileges-to-database-users~1]
     @Override
     public User grant(final GlobalPrivilege... privileges) {
         this.globalPrivileges.addAll(Set.of(privileges));
