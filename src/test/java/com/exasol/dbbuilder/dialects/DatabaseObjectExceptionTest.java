@@ -26,7 +26,7 @@ class DatabaseObjectExceptionTest {
     }
 
     @Test
-    public void testCreateWithObjectAndCause(@Mock final DatabaseObject objectMock, @Mock final Exception causeMock) {
+    void testCreateWithObjectAndCause(@Mock final DatabaseObject objectMock, @Mock final Exception causeMock) {
         final String expectedObjectName = "\"OBJ_B\"";
         final String expectedObjectType = "TYPE_B";
         when(objectMock.getFullyQualifiedName()).thenReturn(expectedObjectName);
@@ -38,7 +38,7 @@ class DatabaseObjectExceptionTest {
     }
 
     @Test
-    public void testDatabaseObjectExceptionStringDatabaseObjectException(@Mock final DatabaseObject objectMock,
+    void testDatabaseObjectExceptionStringDatabaseObjectException(@Mock final DatabaseObject objectMock,
             @Mock final Exception causeMock) throws Exception {
         final String expectedObjectName = "\"OBJ_C\"";
         final String expectedObjectType = "TYPE_C";
@@ -51,5 +51,4 @@ class DatabaseObjectExceptionTest {
                 () -> assertThat(exception.getFullyQualifiedObjectName(), equalTo(expectedObjectName)),
                 () -> assertThat(exception.getObjectType(), equalTo(expectedObjectType)));
     }
-
 }

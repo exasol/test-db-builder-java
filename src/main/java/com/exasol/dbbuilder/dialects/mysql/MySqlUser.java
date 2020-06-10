@@ -1,7 +1,5 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import java.util.Set;
-
 import com.exasol.dbbuilder.dialects.*;
 
 /**
@@ -44,16 +42,7 @@ public class MySqlUser extends AbstractUser {
     }
 
     @Override
-    public User grant(final DatabaseObject object, final ObjectPrivilege... privileges) {
-        this.objectPrivileges.put(object, privileges);
-        this.writer.write(this, object, privileges);
-        return this;
-    }
-
-    @Override
-    public User grant(final GlobalPrivilege... privileges) {
-        this.globalPrivileges.addAll(Set.of(privileges));
-        this.writer.write(this, privileges);
-        return this;
+    protected DatabaseObjectWriter getWriter() {
+        return this.writer;
     }
 }

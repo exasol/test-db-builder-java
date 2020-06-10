@@ -18,7 +18,7 @@ import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
-public class VirtualSchemaTest {
+class VirtualSchemaTest {
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
     private VirtualSchema.Builder builder;
@@ -34,7 +34,7 @@ public class VirtualSchemaTest {
     }
 
     @Test
-    void testGetFullyQuallifiedName() {
+    void testGetFullyQualifiedName() {
         assertThat(this.builder.build().getFullyQualifiedName(), equalTo("\"VS\""));
     }
 
@@ -50,7 +50,8 @@ public class VirtualSchemaTest {
 
     @Test
     void testGetParent() {
-        assertThrows(DatabaseObjectException.class, () -> this.builder.build().getParent());
+        final VirtualSchema build = this.builder.build();
+        assertThrows(DatabaseObjectException.class, build::getParent);
     }
 
     @Test

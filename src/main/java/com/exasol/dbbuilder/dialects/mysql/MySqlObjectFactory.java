@@ -7,9 +7,7 @@ import com.exasol.dbbuilder.dialects.*;
 /**
  * Factory for MySQL top-level database objects.
  */
-// [impl->dsn~mysql-object-factory~1]
 public final class MySqlObjectFactory extends AbstractObjectFactory {
-
     private final MySqlImmediateDatabaseObjectWriter writer;
 
     /**

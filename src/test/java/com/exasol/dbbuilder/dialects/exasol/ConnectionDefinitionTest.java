@@ -97,7 +97,8 @@ class ConnectionDefinitionTest {
 
     @Test
     void testGetParentThrowsException() {
-        assertThrows(DatabaseObjectException.class,
-                () -> new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).getParent());
+        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
+                CONNECTION_TARGET);
+        assertThrows(DatabaseObjectException.class, connectionDefinition::getParent);
     }
 }

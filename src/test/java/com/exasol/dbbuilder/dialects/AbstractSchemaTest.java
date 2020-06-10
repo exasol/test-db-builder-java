@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractSchemaTest {
     protected abstract Schema createSchema(String name);
 
@@ -24,7 +25,8 @@ public abstract class AbstractSchemaTest {
 
     @Test
     void testGetParentThrowsException() {
-        assertThrows(DatabaseObjectException.class, () -> createSchema("A").getParent());
+        final Schema schema = createSchema("A");
+        assertThrows(DatabaseObjectException.class, schema::getParent);
     }
 
     @Test
@@ -43,8 +45,9 @@ public abstract class AbstractSchemaTest {
     }
 
     @Test
+    @SuppressWarnings("java:S5778") // creating lists is not an Exception throwing method
     void createTableThrowsExceptionIfNumberOfColumnNamesAndTypesDoNotMatch() {
-        final Schema Schema = createSchema("COLUMN_PARAMTER_MISMATCH_SCHEMA");
+        final Schema Schema = createSchema("COLUMN_PARAMETER_MISMATCH_SCHEMA");
         assertThrows(IllegalArgumentException.class,
                 () -> Schema.createTable("MISMATCH_TABLE", List.of("A"), List.of("DATE", "NUMBER")));
     }

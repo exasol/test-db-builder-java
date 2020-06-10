@@ -7,7 +7,6 @@ import com.exasol.dbbuilder.dialects.*;
 /**
  * Factory for Exasol top-level database objects.
  */
-// [impl->dsn~exasol-object-factory~1]
 public final class ExasolObjectFactory extends AbstractObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
 
@@ -51,6 +50,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
+    // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
         return new ExasolUser(this.writer, name);
     }

@@ -8,6 +8,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Tag("integration")
 @Testcontainers
+@SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractDatabaseObjectCreationIT {
     protected DatabaseObjectFactory factory;
     protected Connection adminConnection;

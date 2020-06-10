@@ -81,5 +81,11 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
         }
     }
 
+    /**
+     * Get an instance of {@link Identifier}.
+     * 
+     * @param name identifier id
+     * @return instance of {@link Identifier}
+     */
     protected abstract Identifier getIdentifier(String name);
 }
