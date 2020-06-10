@@ -29,6 +29,7 @@ import com.exasol.dbbuilder.dialects.*;
 
 @Tag("integration")
 @Testcontainers
+// [itest->dsn~exasol-object-factory~1]
 class ExasolDatabaseObjectCreationIT {
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();

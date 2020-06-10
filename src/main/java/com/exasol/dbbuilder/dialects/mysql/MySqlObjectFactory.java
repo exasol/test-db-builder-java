@@ -9,6 +9,7 @@ import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
 /**
  * Factory for a top-level database object.
  */
+// [impl->dsn~mysql-object-factory~1]
 public final class MySqlObjectFactory implements DatabaseObjectFactory {
     private final MySqlImmediateDatabaseObjectWriter writer;
     private final QuoteApplier quoteApplier;

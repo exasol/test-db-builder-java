@@ -8,6 +8,7 @@ import com.exasol.dbbuilder.dialects.*;
 /**
  * Factory for a top-level database object.
  */
+// [impl->dsn~exasol-object-factory~1]
 public final class ExasolObjectFactory implements DatabaseObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final QuoteApplier quoteApplier;
@@ -58,7 +59,6 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
-    // [impl->dsn~creating-database-users~1]
     public User createUser(final String name) {
         return new ExasolUser(this.writer, this.quoteApplier, name);
     }
@@ -89,7 +89,6 @@ public final class ExasolObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
-    // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles) {
         this.writer.executeSqlFile(sqlFiles);
     }

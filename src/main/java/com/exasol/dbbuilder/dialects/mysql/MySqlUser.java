@@ -54,7 +54,6 @@ public class MySqlUser extends AbstractUser {
         return this;
     }
 
-    // [impl->dsn~granting-system-privileges-to-database-users~1]
     @Override
     public User grant(final GlobalPrivilege... privileges) {
         this.globalPrivileges.addAll(Set.of(privileges));

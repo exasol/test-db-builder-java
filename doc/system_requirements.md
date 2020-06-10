@@ -39,6 +39,16 @@ The following list gives you an overview of terms and abbreviations commonly use
 
 Features are the highest level requirements in this document that describe the main functionality of TDDB.
 
+### Supporting Different Database
+`feat~supporting-different-database~1`
+
+TDDB supports the following databases:
+
+- Exasol
+- MySQL
+
+Needs: req
+
 ### Creating Database Objects
 `feat~creating-database-objects~1`
 
@@ -70,6 +80,30 @@ Needs: req
 ## Functional Requirements
 
 In this section lists functional requirements from the user's perspective. The requirements are grouped by feature where they belong to a single feature.
+
+### Supporting Different Database
+
+#### Supporting Exasol Database
+`req~supporting-exasol-database~1`
+
+User can create objects for Exasol database.
+
+Covers: 
+
+* [feat~supporting-different-database~1](#supporting-different-database)
+
+Needs: dsn
+
+#### Supporting MySQl Database
+`req~supporting-mysql-database~1`
+
+User can create objects for MySQL database.
+
+Covers: 
+
+* [feat~supporting-different-database~1](#supporting-different-database)
+
+Needs: dsn
 
 ### Creating Database Objects
 

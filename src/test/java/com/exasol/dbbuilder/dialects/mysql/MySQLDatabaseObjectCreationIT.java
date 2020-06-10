@@ -20,6 +20,7 @@ import com.exasol.dbbuilder.dialects.*;
 
 @Tag("integration")
 @Testcontainers
+// [itest->dsn~mysql-object-factory~1]
 class MySQLDatabaseObjectCreationIT {
     private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.0.20";
     @Container
