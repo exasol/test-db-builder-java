@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.exasol.db.Identifier;
 
 @ExtendWith(MockitoExtension.class)
-public class TableTest {
+class TableTest {
     @Mock
     private DatabaseObjectWriter writerMock;
     @Mock
@@ -95,7 +95,7 @@ public class TableTest {
             this.key = key;
         }
 
-        public static Identifier of(final String key) {
+        static Identifier of(final String key) {
             return new DummyIdentifier(key);
         }
 

@@ -51,4 +51,26 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
     public Set<GlobalPrivilege> getGlobalPrivileges() {
         return this.globalPrivileges;
     }
+
+    /**
+     * Get a {@link DatabaseObjectWriter}.
+     *
+     * @return {@link DatabaseObjectWriter}
+     */
+    protected abstract DatabaseObjectWriter getWriter();
+
+    @Override
+    public User grant(final DatabaseObject object, final ObjectPrivilege... privileges) {
+        this.objectPrivileges.put(object, privileges);
+        getWriter().write(this, object, privileges);
+        return this;
+    }
+
+    // [impl->dsn~granting-system-privileges-to-database-users~1]
+    @Override
+    public User grant(final GlobalPrivilege... privileges) {
+        this.globalPrivileges.addAll(Set.of(privileges));
+        getWriter().write(this, privileges);
+        return this;
+    }
 }

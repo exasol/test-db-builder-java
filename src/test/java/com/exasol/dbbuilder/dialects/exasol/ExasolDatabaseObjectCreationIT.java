@@ -186,7 +186,8 @@ class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         if (returnsTable) {
             builder.returnsTable();
         }
-        assertThrows(DatabaseObjectException.class, () -> builder.build().executeQuery());
+        final Script build = builder.build();
+        assertThrows(DatabaseObjectException.class, build::executeQuery);
     }
 
     @Test

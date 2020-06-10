@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+// this class should be public as implementation classes are in different packages
 public abstract class AbstractUserTest {
 
     protected abstract User createUser(String name);
@@ -29,7 +30,8 @@ public abstract class AbstractUserTest {
 
     @Test
     void testGetParentThrowsException() {
-        assertThrows(DatabaseObjectException.class, () -> createUser("JOHNDOE").getParent());
+        final User user = createUser("JOHNDOE");
+        assertThrows(DatabaseObjectException.class, user::getParent);
     }
 
     @Test
