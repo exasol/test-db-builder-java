@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-// this class should be public as implementation classes are in different packages
+@SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractUserTest {
 
     protected abstract User createUser(String name);

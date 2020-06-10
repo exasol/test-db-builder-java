@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-// this class should be public as implementation classes are in different packages
+@SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractImmediateDatabaseObjectWriterTest {
     private DatabaseObjectWriter writer;
     @Mock

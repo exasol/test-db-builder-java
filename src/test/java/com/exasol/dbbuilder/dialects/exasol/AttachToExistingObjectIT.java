@@ -58,7 +58,8 @@ class AttachToExistingObjectIT {
 
     // [itest->dsn~creating-objects-through-sql-files~1]
     @Test
-    void testAttachToScriptThrowsExecptionOnNonExistingFile() {
+    @SuppressWarnings("java:S5778") // creating lists is not an Exception throwing method
+    void testAttachToScriptThrowsExceptionOnNonExistingFile() {
         assertThrows(DatabaseObjectException.class, () -> factory.executeSqlFile(Path.of("non/existent/file.sql")));
     }
 }
