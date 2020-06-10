@@ -54,7 +54,7 @@ public interface DatabaseObjectFactory {
     public User createLoginUser(final String name, final String password);
 
     /**
-     * Execute the contents of a SQL script file.
+     * Execute the contents of an SQL script file.
      *
      * @param sqlFiles path to the script file
      */
