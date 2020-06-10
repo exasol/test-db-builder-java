@@ -4,6 +4,7 @@ import static com.exasol.dbbuilder.dialects.mysql.MySqlGlobalPrivilege.CREATE_RO
 import static com.exasol.dbbuilder.dialects.mysql.MySqlGlobalPrivilege.CREATE_USER;
 import static com.exasol.dbbuilder.dialects.mysql.MySqlObjectPrivilege.DELETE;
 import static com.exasol.dbbuilder.dialects.mysql.MySqlObjectPrivilege.SELECT;
+import static com.exasol.matcher.ResultSetStructureMatcher.table;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -11,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.sql.*;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -21,30 +23,40 @@ import com.exasol.dbbuilder.dialects.*;
 @Tag("integration")
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
-class MySQLDatabaseObjectCreationIT {
+class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
     private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.0.20";
     @Container
     private static final MySQLContainer<?> container = new MySQLContainer<>(MYSQL_DOCKER_IMAGE_REFERENCE)
             .withUsername("root").withPassword("");
-    private MySqlObjectFactory factory;
-    private Connection adminConnection;
 
-    @BeforeEach
-    void beforeEach() throws SQLException {
-        this.adminConnection = container.createConnection("");
-        this.factory = new MySqlObjectFactory(container.createConnection(""));
+    @Override
+    protected Connection getAdminConnection() throws SQLException {
+        return container.createConnection("");
     }
 
-    @Test
-    void testCreateSchema() {
-        final Schema schema = this.factory.createSchema("THE_SCHEMA");
-        assertSchemaExistsInDatabase(schema.getName());
+    @Override
+    protected DatabaseObjectFactory getDatabaseObjectFactory() throws SQLException {
+        return new MySqlObjectFactory(container.createConnection(""));
     }
 
-    private void assertSchemaExistsInDatabase(final String schemaName) {
-        final String sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \"" + schemaName
+    @Override
+    protected void assertSchemaExistsInDatabase(final Schema schema) {
+        final String sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \""
+                + schema.getName() + "\"";
+        assertObjectExistsInDatabase(sql, schema.getName());
+    }
+
+    @Override
+    protected void assertTableExistsInDatabase(final Table table) {
+        final String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
                 + "\"";
-        assertObjectExistsInDatabase(sql, schemaName);
+        assertObjectExistsInDatabase(sql, table.getName());
+    }
+
+    @Override
+    protected void assertUserExistsInDatabase(final User user) {
+        final String sql = "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
+        assertObjectExistsInDatabase(sql, user.getName());
     }
 
     private void assertObjectExistsInDatabase(final String sql, final String objectName) {
@@ -59,37 +71,13 @@ class MySQLDatabaseObjectCreationIT {
     }
 
     @Test
-    void testCreateTable() {
-        final MySqlSchema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
-        final Table table = schema.createTable("THE_TABLE", "COL1", "DATE", "COL2", "INT");
-        assertTableExistsInDatabase(table.getName());
-    }
-
-    private void assertTableExistsInDatabase(final String tableName) {
-        final String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + tableName + "\"";
-        assertObjectExistsInDatabase(sql, tableName);
-    }
-
-    @Test
-    void testCreateUser() {
-        final User user = this.factory.createUser("THE_USER");
-        assertUserExistsInDatabase(user.getName());
-    }
-
-    private void assertUserExistsInDatabase(final String userName) {
-        final String sql = "SELECT user FROM mysql.user WHERE user = \"" + userName + "\"";
-        assertObjectExistsInDatabase(sql, userName);
-    }
-
-    @Test
     void testGrantGlobalPrivilegeToUser() {
         final User user = this.factory.createUser("SYSPRIVUSER").grant(CREATE_USER, CREATE_ROLE);
-        assertAll(() -> assertUserHasGlobalPrivilege(user.getName(), CREATE_USER, "Create_user_priv"),
-                () -> assertUserHasGlobalPrivilege(user.getName(), CREATE_ROLE, "Create_role_priv"));
+        assertAll(() -> assertUserHasGlobalPrivilege(user.getName(), "Create_user_priv"),
+                () -> assertUserHasGlobalPrivilege(user.getName(), "Create_role_priv"));
     }
 
-    private void assertUserHasGlobalPrivilege(final String username, final GlobalPrivilege expectedPrivilege,
-            final String columnName) throws AssertionError {
+    private void assertUserHasGlobalPrivilege(final String username, final String columnName) throws AssertionError {
         final String sql = "SELECT `" + columnName + "` FROM mysql.user WHERE User = '" + username + "'";
         assertObjectExistsInDatabase(sql, "Y");
     }
@@ -98,12 +86,12 @@ class MySQLDatabaseObjectCreationIT {
     void testGrantSchemaPrivilegeToUser() throws InterruptedException {
         final Schema schema = this.factory.createSchema("OBJPRIVSCHEMA");
         final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, SELECT, DELETE);
-        assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), SELECT, "Select_priv"),
-                () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), DELETE, "Delete_priv"));
+        assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Select_priv"),
+                () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
     }
 
-    private void assertUserHasSchemaPrivilege(final String username, final String objectName,
-            final ObjectPrivilege expectedPrivilege, final String columnName) throws AssertionError {
+    private void assertUserHasSchemaPrivilege(final String username, final String objectName, final String columnName)
+            throws AssertionError {
         final String sql = "SELECT `" + columnName + "` FROM mysql.db WHERE User = '" + username + "' AND Db = '"
                 + objectName + "'";
         assertObjectExistsInDatabase(sql, "Y");
@@ -141,16 +129,7 @@ class MySQLDatabaseObjectCreationIT {
         try {
             final ResultSet result = this.adminConnection.createStatement()
                     .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
-            assert (result.next());
-            final int id1 = result.getInt(1);
-            final String name1 = result.getString(2);
-            assert (result.next());
-            final int id2 = result.getInt(1);
-            final String name2 = result.getString(2);
-            assertAll(() -> assertThat("row 1, column 1", id1, equalTo(1)),
-                    () -> assertThat("row 1, column 2", name1, equalTo("FOO")),
-                    () -> assertThat("row 2, column 1", id2, equalTo(2)),
-                    () -> assertThat("row 2, column 2", name2, equalTo("BAR")));
+            assertThat(result, table().row(1, "FOO").row(2, "BAR").matches());
         } catch (final SQLException exception) {
             throw new AssertionError("Unable to validate contents of table " + table.getFullyQualifiedName(),
                     exception);

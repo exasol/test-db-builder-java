@@ -54,10 +54,18 @@ public interface DatabaseObjectFactory {
     public User createLoginUser(final String name, final String password);
 
     /**
-     * Execute the contents of a SQL script file.
+     * Execute the contents of an SQL script file.
      *
      * @param sqlFiles path to the script file
      */
     // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles);
+
+    /**
+     * Create a new database schema.
+     *
+     * @param name name of the schema
+     * @return new {@link Schema}
+     */
+    public Schema createSchema(String name);
 }

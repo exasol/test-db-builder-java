@@ -3,6 +3,8 @@ package com.exasol.dbbuilder.dialects;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.exasol.db.Identifier;
+
 /**
  * This class contains common logic for a database schema.
  */
@@ -12,11 +14,10 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     /**
      * Create a new database schema.
      *
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param name         name of the database schema
+     * @param name name of the database schema
      */
-    public AbstractSchema(final QuoteApplier quoteApplier, final String name) {
-        super(quoteApplier, name, false);
+    public AbstractSchema(final Identifier name) {
+        super(name, false);
     }
 
     /**
@@ -59,13 +60,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      * @return builder for the table
      */
     public Table.Builder createTableBuilder(final String name) {
-        return Table.builder(getWriter(), this.quoteApplier, this, name);
+        return Table.builder(getWriter(), this, getIdentifier(name));
     }
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
-            final Table.Builder builder = Table.builder(getWriter(), this.quoteApplier, this, name);
+            final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
             int index = 0;
             for (final String columnName : columnNames) {
                 builder.column(columnName, columnTypes.get(index));
@@ -79,4 +80,6 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
                     + " column types. Please provide the same number of parameters for both when creating a table.");
         }
     }
+
+    protected abstract Identifier getIdentifier(String name);
 }

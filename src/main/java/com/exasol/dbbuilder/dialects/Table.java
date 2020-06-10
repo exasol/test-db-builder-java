@@ -2,6 +2,8 @@ package com.exasol.dbbuilder.dialects;
 
 import java.util.*;
 
+import com.exasol.db.Identifier;
+
 /**
  * Database table.
  */
@@ -11,7 +13,7 @@ public class Table extends AbstractSchemaChild {
     private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
-        super(builder.quoteApplier, builder.parentSchema, builder.name, false);
+        super(builder.parentSchema, builder.name, false);
         this.columns = builder.columns;
         this.writer = builder.writer;
         this.writer.write(this);
@@ -69,15 +71,13 @@ public class Table extends AbstractSchemaChild {
     /**
      * Create a builder for a {@link Table}.
      *
-     * @param writer       database object writer
-     * @param quoteApplier instance of {@link QuoteApplier}
-     * @param schema       parent schema
-     * @param tableName    name of the database table
+     * @param writer    database object writer
+     * @param schema    parent schema
+     * @param tableName name of the database table
      * @return new {@link Table} instance
      */
-    public static Builder builder(final DatabaseObjectWriter writer, final QuoteApplier quoteApplier,
-            final Schema schema, final String tableName) {
-        return new Builder(writer, quoteApplier, schema, tableName);
+    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
+        return new Builder(writer, schema, tableName);
     }
 
     /**
@@ -85,23 +85,19 @@ public class Table extends AbstractSchemaChild {
      */
     public static class Builder {
         private final DatabaseObjectWriter writer;
-        private final String name;
+        private final Identifier name;
         private final List<Column> columns = new ArrayList<>();
         private final Schema parentSchema;
-        private final QuoteApplier quoteApplier;
 
         /**
          * Create new instance of a builder for a database table.
          *
          * @param writer       data object writer
-         * @param quoteApplier instance of {@link QuoteApplier}
          * @param parentSchema parent schema
          * @param tableName    name of the database table
          */
-        public Builder(final DatabaseObjectWriter writer, final QuoteApplier quoteApplier, final Schema parentSchema,
-                final String tableName) {
+        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
             this.writer = writer;
-            this.quoteApplier = quoteApplier;
             this.parentSchema = parentSchema;
             this.name = tableName;
         }

@@ -14,12 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.shaded.com.google.common.io.Files;
 
-import com.exasol.dbbuilder.dialects.QuoteApplier;
 import com.exasol.dbbuilder.dialects.exasol.Script.Builder;
 
 @ExtendWith(MockitoExtension.class)
 class ExasolScriptTest {
-    private final QuoteApplier quoteApplier = new ExasolQuoteApplier();
     private static final String SRIPT_NAME = "THE_SCRIPT";
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
@@ -29,7 +27,7 @@ class ExasolScriptTest {
 
     @BeforeEach
     void beforeEach() {
-        this.builder = Script.builder(this.writerMock, this.quoteApplier, this.exasolSchemaMock, SRIPT_NAME);
+        this.builder = Script.builder(this.writerMock, this.exasolSchemaMock, SRIPT_NAME);
     }
 
     @Test
