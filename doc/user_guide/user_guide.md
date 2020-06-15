@@ -20,15 +20,23 @@ The "mother" of all database objects TDDB creates is the `DatabaseObjectFactory`
 
 Top-level objects are objects in the database which are not scoped by any other objects. A schema for example is a top-level object in Exasol. A table on the other hand lives inside the scope of a schema.
 
-You create a `DatabaseObjectFactory` by choosing an implementation of the concrete database and feeding it with a JDBC connection.
+You choose a database and create a concrete `DatabaseObjectFactory` feeding it with a JDBC connection.
+Please keep in mind that you also need to add a JDBC driver Maven Dependency to your `pom.xml` file according to the database you are going to use. This project does not contain transitive dependencies for JDBC drivers. 
 
 In the example below you see how to create an `ExasolObjectFactory` with a JDBC connection that you created earlier:
 
 ```java
-final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
+final ExasolObjectFactory factory = new ExasolObjectFactory(connection);
 ```
 
 That is about as much configuration as you need to get started.
+
+Currently supported dialects and their factories:
+
+1. [Exasol](#exasol-specific-database-objects) &rarr; `ExasolObjectFactory`
+1. [MySQL](#mysql-specific-database-objects) &rarr; `MySQLObjectFactory`
+
+## Dialect-Agnostic Database Objects 
 
 ### When are Object Written to the Database?
 
@@ -71,24 +79,58 @@ If you want to create users &mdash; for example when testing privilege effects &
 final User user = factory.createUser("MARIA")
 ```
 
-#### Granting System Privileges
+#### Granting Global Privileges
 
-Sometimes you need to promote one of your users to administrator on a database-wide scale by giving them system privileges. This is as easy as:
+Sometimes you need to promote one of your users to administrator on a database-wide scale by giving them global privileges. 
+Here is an example with Exasol privileges:
 
 ```
-user.grant(SystemPrivilege.CREATE_USER, SystemPrivilege.DROP_USER);
+user.grant(ExasolGlobalPrivilege.CREATE_USER, ExasolGlobalPrivilege.DROP_USER);
 ```
 
-Of course you can use a static import of `SystemPrivilege` to make that code more compact if you wish.
+Each dialect has its own list of privileges.
 
 #### Granting Object Privileges
 
-All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure:
+All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure (Exasol database example):
 
 ```
 final Schema schema = factory.createSchema("SALES");
-user.grant(schema, ObjectPrivilege.SELECT, ObjectPrivilege.INSERT)
+user.grant(schema, ExasolObjectPrivilege.SELECT, ExasolObjectPrivilege.INSERT)
 ```
+
+### Running SQL From Files to Create Objects
+
+Implementation often comes with SQL files that users need to execute as a preparation. Since those files contain production code, it needs to be tested &mdash; but first you need to run those SQL scripts.
+
+Running an SQL script is easy:
+
+```java
+final Path pathToSqlFile = Path.of("src/main/sql/init.sql");
+factory.executeSqlFile(pathToSqlFile);
+```
+
+You can also run multiple SQL files in a row. They are executed in the order they are listed in the `executeSqlFile(...)` call.
+
+```java
+factory.executeSqlFile(file1, file2, file3);
+```
+
+## Populating Tables
+
+Populating a table is really simple:
+
+```java
+table.insert("Monday", "Mon")
+     .insert("Tuesday", "Tue")
+     .insert("Wednesday", "Wed")
+     // ...
+     .insert("Sunday", "Sun");
+```
+
+One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
+
+## Exasol-Specific Database Objects
 
 #### Creating an Exasol User who can log in
 
@@ -188,40 +230,9 @@ final VirtualSchema virtualSchema = factory.createVirtualSchemaBuilder("THE_VIRT
         .build();
 ```
 
-### Running SQL From Files to Create Objects
-
-Implementation often comes with SQL files that users need to execute as a preparation. Since those files contain production code, it needs to be tested &mdash; but first you need to run those SQL scripts.
-
-Running an SQL script is easy:
-
-```java
-final Path pathToSqlFile = Path.of("src/main/sql/init.sql");
-factory.executeSqlFile(pathToSqlFile);
-```
-
-You can also run multiple SQL files in a row. They are executed in the order they are listed in the `executeSqlFile(...)` call.
-
-```java
-factory.executeSqlFile(file1, file2, file3);
-```
-
-## Populating Tables
-
-Populating a table is really simple:
-
-```java
-table.insert("Monday", "Mon")
-     .insert("Tuesday", "Tue")
-     .insert("Wednesday", "Wed")
-     // ...
-     .insert("Sunday", "Sun");
-```
-
-One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
-
 ## Running Executable Database Content
 
-### Executing Scripts
+### Executing Exasol Scripts
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
@@ -262,7 +273,7 @@ In some integration tests users need to manipulate database objects that already
 
 TDDB lets users attach to existing objects to control them.
 
-### Controlling Existing Scripts
+### Controlling Existing Exasol Scripts
 
 Imagine you loaded a couple of scripts from a SQL file and you want to write an integration test for them. You can attach to an existing script in the database like this:
 
@@ -271,3 +282,9 @@ final Script script = schema.getScript("THE_EXISTING_SCRIPT");
 ```
 
 Given that a script of that name exists, you can then [execute the script](#executing-scripts) as if you had [created it using the TDDB](#creating-scripts).
+
+## MySQL-Specific Database Objects
+
+So far there are no MySQL Specific Database Objects that are not described in [Dialect-Unspecific Database Objects](#dialect-unspecific-database-objects) section.
+
+Please keep in mind that Schema object represents a database in MySQL as a schema is a [synonym](https://dev.mysql.com/doc/refman/8.0/en/create-database.html) for a database in MySQL syntax.

@@ -9,7 +9,6 @@ import java.nio.file.Path;
  * for.
  * </p>
  */
-// [impl->dsn~database-object-factory~1]
 public interface DatabaseObjectFactory {
     /**
      * /** Create a new database user with a default password.
@@ -21,6 +20,7 @@ public interface DatabaseObjectFactory {
      * @param name user name
      * @return new {@link User} instance
      */
+    // [impl->dsn~creating-database-users~1]
     public User createUser(final String name);
 
     /**
@@ -58,6 +58,7 @@ public interface DatabaseObjectFactory {
      *
      * @param sqlFiles path to the script file
      */
+    // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles);
 
     /**

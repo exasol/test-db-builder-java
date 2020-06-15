@@ -7,7 +7,6 @@ import java.nio.file.Path;
  */
 public abstract class AbstractObjectFactory implements DatabaseObjectFactory {
     @Override
-    // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles) {
         getWriter().executeSqlFile(sqlFiles);
     }

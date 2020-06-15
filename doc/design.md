@@ -27,12 +27,27 @@ Please refer to the [System Requirement Specification](system_requirements.md) f
 
 This section introduces the building blocks of the software. Together those building blocks make up the big picture of the software structure.
 
-## `DatabaseObjectFactory`
-`dsn~database-object-factory~1`
+## `ExasolObjectFactory`
+`dsn~exasol-object-factory~1`
 
-The `DatabaseObjectFactory` is the factory for top-level database objects.
+The `ExasolObjectFactory` is a factory that allows users to create Exasol-specific database objects.
 
-Needs: impl
+Covers:
+
+* `req~supporting-exasol-database~1`
+
+Needs: impl, itest
+
+## `MySqlObjectFactory`
+`dsn~mysql-object-factory~1`
+
+The `MySqlObjectFactory` is a factory that allows users to create MySQL-specific database objects.
+
+Covers:
+
+* `req~supporting-mysql-database~1`
+
+Needs: impl, itest
 
 # Runtime
 

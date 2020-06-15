@@ -49,6 +49,11 @@ TDDB is not suited for production code. We sacrifice speed and features for comp
 
 * [SQL Statement Builder](https://github.com/exasol/sql-statement-builder)
  
+ ## Supported Databases
+ 
+* Exasol
+* MySQL 
+ 
 ## Features
 
 * Create: schemas, tables, adapter scripts, users, connection definitions, virtual schemas
@@ -74,6 +79,8 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | Dependency                                                                          | Purpose                                                | License                          |
 |-------------------------------------------------------------------------------------|--------------------------------------------------------|----------------------------------|
 | [Exasol JDBC Driver][exasol-jdbc-driver]                                            | JDBC driver for Exasol database                        | MIT License                      |
+| [Exasol Database Fundamentals for Java][db-fundamentals-java]                       | Base objects and ground rules for the Exasol database  | MIT License                      |
+| [MySQL JDBC Driver][mysql-jdbc-driver]                                              | JDBC driver for MySQL database                         | GNU GPL Version 2.0              |
 
 ### Test Dependencies
 
@@ -81,6 +88,7 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 |-------------------------------------------------------------------------------------|--------------------------------------------------------|----------------------------------|
 | [Apache Maven](https://maven.apache.org/)                                           | Build tool                                             | Apache License 2.0               |
 | [Exasol Testcontainers][exasol-testcontainers]                                      | Exasol extension for the Testcontainers framework      | MIT License                      |
+| [Hamcrest ResultSet Matcher][hamcrest-resultset-matcher]                            | Hamcrest extension for matching ResultSets             | MIT License                      |
 | [Java Hamcrest](http://hamcrest.org/JavaHamcrest/)                                  | Checking for conditions in code via matchers           | BSD License                      |
 | [JUnit](https://junit.org/junit5)                                                   | Unit testing framework                                 | Eclipse Public License 1.0       |
 | [Mockito](http://site.mockito.org/)                                                 | Mocking framework                                      | MIT License                      |
@@ -98,7 +106,11 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Maven Jacoco Plugin](https://www.eclemma.org/jacoco/trunk/doc/maven.html)          | Code coverage metering                                 | Eclipse Public License 2.0       |
 | [Maven Source Plugin](https://maven.apache.org/plugins/maven-source-plugin/)        | Creating a source code JAR                             | Apache License 2.0               |
 | [Maven Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)   | Unit testing                                           | Apache License 2.0               |
-
+| [OpenFastTrace Maven Plugin][open-fast-trace-maven-plugin]                          | Requirement Tracing                                    | GPL v3                           |
 
 [exasol-jdbc-driver]: https://www.exasol.com/portal/display/DOWNLOAD/Exasol+Download+Section
+[mysql-jdbc-driver]: https://dev.mysql.com/downloads/connector/j/
+[db-fundamentals-java]: https://github.com/exasol/db-fundamentals-java
 [exasol-testcontainers]: https://github.com/exasol/exasol-testcontainers
+[hamcrest-resultset-matcher]: https://github.com/exasol/hamcrest-resultset-matcher
+[open-fast-trace-maven-plugin]: https://github.com/itsallcode/openfasttrace-maven-plugin
