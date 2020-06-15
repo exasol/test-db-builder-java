@@ -32,10 +32,10 @@ That is about as much configuration as you need to get started.
 
 Currently supported dialects and their factories:
 
-1. [Exasol](#exasol-specific-database-objects) -> `ExasolObjectFactory`
-1. [MySQL](#mysql-specific-database-objects) -> `MySQLObjectFactory`
+1. [Exasol](#exasol-specific-database-objects) &rarr; `ExasolObjectFactory`
+1. [MySQL](#mysql-specific-database-objects) &rarr; `MySQLObjectFactory`
 
-## Dialect-Unspecific Database Objects 
+## Dialect-Agnostic Database Objects 
 
 ### When are Object Written to the Database?
 
