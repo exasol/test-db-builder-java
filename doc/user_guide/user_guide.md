@@ -21,6 +21,7 @@ The "mother" of all database objects TDDB creates is the `DatabaseObjectFactory`
 Top-level objects are objects in the database which are not scoped by any other objects. A schema for example is a top-level object in Exasol. A table on the other hand lives inside the scope of a schema.
 
 You choose a database and create a concrete `DatabaseObjectFactory` feeding it with a JDBC connection.
+Please keep in mind that you also need to add a JDBC driver Maven Dependency to your `pom.xml` file according to the database you are going to use. This project does not contain transitive dependencies for JDBC drivers. 
 
 In the example below you see how to create an `ExasolObjectFactory` with a JDBC connection that you created earlier:
 
