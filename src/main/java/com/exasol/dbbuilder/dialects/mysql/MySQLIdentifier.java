@@ -48,12 +48,12 @@ public class MySQLIdentifier implements Identifier {
      * @return {@code true} if the string is a valid identifier
      */
     public static boolean validate(final String id) {
-        if ((id == null) || id.isEmpty() || id.length() > 64) {
+        if ((id == null) || (id.isEmpty()) || (id.length() > 64)) {
             return false;
         }
         for (int i = 0; i < id.length(); ++i) {
             final int codePoint = id.codePointAt(i);
-            if (!Character.isBmpCodePoint(codePoint) || codePoint == '\u0000') {
+            if ((!Character.isBmpCodePoint(codePoint)) || (codePoint == '\u0000')) {
                 return false;
             }
         }
