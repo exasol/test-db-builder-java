@@ -13,7 +13,7 @@ addons:
     organization: exasol
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify sonar:sonar -Dsonar.projectKey=com.exasol:test-db-builder-java -Dsonar.login=${SONAR_TOKEN} org.sonatype.ossindex.maven:ossindex-maven-plugin:audit -f pom.xml
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:prepare-agent-integration verify sonar:sonar -Dsonar.projectKey=com.exasol:test-db-builder-java -Dsonar.login=${SONAR_TOKEN}
 cache:
   directories:
     - "$HOME/.m2"
