@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class MySQLIdentifierTest {
+import nl.jqno.equalsverifier.EqualsVerifier;
 
+class MySQLIdentifierTest {
     @ParameterizedTest
     @ValueSource(strings = { "abc", "Abc10", "9abc", "a_$", "漢字テスト", "Тест", "\u0080" })
     void testValidIdentifier(final String value) {
@@ -16,7 +17,7 @@ class MySQLIdentifierTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "\uD800\uDF23", "\u0000" })
+    @ValueSource(strings = { "\uD800\uDF23", "\u0000", "" })
     void testInvalidIdentifier(final String value) {
         assertThat(MySQLIdentifier.validate(value), equalTo(false));
     }
@@ -31,5 +32,10 @@ class MySQLIdentifierTest {
     void testValidLength() {
         final String value = "a".repeat(64);
         assertThat(MySQLIdentifier.validate(value), equalTo(true));
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.simple().forClass(MySQLIdentifier.class).verify();
     }
 }
