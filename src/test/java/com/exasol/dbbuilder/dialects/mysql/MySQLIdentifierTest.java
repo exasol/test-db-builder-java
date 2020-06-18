@@ -35,7 +35,7 @@ class MySQLIdentifierTest {
     }
 
     @Test
-    public void equalsContract() {
+    void equalsContract() {
         EqualsVerifier.simple().forClass(MySQLIdentifier.class).verify();
     }
 }
