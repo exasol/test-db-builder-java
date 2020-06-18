@@ -87,6 +87,7 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | Dependency                                                                          | Purpose                                                | License                          |
 |-------------------------------------------------------------------------------------|--------------------------------------------------------|----------------------------------|
 | [Apache Maven](https://maven.apache.org/)                                           | Build tool                                             | Apache License 2.0               |
+| [Equals Verifier](https://jqno.nl/equalsverifier/)                                  | Testing `equals(...)` and `hashCode()` contracts       | Apache License 2.0               |
 | [Exasol Testcontainers][exasol-testcontainers]                                      | Exasol extension for the Testcontainers framework      | MIT License                      |
 | [Hamcrest ResultSet Matcher][hamcrest-resultset-matcher]                            | Hamcrest extension for matching ResultSets             | MIT License                      |
 | [Java Hamcrest](http://hamcrest.org/JavaHamcrest/)                                  | Checking for conditions in code via matchers           | BSD License                      |
