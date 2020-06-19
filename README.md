@@ -107,6 +107,7 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Maven Jacoco Plugin](https://www.eclemma.org/jacoco/trunk/doc/maven.html)          | Code coverage metering                                 | Eclipse Public License 2.0       |
 | [Maven Source Plugin](https://maven.apache.org/plugins/maven-source-plugin/)        | Creating a source code JAR                             | Apache License 2.0               |
 | [Maven Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)   | Unit testing                                           | Apache License 2.0               |
+| [Sonatype OSS Index Maven Plugin][sonatype-oss-index-maven-plugin]                  | Checking Dependencies Vulnerability                    | ASL2                             |
 | [OpenFastTrace Maven Plugin][open-fast-trace-maven-plugin]                          | Requirement Tracing                                    | GPL v3                           |
 
 [exasol-jdbc-driver]: https://www.exasol.com/portal/display/DOWNLOAD/Exasol+Download+Section
@@ -115,3 +116,4 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 [exasol-testcontainers]: https://github.com/exasol/exasol-testcontainers
 [hamcrest-resultset-matcher]: https://github.com/exasol/hamcrest-resultset-matcher
 [open-fast-trace-maven-plugin]: https://github.com/itsallcode/openfasttrace-maven-plugin
+[sonatype-oss-index-maven-plugin]: https://sonatype.github.io/ossindex-maven/maven-plugin/
