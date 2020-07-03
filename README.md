@@ -69,6 +69,7 @@ This is an open source project which is written by enthusiasts at Exasol and not
 ## Information for Users
 
 * [User Guide](doc/user_guide/user_guide.md)
+* [Changelog](doc/changes/changelog.md)
 
 ## Dependencies
 
@@ -102,6 +103,7 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Maven Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/)    | Setting required Java version                          | Apache License 2.0               |
 | [Maven Exec Plugin](https://www.mojohaus.org/exec-maven-plugin/)                    | Executing external applications                        | Apache License 2.0               |
 | [Maven GPG Plugin](https://maven.apache.org/plugins/maven-gpg-plugin/)              | Code signing                                           | Apache License 2.0               |
+| [Maven Enforcer Plugin][maven-enforcer-plugin]                                      | Controlling environment constants                      | Apache License 2.0            |
 | [Maven Failsafe Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)   | Integration testing                                    | Apache License 2.0               |
 | [Maven Javadoc Plugin](https://maven.apache.org/plugins/maven-javadoc-plugin/)      | Creating a Javadoc JAR                                 | Apache License 2.0               |
 | [Maven Jacoco Plugin](https://www.eclemma.org/jacoco/trunk/doc/maven.html)          | Code coverage metering                                 | Eclipse Public License 2.0       |
@@ -109,11 +111,14 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Maven Surefire Plugin](https://maven.apache.org/surefire/maven-surefire-plugin/)   | Unit testing                                           | Apache License 2.0               |
 | [Sonatype OSS Index Maven Plugin][sonatype-oss-index-maven-plugin]                  | Checking Dependencies Vulnerability                    | ASL2                             |
 | [OpenFastTrace Maven Plugin][open-fast-trace-maven-plugin]                          | Requirement Tracing                                    | GPL v3                           |
+| [Versions Maven Plugin][versions-maven-plugin]                                      | Checking if dependencies updates are available         | Apache License 2.0            |
 
 [exasol-jdbc-driver]: https://www.exasol.com/portal/display/DOWNLOAD/Exasol+Download+Section
 [mysql-jdbc-driver]: https://dev.mysql.com/downloads/connector/j/
 [db-fundamentals-java]: https://github.com/exasol/db-fundamentals-java
 [exasol-testcontainers]: https://github.com/exasol/exasol-testcontainers
 [hamcrest-resultset-matcher]: https://github.com/exasol/hamcrest-resultset-matcher
+[maven-enforcer-plugin]: http://maven.apache.org/enforcer/maven-enforcer-plugin/
 [open-fast-trace-maven-plugin]: https://github.com/itsallcode/openfasttrace-maven-plugin
 [sonatype-oss-index-maven-plugin]: https://sonatype.github.io/ossindex-maven/maven-plugin/
+[versions-maven-plugin]: https://www.mojohaus.org/versions-maven-plugin/
