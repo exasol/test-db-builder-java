@@ -112,4 +112,10 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             }
         }
     }
+
+    @Override
+    public void drop(Table table) {
+        String sql = "DROP TABLE " + table.getFullyQualifiedName();
+        writeToObject(table, sql);
+    }
 }

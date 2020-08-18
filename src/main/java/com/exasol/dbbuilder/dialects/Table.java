@@ -24,6 +24,11 @@ public class Table extends AbstractSchemaChild {
         return "table";
     }
 
+    @Override
+    public void drop() {
+        writer.drop(this);
+    }
+
     /**
      * Get the columns of the table.
      *

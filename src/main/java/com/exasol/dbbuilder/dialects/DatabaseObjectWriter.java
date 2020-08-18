@@ -58,4 +58,11 @@ public interface DatabaseObjectWriter {
      * @param sqlFiles path(s) to the script file(s)
      */
     public void executeSqlFile(Path... sqlFiles);
+
+    /**
+     * Drop a table.
+     *
+     * @param table table to drop.
+     */
+    public void drop(Table table);
 }

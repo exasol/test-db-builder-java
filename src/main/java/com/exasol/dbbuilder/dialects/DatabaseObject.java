@@ -45,4 +45,9 @@ public interface DatabaseObject {
      * @return {@code true} if this is a control object attached to an existing database object
      */
     boolean isOwned();
+
+    /**
+     * Drop the database object and all contained objects.
+     */
+    public void drop();
 }
