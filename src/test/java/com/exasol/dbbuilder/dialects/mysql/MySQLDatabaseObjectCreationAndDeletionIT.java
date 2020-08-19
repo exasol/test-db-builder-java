@@ -90,7 +90,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
                     .prepareStatement(getCheckCommand(object));
                     final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getString(1).equals(object.getName()) && false;
+                return resultSet.next() && resultSet.getString(1).equals(object.getName());
             } catch (final SQLException exception) {
                 throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
             }
