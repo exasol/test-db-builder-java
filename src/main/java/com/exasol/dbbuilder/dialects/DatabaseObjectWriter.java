@@ -62,7 +62,21 @@ public interface DatabaseObjectWriter {
     /**
      * Drop a table.
      *
-     * @param table table to drop.
+     * @param table table to drop
      */
     public void drop(Table table);
+
+    /**
+     * Drop a user.
+     * 
+     * @param user to drop
+     */
+    public void drop(User user);
+
+    /**
+     * Drop a schema.
+     * 
+     * @param schema to drop
+     */
+    public void drop(Schema schema);
 }

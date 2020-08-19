@@ -56,6 +56,17 @@ TDDB allows developers to programmatically create database objects.
 
 Needs: req
 
+### Dropping Database Objects
+`feat~dropping-existing-database-objects~1`
+
+TDDB allows developers to drop database content.
+
+These include:
+* Generic Database object
+* Database specific database objects
+
+Needs: req
+
 ### Populating Database With Test Data
 `feat~populating-database-with-test-data~1`
 
@@ -76,6 +87,7 @@ Needs: req
 TDDB allows developers to attach to existing database objects to control them programmatically.
 
 Needs: req
+
 
 ## Functional Requirements
 
@@ -171,6 +183,41 @@ Especially when scripts are part of the implementation under test, they often co
 Covers:
 
 * [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+### Dropping Database Objects
+
+#### Dropping Generic Database Objects
+`req~dropping-generic-database-objects~1`
+
+Users can drop non database specific objects through TDDB.
+
+Covers:
+
+* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
+
+Needs: dsn
+
+#### Dropping Exasol Specific Database Objects
+`req~dropping-exasol-database-objects~1`
+
+Users can drop Exasol specific objects through TDDB.
+
+Covers:
+
+* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
+
+Needs: dsn
+
+#### Dropping MySQL Specific Database Objects
+`req~dropping-mysql-database-objects~1`
+
+Users can drop MySQL specific objects through TDDB.
+
+Covers:
+
+* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
 
 Needs: dsn
 

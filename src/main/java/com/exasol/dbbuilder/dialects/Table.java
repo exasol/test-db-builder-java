@@ -25,8 +25,9 @@ public class Table extends AbstractSchemaChild {
     }
 
     @Override
+    // [impl->dsn~dropping-tables~1]
     public void drop() {
-        writer.drop(this);
+        this.writer.drop(this);
     }
 
     /**

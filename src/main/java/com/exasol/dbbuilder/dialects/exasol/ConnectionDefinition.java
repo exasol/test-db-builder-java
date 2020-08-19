@@ -93,6 +93,12 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
                 "Illegal attempt to access parent object of a CONNECTION which is a top-level object.");
     }
 
+    @Override
+    // [impl->dsn~dropping-connections~1]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     /**
      * Check whether the connection definition contains a user name.
      *

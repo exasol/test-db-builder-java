@@ -30,6 +30,15 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     }
 
     /**
+     * Drop an Adapter Script.
+     * 
+     * @param adapterScript to drop
+     */
+    void drop(final AdapterScript adapterScript) {
+        writeToObject(adapterScript, "DROP ADAPTER SCRIPT " + adapterScript.getFullyQualifiedName());
+    }
+
+    /**
      * Create a connection definition.
      *
      * @param definition connection definition to be created
@@ -51,6 +60,15 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
                         + definition.getTarget() + "'");
             }
         }
+    }
+
+    /**
+     * Drop a Connection.
+     * 
+     * @param connectionDefinition to drop
+     */
+    public void drop(final ConnectionDefinition connectionDefinition) {
+        writeToObject(connectionDefinition, "DROP CONNECTION " + connectionDefinition.getFullyQualifiedName());
     }
 
     @Override
@@ -89,6 +107,15 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         writeToObject(script, builder.toString());
     }
 
+    /**
+     * Drop a script.
+     *
+     * @param script to drop
+     */
+    public void drop(final Script script) {
+        writeToObject(script, "DROP SCRIPT " + script.getFullyQualifiedName());
+    }
+
     @Override
     public void write(final User user) {
         writeToObject(user,
@@ -120,6 +147,15 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
             builder.append("'");
         }
         writeToObject(virtualSchema, builder.toString());
+    }
+
+    /**
+     * Drop a Virtual Schema.
+     *
+     * @param virtualSchema Virtual Schema to drop.
+     */
+    public void drop(final VirtualSchema virtualSchema) {
+        writeToObject(virtualSchema, "DROP VIRTUAL SCHEMA " + virtualSchema.getFullyQualifiedName() + " CASCADE");
     }
 
     /**

@@ -53,6 +53,12 @@ public class AdapterScript extends AbstractSchemaChild {
         return this.content;
     }
 
+    @Override
+    // [impl->dsn~dropping-adapter-scripts~1]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     public enum Language {
         JAVA, PYTHON, LUA, R
     }

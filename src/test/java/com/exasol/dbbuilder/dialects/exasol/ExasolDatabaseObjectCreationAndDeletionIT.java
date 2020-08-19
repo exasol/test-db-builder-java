@@ -6,6 +6,7 @@ import static com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege.KILL_AN
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.DELETE;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.UPDATE;
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -18,6 +19,9 @@ import java.nio.file.Path;
 import java.sql.*;
 import java.util.List;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -32,11 +36,13 @@ import com.exasol.dbbuilder.dialects.*;
 @Tag("integration")
 @Testcontainers
 // [itest->dsn~exasol-object-factory~1]
-class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
+class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();
-    private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):" //
-            + "    return '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'";
+    private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):\n" + //
+            "\tif 'createVirtualSchema' in request:\n"
+            + "\t\treturn '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'\n" + "\telse:\n"
+            + "\t\treturn '{\"type\":\"dropVirtualSchema\"}'\t\t";
 
     @Override
     protected Connection getAdminConnection() throws SQLException {
@@ -48,40 +54,22 @@ class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         return new ExasolObjectFactory(container.createConnection(""));
     }
 
-    @Override
-    protected void assertSchemaExistsInDatabase(final Schema schema) {
-        assertObjectExistsInDatabase(schema);
-    }
-
-    @Override
-    protected void assertTableExistsInDatabase(final Table table) {
-        assertObjectExistsInDatabase(table);
-    }
-
-    @Override
-    protected void assertUserExistsInDatabase(final User user) {
-        assertObjectExistsInDatabase(user);
-    }
-
     @Test
     void testCreateAdapterScript() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT");
-        assertObjectExistsInDatabase(
-                exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON, ADAPTER_SCRIPT_CONTENT));
+        assertThat(exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON, ADAPTER_SCRIPT_CONTENT),
+                existsInDatabase());
     }
 
-    private void assertObjectExistsInDatabase(final DatabaseObject object) {
-        try (final PreparedStatement objectExistenceStatement = this.adminConnection.prepareStatement(
-                "SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE " + getSysName(object) + "_NAME=?")) {
-            objectExistenceStatement.setString(1, object.getName());
-            final ResultSet resultSet = objectExistenceStatement.executeQuery();
-            assertThat("Object" + object.getType() + " " + object.getFullyQualifiedName() + " exists in database",
-                    resultSet.next(), equalTo(true));
-        } catch (final SQLException exception) {
-            throw new AssertionError(
-                    "Unable to determine existence of " + object.getType() + " " + object.getFullyQualifiedName() + ".",
-                    exception);
-        }
+    @Test
+    // [itest->dsn~dropping-adapter-scripts~1]
+    void testDropAdapterScript() {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT_TO_DROP");
+        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_TO_DROP", PYTHON,
+                ADAPTER_SCRIPT_CONTENT);
+        adapterScript.drop();
+        assertThat(adapterScript, not(existsInDatabase()));
     }
 
     private String getTableSysName(final DatabaseObject object) {
@@ -105,20 +93,38 @@ class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
     @Test
     void testCreateConnectionWithCredentials() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
-        assertObjectExistsInDatabase(exasolFactory.createConnectionDefinition("CONNECTION_B", "TO", "USER", "PWD"));
+        assertThat(exasolFactory.createConnectionDefinition("CONNECTION_B", "TO", "USER", "PWD"), existsInDatabase());
     }
 
     @Test
     void testCreateConnectionWithoutCredentials() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
-        assertObjectExistsInDatabase(exasolFactory.createConnectionDefinition("CONNECTION_A", "TO"));
+        assertThat(exasolFactory.createConnectionDefinition("CONNECTION_A", "TO"), existsInDatabase());
+    }
+
+    @Test
+    // [itest->dsn~dropping-connections~1]
+    void testDropConnection() {
+        final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
+        final ConnectionDefinition connection = exasolFactory.createConnectionDefinition("CONNECTION_A", "TO");
+        connection.drop();
+        assertThat(connection, not(existsInDatabase()));
     }
 
     @Test
     // [itest->dsn~creating-scripts~1]
     void testCreateScript() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT");
-        assertObjectExistsInDatabase(exasolSchema.createScript("THE_SCRIPT", "print(\"Hello World\")"));
+        assertThat(exasolSchema.createScript("THE_SCRIPT", "print(\"Hello World\")"), existsInDatabase());
+    }
+
+    @Test
+    // [itest->dsn~dropping-scripts~1]
+    void testDropScript() {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_SCRIPT_2");
+        final Script script = exasolSchema.createScript("THE_SCRIPT_2", "print(\"Hello World\")");
+        script.drop();
+        assertThat(script, not(existsInDatabase()));
     }
 
     @Test
@@ -233,8 +239,25 @@ class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         final ExasolSchema exasolSchema = exasolFactory.createSchema("PARENT_SCHEMA_FOR_VIRTUAL_SCHEMA");
         final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON,
                 ADAPTER_SCRIPT_CONTENT);
-        assertObjectExistsInDatabase(exasolFactory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA")
-                .dialectName("Exasol").adapterScript(adapterScript).connectionDefinition(connectionDefinition).build());
+        assertThat(
+                exasolFactory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA").dialectName("Exasol")
+                        .adapterScript(adapterScript).connectionDefinition(connectionDefinition).build(),
+                existsInDatabase());
+    }
+
+    @Test
+    // [itest->dsn~dropping-virtual-schemas~1]
+    void testDropVirtualSchema() {
+        final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
+        final ConnectionDefinition connectionDefinition = exasolFactory.createConnectionDefinition("THE_CONNECTION_2",
+                "destination");
+        final ExasolSchema exasolSchema = exasolFactory.createSchema("PARENT_SCHEMA_FOR_VIRTUAL_SCHEMA_2");
+        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_2", PYTHON,
+                ADAPTER_SCRIPT_CONTENT);
+        final VirtualSchema virtualSchema = exasolFactory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA_2")
+                .dialectName("Exasol").adapterScript(adapterScript).connectionDefinition(connectionDefinition).build();
+        virtualSchema.drop();
+        assertThat(virtualSchema, not(existsInDatabase()));
     }
 
     @Test
@@ -296,6 +319,33 @@ class ExasolDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         } catch (final SQLException exception) {
             throw new AssertionError("Unable to validate contents of table " + table.getFullyQualifiedName(),
                     exception);
+        }
+    }
+
+    @Override
+    protected Matcher<DatabaseObject> existsInDatabase() {
+        return new ExistsInDatabaseMatcher();
+    }
+
+    private class ExistsInDatabaseMatcher extends TypeSafeMatcher<DatabaseObject> {
+        @Override
+        protected boolean matchesSafely(final DatabaseObject object) {
+            try (final PreparedStatement objectExistenceStatement = ExasolDatabaseObjectCreationAndDeletionIT.this.adminConnection
+                    .prepareStatement("SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE "
+                            + getSysName(object) + "_NAME=?")) {
+                objectExistenceStatement.setString(1, object.getName());
+                try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+                    return resultSet.next();
+                }
+            } catch (final SQLException exception) {
+                throw new AssertionError("Unable to determine existence of " + object.getType() + " "
+                        + object.getFullyQualifiedName() + ".", exception);
+            }
+        }
+
+        @Override
+        public void describeTo(final Description description) {
+            description.appendText("exists in database");
         }
     }
 }
