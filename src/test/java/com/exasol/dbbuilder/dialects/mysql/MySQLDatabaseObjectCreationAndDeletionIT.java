@@ -84,13 +84,13 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
                 () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
     }
 
-    private class ExistsInDatabaseMatcher extends TypeSafeMatcher<DatabaseObject> {
+    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
         @Override
         protected boolean matchesSafely(final DatabaseObject object) {
             try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
                     .prepareStatement(getCheckCommand(object));
                     final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getString(1).equals(object.getFullyQualifiedName());
+                return resultSet.next() && resultSet.getString(1).equals(object.getName()) && false;
             } catch (final SQLException exception) {
                 throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
             }
@@ -111,11 +111,6 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             } else {
                 throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
             }
-        }
-
-        @Override
-        public void describeTo(final Description description) {
-            description.appendText("exists in database");
         }
     }
 

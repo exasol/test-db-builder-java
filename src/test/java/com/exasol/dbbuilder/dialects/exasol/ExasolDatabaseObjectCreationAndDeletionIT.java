@@ -327,7 +327,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         return new ExistsInDatabaseMatcher();
     }
 
-    private class ExistsInDatabaseMatcher extends TypeSafeMatcher<DatabaseObject> {
+    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
         @Override
         protected boolean matchesSafely(final DatabaseObject object) {
             try (final PreparedStatement objectExistenceStatement = ExasolDatabaseObjectCreationAndDeletionIT.this.adminConnection
@@ -341,11 +341,6 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 throw new AssertionError("Unable to determine existence of " + object.getType() + " "
                         + object.getFullyQualifiedName() + ".", exception);
             }
-        }
-
-        @Override
-        public void describeTo(final Description description) {
-            description.appendText("exists in database");
         }
     }
 }

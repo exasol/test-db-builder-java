@@ -3,7 +3,9 @@ package com.exasol.dbbuilder.dialects;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -69,5 +71,18 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
         final User user = this.factory.createLoginUser("USER_TO_DROP");
         user.drop();
         assertThat(user, not(existsInDatabase()));
+    }
+
+    protected abstract static class ExistsInDatabaseMatcher extends TypeSafeMatcher<DatabaseObject> {
+        @Override
+        public void describeTo(final Description description) {
+            description.appendText("database object exists in database");
+        }
+
+        @Override
+        protected void describeMismatchSafely(final DatabaseObject item, final Description mismatchDescription) {
+            mismatchDescription.appendText("could not find ").appendText(item.getType()).appendText(" ")
+                    .appendText(item.getFullyQualifiedName()).appendText(" in the database");
+        }
     }
 }
