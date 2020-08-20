@@ -146,7 +146,7 @@ Needs: impl, itest
 #### Dropping Users
 `dsn~dropping-users~1`
 
-Users can drop users using TDDB.
+Users can drop database users using TDDB.
 
 Covers:
 
