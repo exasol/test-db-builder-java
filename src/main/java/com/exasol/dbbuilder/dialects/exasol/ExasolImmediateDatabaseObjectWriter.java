@@ -155,7 +155,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param virtualSchema Virtual Schema to drop.
      */
     public void drop(final VirtualSchema virtualSchema) {
-        writeToObject(virtualSchema, "DROP VIRTUAL SCHEMA " + virtualSchema.getFullyQualifiedName() + " CASCADE");
+        writeToObject(virtualSchema, "DROP VIRTUAL SCHEMA " + virtualSchema.getFullyQualifiedName());
     }
 
     /**
