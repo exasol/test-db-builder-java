@@ -150,7 +150,7 @@ Users can drop database users using TDDB.
 
 Covers:
 
-* `req~dropping-generic-database-objects~1`
+* `req~dropping-generic-database-objects~2`
 
 Needs: impl, itest
 
@@ -161,18 +161,20 @@ Users can drop tables using TDDB.
 
 Covers:
 
-* `req~dropping-generic-database-objects~1`
+* `req~dropping-generic-database-objects~2`
 
 Needs: impl, itest
 
 #### Dropping Schemas
-`dsn~dropping-schemas~1`
+`dsn~dropping-schemas~2`
 
 Users can drop schemas using TDDB.
 
+TDDB uses the `CASCADE` option to drop contained tables.
+
 Covers:
 
-* `req~dropping-generic-database-objects~1`
+* `req~dropping-generic-database-objects~2`
 
 Needs: impl, itest
 
@@ -185,7 +187,7 @@ Users can drop adapter scripts using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~1`
+* `req~dropping-exasol-database-objects~2`
 
 Needs: impl, itest
 
@@ -196,7 +198,7 @@ Users can drop connections using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~1`
+* `req~dropping-exasol-database-objects~2`
 
 Needs: impl, itest
 
@@ -207,29 +209,31 @@ Users can drop scripts using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~1`
+* `req~dropping-exasol-database-objects~2`
 
 Needs: impl, itest
 
 #### Dropping Virtual Schemas
-`dsn~dropping-virtual-schemas~1`
+`dsn~dropping-virtual-schemas~2`
 
 Users can drop virtual schemas using TDDB.
 
+TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
+
 Covers:
 
-* `req~dropping-exasol-database-objects~1`
+* `req~dropping-exasol-database-objects~2`
 
 Needs: impl, itest
 
 ### Dropping MySQL Database Objects
-`dsn~dropping-mysql-database-objects~1`
+`dsn~dropping-mysql-database-objects~2`
 
 MySQL has currently no database specific objects that could be dropped.
 
 Covers:
 
-* `req~dropping-mysql-database-objects~1`
+* `req~dropping-mysql-database-objects~2`
 
 # Cross-cutting Concerns
 

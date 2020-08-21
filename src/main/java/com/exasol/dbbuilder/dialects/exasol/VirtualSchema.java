@@ -58,7 +58,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
     }
 
     @Override
-    // [impl->dsn~dropping-virtual-schemas~1]
+    // [impl->dsn~dropping-virtual-schemas~2]
     public void drop() {
         this.writer.drop(this);
     }

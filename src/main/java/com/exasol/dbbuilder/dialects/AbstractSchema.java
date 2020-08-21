@@ -1,6 +1,7 @@
 package com.exasol.dbbuilder.dialects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.exasol.db.Identifier;
@@ -90,8 +91,9 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     protected abstract Identifier getIdentifier(String name);
 
     @Override
-    // [impl->dsn~dropping-schemas~1]
+    // [impl->dsn~dropping-schemas~2]
     public void drop() {
         getWriter().drop(this);
+        this.tables.clear();
     }
 }

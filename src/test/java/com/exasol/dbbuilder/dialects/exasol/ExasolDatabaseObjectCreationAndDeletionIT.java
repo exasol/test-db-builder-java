@@ -246,7 +246,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
-    // [itest->dsn~dropping-virtual-schemas~1]
+    // [itest->dsn~dropping-virtual-schemas~2]
     void testDropVirtualSchema() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
         final ConnectionDefinition connectionDefinition = exasolFactory.createConnectionDefinition("THE_CONNECTION_2",

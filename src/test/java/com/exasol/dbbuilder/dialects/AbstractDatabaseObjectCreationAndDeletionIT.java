@@ -11,6 +11,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Tag("integration")
 @Testcontainers
@@ -37,11 +39,24 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     @Test
-    // [itest->dsn~dropping-schemas~1]
+    // [itest->dsn~dropping-schemas~2]
     void testDropSchema() {
         final Schema schema = this.factory.createSchema("SCHEMA_TO_DROP");
         schema.drop();
         assertThat(schema, not(existsInDatabase()));
+    }
+
+    @Test
+    // [itest->dsn~dropping-schemas~2]
+    void testDropSchemaCascades() {
+        final Schema schema = this.factory.createSchema("SCHEMA_TO_DROP");
+        final Table table = schema.createTable("THE_TABLE", "COL1", "DATE");
+        schema.drop();
+        assertAll(//
+                () -> assertThat(schema, not(existsInDatabase())), //
+                () -> assertThat(table, not(existsInDatabase())), //
+                () -> assertThat(schema.getTables(), empty())//
+        );
     }
 
     @Test
