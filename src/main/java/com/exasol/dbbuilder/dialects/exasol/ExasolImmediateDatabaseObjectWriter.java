@@ -25,8 +25,16 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param adapterScript the adapter script to be created
      */
     public void write(final AdapterScript adapterScript) {
-        writeToObject(adapterScript, "CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
-                + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n/");
+        final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
+                + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
+
+        if (AdapterScript.isAdapterScriptDebuggingEnabled()) {
+            final String debuggerConnection = adapterScript.getDebuggerConnection().orElseThrow();
+            sqlBuilder.append("-agentlib:jdwp=transport=dt_socket,server=n,address=").append(debuggerConnection)
+                    .append("\n");
+        }
+        sqlBuilder.append("/");
+        writeToObject(adapterScript, sqlBuilder.toString());
     }
 
     /**
