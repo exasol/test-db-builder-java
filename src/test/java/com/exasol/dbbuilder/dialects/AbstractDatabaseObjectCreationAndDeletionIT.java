@@ -50,7 +50,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     // [itest->dsn~dropping-schemas~2]
     void testDropSchemaCascades() {
         final Schema schema = this.factory.createSchema("SCHEMA_TO_DROP");
-        final Table table = schema.createTable("THE_TABLE", "COL1", "DATE");
+        final Table table = schema.createTable("TABLE_IN_SCHEMA_TO_DROP", "COL1", "DATE");
         schema.drop();
         assertAll(//
                 () -> assertThat(schema, not(existsInDatabase())), //
