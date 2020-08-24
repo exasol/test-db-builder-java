@@ -39,9 +39,11 @@ public class AdapterScript extends AbstractSchemaChild {
     }
 
     /**
-     * Create a new instance of an {@link AdapterScript} with possible debugger connection. The debugger is only
+     * Create a new instance of an {@link AdapterScript} with possible debugger connection.
+     * <p> The debugger is only
      * attached if the property test.debugAdapterScripts="true" is set. You can set it by appending -Dtest.debug="true"
      * to your the JVM.
+     * </p>
      *
      * @param writer             database object writer
      * @param parentSchema       parent schema
