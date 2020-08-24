@@ -57,9 +57,11 @@ TDDB allows developers to programmatically create database objects.
 Needs: req
 
 ### Dropping Database Objects
-`feat~dropping-existing-database-objects~1`
+`feat~dropping-existing-database-objects~2`
 
 TDDB allows developers to drop database content.
+
+TDDB drops the objects including all contained objects.
 
 These include:
 * Generic Database object
@@ -189,35 +191,35 @@ Needs: dsn
 ### Dropping Database Objects
 
 #### Dropping Generic Database Objects
-`req~dropping-generic-database-objects~1`
+`req~dropping-generic-database-objects~2`
 
 Users can drop non database specific objects through TDDB.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
 #### Dropping Exasol Specific Database Objects
-`req~dropping-exasol-database-objects~1`
+`req~dropping-exasol-database-objects~2`
 
 Users can drop Exasol specific objects through TDDB.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
 #### Dropping MySQL Specific Database Objects
-`req~dropping-mysql-database-objects~1`
+`req~dropping-mysql-database-objects~2`
 
 Users can drop MySQL specific objects through TDDB.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~1](#dropping-database-objects)
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
