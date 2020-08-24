@@ -23,7 +23,7 @@ class ExasolConfiguration {
      * Get if debugging adapter scripts was globally enabled. *
      * <p>
      * You can enable debugging by setting the property test.debugAdapterScripts to true. You can set it by appending
-     * -Dtest.debug="true" to your the JVM.
+     * -Dtest.debugAdapterScripts="true" to your the JVM.
      * </p>
      *
      * @return true if debugging adapter scripts was globally enabled
