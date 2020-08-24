@@ -73,6 +73,6 @@ class AdapterScriptTest {
         final String expectedDebuggerConnection = "127.0.0.2:8000";
         assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
                 .language(PYTHON).content("").debuggerConnection(expectedDebuggerConnection).build()
-                .getDebuggerConnection().orElseThrow(), equalTo(expectedDebuggerConnection));
+                .getDebuggerConnection(), equalTo(expectedDebuggerConnection));
     }
 }

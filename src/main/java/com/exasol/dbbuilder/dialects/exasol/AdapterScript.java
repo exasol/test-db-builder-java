@@ -13,11 +13,10 @@ public class AdapterScript extends AbstractSchemaChild {
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final Language language;
     private final String content;
-    private final Optional<String> debuggerConnection;
+    private final String debuggerConnection;
 
     private AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
-            final String name, final Language language, final String content,
-            final Optional<String> debuggerConnection) {
+            final String name, final Language language, final String content, final String debuggerConnection) {
         super(parentSchema, ExasolIdentifier.of(name), false);
         this.writer = writer;
         this.language = language;
@@ -50,11 +49,20 @@ public class AdapterScript extends AbstractSchemaChild {
     }
 
     /**
+     * Get if this adapter script has a debugger connection.
+     *
+     * @return true if a debugger connection was set
+     */
+    public boolean hasDebuggerConnection() {
+        return this.debuggerConnection != null;
+    }
+
+    /**
      * Get the debugger connection for this adapter script.
      * 
      * @return debugger connection
      */
-    public Optional<String> getDebuggerConnection() {
+    public String getDebuggerConnection() {
         return this.debuggerConnection;
     }
 
@@ -81,7 +89,7 @@ public class AdapterScript extends AbstractSchemaChild {
         private ExasolImmediateDatabaseObjectWriter writer;
         private Language language;
         private String content;
-        private Optional<String> debuggerConnection = Optional.empty();
+        private String debuggerConnection;
 
         private Builder() {
         }
@@ -137,7 +145,7 @@ public class AdapterScript extends AbstractSchemaChild {
          * @return self
          */
         public Builder debuggerConnection(final String debuggerConnection) {
-            this.debuggerConnection = Optional.of(debuggerConnection);
+            this.debuggerConnection = debuggerConnection;
             return this;
         }
 

@@ -29,7 +29,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
                 + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
 
         if (ExasolConfiguration.getInstance().isAdapterScriptDebuggingEnabled()) {
-            final String debuggerConnection = adapterScript.getDebuggerConnection().orElseThrow();
+            if (!adapterScript.hasDebuggerConnection()) {
+                throw new IllegalStateException("Debugging was enabled but now debugging connection provided. "
+                        + "You can either disable debugging or provide a debugging connection at the AdatperScript creation.");
+            }
+            final String debuggerConnection = adapterScript.getDebuggerConnection();
             sqlBuilder.append("-agentlib:jdwp=transport=dt_socket,server=n,address=").append(debuggerConnection)
                     .append("\n");
         }
