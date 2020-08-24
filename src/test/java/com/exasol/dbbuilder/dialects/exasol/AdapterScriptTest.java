@@ -27,7 +27,8 @@ class AdapterScriptTest {
     }
 
     private AdapterScript createContentlessJavaAdapterScript() {
-        return new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "");
+        return AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(JAVA).content("").build();
     }
 
     @Test
@@ -39,7 +40,8 @@ class AdapterScriptTest {
 
     @Test
     void testGetType() {
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, LUA, "").getType(),
+        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(LUA).content("").build().getType(),
                 equalTo("adapter script"));
     }
 
@@ -56,7 +58,8 @@ class AdapterScriptTest {
     @Test
     void testGetLaguage() {
         final String expectedContent = "content";
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, R, expectedContent).getLanguage(),
+        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(R).content(expectedContent).build().getLanguage(),
                 equalTo(R));
     }
 
@@ -64,7 +67,8 @@ class AdapterScriptTest {
     void testGetContent() {
         final String expectedContent = "content";
         assertThat(
-                new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, PYTHON, expectedContent).getContent(),
+                AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                        .language(PYTHON).content(expectedContent).build().getContent(),
                 equalTo(expectedContent));
     }
 }

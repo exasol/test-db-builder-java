@@ -15,22 +15,9 @@ public class AdapterScript extends AbstractSchemaChild {
     private final String content;
     private final Optional<String> debuggerConnection;
 
-    /**
-     * Create a new instance of an {@link AdapterScript} with possible debugger connection.
-     * <p>
-     * The debugger is only attached if the property test.debugAdapterScripts="true" is set. You can set it by appending
-     * -Dtest.debug="true" to your the JVM.
-     * </p>
-     *
-     * @param writer             database object writer
-     * @param parentSchema       parent schema
-     * @param name               name of the adapter script
-     * @param language           language the the script is implemented in
-     * @param content            the actual script
-     * @param debuggerConnection connection string for the debugger
-     */
-    public AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema, final String name,
-            final Language language, final String content, final Optional<String> debuggerConnection) {
+    private AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
+            final String name, final Language language, final String content,
+            final Optional<String> debuggerConnection) {
         super(parentSchema, ExasolIdentifier.of(name), false);
         this.writer = writer;
         this.language = language;
@@ -155,6 +142,11 @@ public class AdapterScript extends AbstractSchemaChild {
 
         /**
          * Set an optional connection to a debugger.
+         * 
+         * <p>
+         * The debugger is only attached if the property test.debugAdapterScripts="true" is set. You can set it by
+         * appending -Dtest.debug="true" to your the JVM.
+         * </p>
          * 
          * @param debuggerConnection optional connection to a debugger
          * @return self
