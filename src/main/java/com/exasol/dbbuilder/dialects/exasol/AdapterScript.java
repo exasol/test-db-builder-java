@@ -50,16 +50,6 @@ public class AdapterScript extends AbstractSchemaChild {
     }
 
     /**
-     * Get if debugging adapter scripts was globally enabled enabled.
-     * 
-     * @return true if debugging adapter scripts was globally enabled
-     */
-    public static boolean isAdapterScriptDebuggingEnabled() {
-        final String debugProperty = System.getProperty("tests.debugAdapterScripts");
-        return debugProperty != null && debugProperty.equals("true");
-    }
-
-    /**
      * Get the debugger connection for this adapter script.
      * 
      * @return debugger connection
@@ -141,12 +131,7 @@ public class AdapterScript extends AbstractSchemaChild {
         }
 
         /**
-         * Set an optional connection to a debugger.
-         * 
-         * <p>
-         * The debugger is only attached if the property test.debugAdapterScripts="true" is set. You can set it by
-         * appending -Dtest.debug="true" to your the JVM.
-         * </p>
+         * Set an optional connection to a debugger. See {@link ExasolConfiguration#isAdapterScriptDebuggingEnabled()}
          * 
          * @param debuggerConnection optional connection to a debugger
          * @return self

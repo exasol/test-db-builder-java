@@ -41,8 +41,7 @@ class AdapterScriptTest {
     @Test
     void testGetType() {
         assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
-                .language(LUA).content("").build().getType(),
-                equalTo("adapter script"));
+                .language(LUA).content("").build().getType(), equalTo("adapter script"));
     }
 
     @Test
@@ -59,16 +58,21 @@ class AdapterScriptTest {
     void testGetLaguage() {
         final String expectedContent = "content";
         assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
-                .language(R).content(expectedContent).build().getLanguage(),
-                equalTo(R));
+                .language(R).content(expectedContent).build().getLanguage(), equalTo(R));
     }
 
     @Test
     void testGetContent() {
         final String expectedContent = "content";
-        assertThat(
-                AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
-                        .language(PYTHON).content(expectedContent).build().getContent(),
-                equalTo(expectedContent));
+        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(PYTHON).content(expectedContent).build().getContent(), equalTo(expectedContent));
+    }
+
+    @Test
+    void testGetDebuggerConnection() {
+        final String expectedDebuggerConnection = "127.0.0.2:8000";
+        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(PYTHON).content("").debuggerConnection(expectedDebuggerConnection).build()
+                .getDebuggerConnection().orElseThrow(), equalTo(expectedDebuggerConnection));
     }
 }

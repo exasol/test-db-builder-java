@@ -28,7 +28,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
                 + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
 
-        if (AdapterScript.isAdapterScriptDebuggingEnabled()) {
+        if (ExasolConfiguration.getInstance().isAdapterScriptDebuggingEnabled()) {
             final String debuggerConnection = adapterScript.getDebuggerConnection().orElseThrow();
             sqlBuilder.append("-agentlib:jdwp=transport=dt_socket,server=n,address=").append(debuggerConnection)
                     .append("\n");
