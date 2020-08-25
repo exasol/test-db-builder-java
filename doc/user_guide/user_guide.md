@@ -219,9 +219,10 @@ final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "P
 #### Debugging (Java only)
 
 Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)).
-This requires a special option for the `CREATE ADAPTER SCRIPT` command. The TDDB can also add this option.
+This requires a special option for the `CREATE ADAPTER SCRIPT` command. The TDDB can also add this option. When this option is set, the Java environment the script runs in uses a debug agent that connects to a remote debugger.
 
-For that you need to run a debugger on your local machine (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)).
+For that you need to run a debugger on your local machine (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)) that the debug agent connects to.
+
 Next pass a connection string to the `createAdapterScript` command. For example:
 
  ```java
