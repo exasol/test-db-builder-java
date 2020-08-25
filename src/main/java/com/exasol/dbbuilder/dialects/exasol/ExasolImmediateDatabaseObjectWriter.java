@@ -39,8 +39,8 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
         if (ExasolConfiguration.getInstance().isAdapterScriptDebuggingEnabled()) {
             if (!adapterScript.hasDebuggerConnection()) {
-                throw new IllegalStateException("Debugging was enabled but now debugging connection provided. "
-                        + "You can either disable debugging or provide a debugging connection at the AdatperScript creation.");
+                throw new IllegalStateException("Debugging is enabled but debug connection is missing. "
+                        + "You can either disable debugging or provide a debug connection with the AdatperScript creation.");
             }
             final String debuggerConnection = adapterScript.getDebuggerConnection();
             sqlBuilder.append("-agentlib:jdwp=transport=dt_socket,server=n,address=").append(debuggerConnection)
