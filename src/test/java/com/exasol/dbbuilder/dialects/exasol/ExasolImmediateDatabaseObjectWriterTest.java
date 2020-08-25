@@ -10,7 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractImmediateDatabaseObjectWriterTest;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 
 @ExtendWith(MockitoExtension.class)
 class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseObjectWriterTest {

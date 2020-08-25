@@ -3,7 +3,9 @@ package com.exasol.dbbuilder.dialects;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Tag("integration")

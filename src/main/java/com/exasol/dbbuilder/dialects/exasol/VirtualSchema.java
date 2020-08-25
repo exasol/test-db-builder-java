@@ -5,16 +5,19 @@ import java.util.Map;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
+import com.exasol.dbbuilder.dialects.DatabaseObject;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.Schema;
 
 /**
  * Virtual Schema.
  */
 public class VirtualSchema extends AbstractDatabaseObject {
-    private final ExasolImmediateDatabaseObjectWriter writer;
     private static final String SCHEMA_NAME_KEY = "SCHEMA_NAME";
     private static final String CONNECTION_NAME_KEY = "CONNECTION_NAME";
     private static final String SQL_DIALECT_KEY = "SQL_DIALECT";
+    private final ExasolImmediateDatabaseObjectWriter writer;
     private final AdapterScript adapterScript;
     private final ConnectionDefinition connectionDefinition;
     private final Map<String, String> properties = new HashMap<>();
@@ -27,6 +30,17 @@ public class VirtualSchema extends AbstractDatabaseObject {
         addReservedProperties(builder);
         this.properties.putAll(builder.properties);
         this.writer.write(this);
+    }
+
+    /**
+     * Create a new builder for a {@link VirtualSchema}.
+     *
+     * @param writer database object writer
+     * @param name   name of the Virtual Schema to be built
+     * @return builder instance
+     */
+    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
+        return new Builder(writer, ExasolIdentifier.of(name));
     }
 
     private void addReservedProperties(final Builder builder) {
@@ -100,17 +114,6 @@ public class VirtualSchema extends AbstractDatabaseObject {
      */
     public Map<String, String> getProperties() {
         return this.properties;
-    }
-
-    /**
-     * Create a new builder for a {@link VirtualSchema}.
-     *
-     * @param writer database object writer
-     * @param name   name of the Virtual Schema to be built
-     * @return builder instance
-     */
-    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        return new Builder(writer, ExasolIdentifier.of(name));
     }
 
     /**

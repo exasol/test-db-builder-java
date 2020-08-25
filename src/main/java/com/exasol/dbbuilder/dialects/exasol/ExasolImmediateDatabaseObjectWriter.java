@@ -1,9 +1,18 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractImmediateDatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.GlobalPrivilege;
+import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Database object writer that writes objects to the database immediately.
@@ -25,8 +34,20 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param adapterScript the adapter script to be created
      */
     public void write(final AdapterScript adapterScript) {
-        writeToObject(adapterScript, "CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
-                + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n/");
+        final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
+                + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
+
+        if (ExasolConfiguration.getInstance().isAdapterScriptDebuggingEnabled()) {
+            if (!adapterScript.hasDebuggerConnection()) {
+                throw new IllegalStateException("Debugging is enabled but debug connection is missing. "
+                        + "You can either disable debugging or provide a debug connection with the AdatperScript creation.");
+            }
+            final String debuggerConnection = adapterScript.getDebuggerConnection();
+            sqlBuilder.append("-agentlib:jdwp=transport=dt_socket,server=n,address=").append(debuggerConnection)
+                    .append("\n");
+        }
+        sqlBuilder.append("/");
+        writeToObject(adapterScript, sqlBuilder.toString());
     }
 
     /**
