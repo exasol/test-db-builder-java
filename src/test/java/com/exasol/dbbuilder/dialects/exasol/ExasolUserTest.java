@@ -10,7 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractUserTest;
+import com.exasol.dbbuilder.dialects.DatabaseObject;
+import com.exasol.dbbuilder.dialects.ObjectPrivilege;
+import com.exasol.dbbuilder.dialects.User;
 
 // [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)

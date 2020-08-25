@@ -5,7 +5,9 @@ import java.nio.file.Path;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractSchema;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 
 /**
  * Exasol database schema.

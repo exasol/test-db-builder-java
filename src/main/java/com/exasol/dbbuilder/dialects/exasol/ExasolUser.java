@@ -1,7 +1,10 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractUser;
+import com.exasol.dbbuilder.dialects.DatabaseObject;
+import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Exasol database user.

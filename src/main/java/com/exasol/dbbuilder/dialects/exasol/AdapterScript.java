@@ -4,8 +4,6 @@ import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.AbstractSchemaChild;
 import com.exasol.dbbuilder.dialects.Schema;
 
-import java.util.Optional;
-
 /**
  * Virtual Schema Adapter Script.
  */
@@ -23,6 +21,15 @@ public class AdapterScript extends AbstractSchemaChild {
         this.content = content;
         this.debuggerConnection = debuggerConnection;
         this.writer.write(this);
+    }
+
+    /**
+     * Get a builder for {@link AdapterScript}.
+     *
+     * @return builder for {@link AdapterScript}
+     */
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -59,7 +66,7 @@ public class AdapterScript extends AbstractSchemaChild {
 
     /**
      * Get the debugger connection for this adapter script.
-     * 
+     *
      * @return debugger connection
      */
     public String getDebuggerConnection() {
@@ -68,15 +75,6 @@ public class AdapterScript extends AbstractSchemaChild {
 
     public enum Language {
         JAVA, PYTHON, LUA, R
-    }
-
-    /**
-     * Get a builder for {@link AdapterScript}.
-     * 
-     * @return builder for {@link AdapterScript}
-     */
-    public static Builder builder() {
-        return new Builder();
     }
 
     /**

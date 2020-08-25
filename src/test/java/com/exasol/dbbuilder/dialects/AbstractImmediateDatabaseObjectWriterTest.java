@@ -17,9 +17,9 @@ import org.mockito.Mock;
 
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractImmediateDatabaseObjectWriterTest {
-    private DatabaseObjectWriter writer;
     @Mock
     protected Connection connectionMock;
+    private DatabaseObjectWriter writer;
 
     @BeforeEach
     void beforeEach() {
