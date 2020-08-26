@@ -4,3 +4,4 @@
 
 * #27 Dropping database objects
 * #26 Add debugger to adapter script
+* #33 Refactored requirement tracing
