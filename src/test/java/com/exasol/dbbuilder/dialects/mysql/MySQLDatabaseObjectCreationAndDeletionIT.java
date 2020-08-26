@@ -45,7 +45,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
 
     @Override
     protected Matcher<DatabaseObject> existsInDatabase() {
-        return new ExistsInDatabaseMatcher();
+        return new ExistsInDatabaseMatcher(this.adminConnection);
     }
 
     private void assertUserHasGlobalPrivilege(final String username, final String columnName) throws AssertionError {
@@ -124,10 +124,17 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
         }
     }
 
-    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+    private static class ExistsInDatabaseMatcher
+            extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+        private final Connection connection;
+
+        private ExistsInDatabaseMatcher(final Connection connection) {
+            this.connection = connection;
+        }
+
         @Override
         protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
+            try (final PreparedStatement objectExistenceStatement = this.connection
                     .prepareStatement(getCheckCommand(object));
                     final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
                 return resultSet.next() && resultSet.getString(1).equals(object.getName());

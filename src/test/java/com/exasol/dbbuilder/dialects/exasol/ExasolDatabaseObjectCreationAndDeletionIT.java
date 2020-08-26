@@ -70,7 +70,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         assertThat(adapterScript, not(existsInDatabase()));
     }
 
-    private String getTableSysName(final DatabaseObject object) {
+    private static String getTableSysName(final DatabaseObject object) {
         if (object instanceof AdapterScript) {
             return "SCRIPT";
         } else {
@@ -78,7 +78,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         }
     }
 
-    private String getSysName(final DatabaseObject object) {
+    private static String getSysName(final DatabaseObject object) {
         if (object instanceof AdapterScript) {
             return "SCRIPT";
         } else if (object instanceof VirtualSchema) {
@@ -322,13 +322,20 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     @Override
     protected Matcher<DatabaseObject> existsInDatabase() {
-        return new ExistsInDatabaseMatcher();
+        return new ExistsInDatabaseMatcher(this.adminConnection);
     }
 
-    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+    private static class ExistsInDatabaseMatcher
+            extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+        private final Connection connection;
+
+        private ExistsInDatabaseMatcher(final Connection connection) {
+            this.connection = connection;
+        }
+
         @Override
         protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = ExasolDatabaseObjectCreationAndDeletionIT.this.adminConnection
+            try (final PreparedStatement objectExistenceStatement = this.connection
                     .prepareStatement("SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE "
                             + getSysName(object) + "_NAME=?")) {
                 objectExistenceStatement.setString(1, object.getName());
