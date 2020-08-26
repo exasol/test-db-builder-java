@@ -116,8 +116,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     @Override
     // [impl->dsn~dropping-tables~1]
     public void drop(final Table table) {
-        final String sql = "DROP TABLE " + table.getFullyQualifiedName();
-        writeToObject(table, sql);
+        writeToObject(table, "DROP TABLE " + table.getFullyQualifiedName());
     }
 
     @Override
