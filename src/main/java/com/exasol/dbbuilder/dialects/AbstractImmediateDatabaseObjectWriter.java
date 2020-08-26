@@ -34,6 +34,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         }
     }
 
+    // [impl->dsn~creating-schemas~1]
     @Override
     public void write(final Schema schema) {
         writeToObject(schema, "CREATE SCHEMA " + schema.getFullyQualifiedName());

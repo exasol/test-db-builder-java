@@ -30,6 +30,8 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      *
      * @param adapterScript the adapter script to be created
      */
+    // [impl->dsn~creating-adapter-scripts~1]
+    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
     public void write(final AdapterScript adapterScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
                 + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
@@ -151,6 +153,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      *
      * @param virtualSchema Virtual Schema to write
      */
+    // [impl->dsn~creating-virtual-schemas~1]
     public void write(final VirtualSchema virtualSchema) {
         final StringBuilder builder = new StringBuilder("CREATE VIRTUAL SCHEMA ")
                 .append(virtualSchema.getFullyQualifiedName()) //

@@ -53,6 +53,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
+    // [itest->dsn~creating-adapter-scripts~1]
     void testCreateAdapterScript() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT");
         assertThat(exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON, ADAPTER_SCRIPT_CONTENT),
@@ -89,12 +90,14 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
+    // [itest->dsn~creating-connections~1]
     void testCreateConnectionWithCredentials() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
         assertThat(exasolFactory.createConnectionDefinition("CONNECTION_B", "TO", "USER", "PWD"), existsInDatabase());
     }
 
     @Test
+    // [itest->dsn~creating-connections~1]
     void testCreateConnectionWithoutCredentials() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
         assertThat(exasolFactory.createConnectionDefinition("CONNECTION_A", "TO"), existsInDatabase());
@@ -230,6 +233,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
+    // [itest->dsn~creating-virtual-schemas~1]
     void testCreateVirtualSchema() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
         final ConnectionDefinition connectionDefinition = exasolFactory.createConnectionDefinition("THE_CONNECTION",

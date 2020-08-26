@@ -125,6 +125,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
     /**
      * Builder for a {@link VirtualSchema}.
      */
+    // [impl->dsn~creating-virtual-schemas~1]
     public static class Builder {
         private final ExasolImmediateDatabaseObjectWriter writer;
         private final Identifier name;

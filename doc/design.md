@@ -66,6 +66,73 @@ Covers:
 
 Needs: impl, utest, itest
 
+### Creating Adapter Scripts
+`dsn~creating-adapter-scripts~1`
+
+Users can create Exasol adapter scripts.
+
+Covers:
+
+* `req~creating-adapter-scripts~1`
+
+Needs: impl, utest, itest
+
+### Creating Adapter Scripts With Optional Debugger
+`dsn~creating-adapter-scripts-with-debugger~1`
+
+Users can create Exasol adapter scripts with debugger connection.
+Users can enable the debugger by setting the `test.debugAdapterScripts` to `"true"`.
+
+Covers:
+
+* `req~creating-adapter-scripts~1`
+
+Needs: impl, utest
+
+### Creating Connection
+`dsn~creating-connections~1`
+
+Users can create Exasol connection definitions.
+
+Covers:
+
+* `req~creating-connections~1`
+
+Needs: impl, utest, itest
+
+### Creating Schemas
+`dsn~creating-schemas~1`
+
+Users can create dialect specific schemas.
+
+Covers:
+
+* `req~creating-schemas~1`
+
+Needs: impl, utest, itest
+
+### Creating Virtual Schemas
+`dsn~creating-virtual-schemas~1`
+
+Users can create exasol virtual schemas.
+
+Covers:
+
+* `req~creating-virtual-schemas~1`
+
+Needs: impl, utest, itest
+
+### Creating Tables
+`dsn~creating-tables~1`
+
+Users can create tables.
+
+Covers:
+
+* `req~creating-tables~1`
+
+Needs: impl, utest, itest
+
 ### Granting System Privileges to Database Users
 `dsn~granting-system-privileges-to-database-users~1`
 
@@ -141,31 +208,29 @@ Needs: impl, itest
 
 ## Dropping database objects
 
-### Dropping Generic Database Objects
-
-#### Dropping Users
+### Dropping Users
 `dsn~dropping-users~1`
 
 Users can drop database users using TDDB.
 
 Covers:
 
-* `req~dropping-generic-database-objects~2`
+* `req~dropping-users~1`
 
 Needs: impl, itest
 
-#### Dropping Tables
+### Dropping Tables
 `dsn~dropping-tables~1`
 
 Users can drop tables using TDDB.
 
 Covers:
 
-* `req~dropping-generic-database-objects~2`
+* `req~dropping-tables~1`
 
 Needs: impl, itest
 
-#### Dropping Schemas
+### Dropping Schemas
 `dsn~dropping-schemas~2`
 
 Users can drop schemas using TDDB.
@@ -174,46 +239,44 @@ TDDB uses the `CASCADE` option to drop contained tables.
 
 Covers:
 
-* `req~dropping-generic-database-objects~2`
+* `req~dropping-schemas~1`
 
 Needs: impl, itest
 
-### Dropping Exasol Database Objects
-
-#### Dropping Adapter Scripts
+### Dropping Adapter Scripts
 `dsn~dropping-adapter-scripts~1`
 
 Users can drop adapter scripts using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~2`
+* `req~dropping-adapter-scripts~1`
 
 Needs: impl, itest
 
-#### Dropping Connections
+### Dropping Connections
 `dsn~dropping-connections~1`
 
 Users can drop connections using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~2`
+* `req~dropping-connections~1`
 
 Needs: impl, itest
 
-#### Dropping Scripts
+### Dropping Scripts
 `dsn~dropping-scripts~1`
 
 Users can drop scripts using TDDB.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~2`
+* `req~dropping-scripts~1`
 
 Needs: impl, itest
 
-#### Dropping Virtual Schemas
+### Dropping Virtual Schemas
 `dsn~dropping-virtual-schemas~2`
 
 Users can drop virtual schemas using TDDB.
@@ -222,18 +285,9 @@ TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
 
 Covers:
 
-* `req~dropping-exasol-database-objects~2`
+* `req~dropping-virtual-schemas~1`
 
 Needs: impl, itest
-
-### Dropping MySQL Database Objects
-`dsn~dropping-mysql-database-objects~2`
-
-MySQL has currently no database specific objects that could be dropped.
-
-Covers:
-
-* `req~dropping-mysql-database-objects~2`
 
 # Cross-cutting Concerns
 

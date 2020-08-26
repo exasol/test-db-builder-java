@@ -173,6 +173,65 @@ Covers:
 
 Needs: dsn
 
+#### Creating Adapter Scripts
+`req~creating-adapter-scripts~1`
+
+Users can create Exasol adapter scripts using TDDB.
+
+Optionally they can define a debugger connection. 
+Users can control if the debugger is added by an switch that is independent of the source code. 
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+
+#### Creating Tables
+`req~creating-tables~1`
+
+Users can create tables using TDDB.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+#### Creating Connections
+`req~creating-connections~1`
+
+Users can create Exasol connection definitions using TDDB.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+#### Creating Schemas
+`req~creating-schemas~1`
+
+Users can create Exasol schemas using TDDB.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
+#### Creating Virtual Schemas
+`req~creating-virtual-schemas~1`
+
+Users can create Exasol virtual schemas using TDDB.
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
 #### Creating Objects Through SQL From Files
 `req~creating-objects-through-sql-files~1`
 
@@ -190,36 +249,84 @@ Needs: dsn
 
 ### Dropping Database Objects
 
-#### Dropping Generic Database Objects
-`req~dropping-generic-database-objects~2`
+### Dropping Users
+`req~dropping-users~1`
 
-Users can drop non database specific objects through TDDB.
+Users can drop database users using TDDB.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
+* `feat~dropping-existing-database-objects~2`
 
 Needs: dsn
 
-#### Dropping Exasol Specific Database Objects
-`req~dropping-exasol-database-objects~2`
+### Dropping Tables
+`req~dropping-tables~1`
 
-Users can drop Exasol specific objects through TDDB.
+Users can drop tables using TDDB.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
+* `feat~dropping-existing-database-objects~2`
 
 Needs: dsn
 
-#### Dropping MySQL Specific Database Objects
-`req~dropping-mysql-database-objects~2`
+### Dropping Schemas
+`req~dropping-schemas~1`
 
-Users can drop MySQL specific objects through TDDB.
+Users can drop schemas using TDDB.
+
+TDDB uses the `CASCADE` option to drop contained tables.
 
 Covers:
 
-* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
+* `feat~dropping-existing-database-objects~2`
+
+Needs: dsn
+
+### Dropping Adapter Scripts
+`req~dropping-adapter-scripts~1`
+
+Users can drop adapter scripts using TDDB.
+
+Covers:
+
+* `feat~dropping-existing-database-objects~2`
+
+Needs: dsn
+
+### Dropping Connections
+`req~dropping-connections~1`
+
+Users can drop connections using TDDB.
+
+Covers:
+
+* `feat~dropping-existing-database-objects~2`
+
+Needs: dsn
+
+### Dropping Scripts
+`req~dropping-scripts~1`
+
+Users can drop scripts using TDDB.
+
+Covers:
+
+* `feat~dropping-existing-database-objects~2`
+
+Needs: dsn
+
+### Dropping Virtual Schemas
+`req~dropping-virtual-schemas~1`
+
+Users can drop virtual schemas using TDDB.
+
+TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
+
+Covers:
+
+* `feat~dropping-existing-database-objects~2`
 
 Needs: dsn
 
