@@ -3,3 +3,4 @@
 ## Features / Enhancements
 
 * #27 Dropping database objects
+* #26 Add debugger to adapter script

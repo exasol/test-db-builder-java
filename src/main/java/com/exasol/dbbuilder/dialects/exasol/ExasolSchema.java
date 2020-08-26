@@ -5,7 +5,9 @@ import java.nio.file.Path;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractSchema;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 
 /**
  * Exasol database schema.
@@ -35,7 +37,23 @@ public class ExasolSchema extends AbstractSchema {
      */
     public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
             final String content) {
-        return new AdapterScript(this.writer, this, name, language, content);
+        return AdapterScript.builder().writer(this.writer).parentSchema(this).name(name).language(language)
+                .content(content).build();
+    }
+
+    /**
+     * Create an adapter script with debugger connection.
+     *
+     * @param name               name of the adapter script
+     * @param language           language the adapter script is implemented in
+     * @param content            implementation of the script
+     * @param debuggerConnection connection to a debugger
+     * @return adapter script
+     */
+    public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
+            final String content, final String debuggerConnection) {
+        return AdapterScript.builder().writer(this.writer).parentSchema(this).name(name).language(language)
+                .content(content).debuggerConnection(debuggerConnection).build();
     }
 
     /**

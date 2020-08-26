@@ -68,3 +68,4 @@ sp_cleanup.use_this_for_non_static_field_access_only_if_necessary=false
 sp_cleanup.use_this_for_non_static_method_access=false
 sp_cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 sp_cleanup.use_unboxing=true
+org.eclipse.jdt.ui.importorder=java;javax;org;com;

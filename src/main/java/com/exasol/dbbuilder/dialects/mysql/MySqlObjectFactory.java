@@ -2,7 +2,9 @@ package com.exasol.dbbuilder.dialects.mysql;
 
 import java.sql.Connection;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
+import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Factory for MySQL top-level database objects.

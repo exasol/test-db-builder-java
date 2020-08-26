@@ -28,6 +28,19 @@ public class Script extends AbstractSchemaChild {
         this.returnsTable = builder.returnsTable;
     }
 
+    /**
+     * Create a builder for a {@link Script}.
+     *
+     * @param writer       data object writer
+     * @param parentSchema parent schema
+     * @param name         name of the script
+     * @return builder
+     */
+    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
+            final String name) {
+        return new Builder(writer, parentSchema, ExasolIdentifier.of(name));
+    }
+
     @Override
     public String getType() {
         return "script";
@@ -86,19 +99,6 @@ public class Script extends AbstractSchemaChild {
     // [impl->dsn~dropping-scripts~1]
     public void drop() {
         this.writer.drop(this);
-    }
-
-    /**
-     * Create a builder for a {@link Script}.
-     *
-     * @param writer       data object writer
-     * @param parentSchema parent schema
-     * @param name         name of the script
-     * @return builder
-     */
-    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
-            final String name) {
-        return new Builder(writer, parentSchema, ExasolIdentifier.of(name));
     }
 
     /**

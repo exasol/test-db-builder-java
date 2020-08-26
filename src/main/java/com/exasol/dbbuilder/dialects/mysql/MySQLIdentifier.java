@@ -14,19 +14,9 @@ public class MySQLIdentifier implements Identifier {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return this.id;
-    }
-
-    @Override
-    public String quote() {
-        return "`" + this.id + "`";
-    }
-
     /**
      * Create a new {@link MySQLIdentifier}.
-     * 
+     *
      * @param id the identifier as {@link String}
      * @return new {@link MySQLIdentifier} instance
      */
@@ -58,6 +48,16 @@ public class MySQLIdentifier implements Identifier {
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return this.id;
+    }
+
+    @Override
+    public String quote() {
+        return "`" + this.id + "`";
     }
 
     @Override

@@ -12,21 +12,21 @@ public interface User extends DatabaseObject {
      *
      * @return password
      */
-    public String getPassword();
+    String getPassword();
 
     /**
      * Get the objectPrivileges of the user.
      *
      * @return object privileges
      */
-    public Map<DatabaseObject, ObjectPrivilege[]> getObjectPrivileges();
+    Map<DatabaseObject, ObjectPrivilege[]> getObjectPrivileges();
 
     /**
      * Get the systemPrivileges of the user.
      *
      * @return system privileges
      */
-    public Set<GlobalPrivilege> getGlobalPrivileges();
+    Set<GlobalPrivilege> getGlobalPrivileges();
 
     /**
      * Grant the user access to all aspects of a database schema.
@@ -34,7 +34,7 @@ public interface User extends DatabaseObject {
      * @param object database object
      * @return {@link User} instance for fluent programming
      */
-    public User grantAllAccess(DatabaseObject object);
+    User grantAllAccess(DatabaseObject object);
 
     /**
      * Grant the user access to a database schema with the given privileges.
@@ -43,7 +43,7 @@ public interface User extends DatabaseObject {
      * @param privileges privileges to grant the user
      * @return {@link User} instance for fluent programming
      */
-    public User grant(DatabaseObject object, ObjectPrivilege... privileges);
+    User grant(DatabaseObject object, ObjectPrivilege... privileges);
 
     /**
      * Grant system privileges to a user.
@@ -52,20 +52,20 @@ public interface User extends DatabaseObject {
      * @return {@link User} instance for fluent programming
      */
     // [impl->dsn~granting-system-privileges-to-database-users~1]
-    public User grant(GlobalPrivilege... privileges);
+    User grant(GlobalPrivilege... privileges);
 
     @Override
-    public default String getType() {
+    default String getType() {
         return "user";
     }
 
     @Override
-    public default boolean hasParent() {
+    default boolean hasParent() {
         return false;
     }
 
     @Override
-    public default DatabaseObject getParent() {
+    default DatabaseObject getParent() {
         throw new DatabaseObjectException(this,
                 "Illegal attempt to access parent object of a USER which is a top-level object.");
     }

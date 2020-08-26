@@ -1,7 +1,9 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
+import com.exasol.dbbuilder.dialects.DatabaseObject;
+import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 
 /**
  * Definition of a connection to another database or service.

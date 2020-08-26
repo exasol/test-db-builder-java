@@ -10,11 +10,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
@@ -84,36 +85,6 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
                 () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
     }
 
-    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
-        @Override
-        protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
-                    .prepareStatement(getCheckCommand(object));
-                    final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getString(1).equals(object.getName());
-            } catch (final SQLException exception) {
-                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
-            }
-        }
-
-        private String getCheckCommand(final DatabaseObject object) {
-            if (object instanceof User) {
-                final User user = (User) object;
-                return "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
-            } else if (object instanceof Table) {
-                final Table table = (Table) object;
-                return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
-                        + "\"";
-            } else if (object instanceof Schema) {
-                final Schema schema = (Schema) object;
-                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \"" + schema.getName()
-                        + "\"";
-            } else {
-                throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
-            }
-        }
-    }
-
     @Test
     void testGrantTablePrivilegeToUser() throws InterruptedException {
         final Schema schema = this.factory.createSchema("TABPRIVSCHEMA");
@@ -150,6 +121,36 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
         } catch (final SQLException exception) {
             throw new AssertionError("Unable to validate contents of table " + table.getFullyQualifiedName(),
                     exception);
+        }
+    }
+
+    private class ExistsInDatabaseMatcher extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+        @Override
+        protected boolean matchesSafely(final DatabaseObject object) {
+            try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
+                    .prepareStatement(getCheckCommand(object));
+                    final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+                return resultSet.next() && resultSet.getString(1).equals(object.getName());
+            } catch (final SQLException exception) {
+                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
+            }
+        }
+
+        private String getCheckCommand(final DatabaseObject object) {
+            if (object instanceof User) {
+                final User user = (User) object;
+                return "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
+            } else if (object instanceof Table) {
+                final Table table = (Table) object;
+                return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
+                        + "\"";
+            } else if (object instanceof Schema) {
+                final Schema schema = (Schema) object;
+                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \"" + schema.getName()
+                        + "\"";
+            } else {
+                throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
+            }
         }
     }
 }

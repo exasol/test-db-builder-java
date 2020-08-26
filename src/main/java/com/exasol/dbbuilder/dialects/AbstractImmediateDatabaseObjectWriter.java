@@ -3,7 +3,10 @@ package com.exasol.dbbuilder.dialects;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * This class contains common logic for writers that persist database objects.

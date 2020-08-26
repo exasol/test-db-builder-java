@@ -2,8 +2,7 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,48 +22,64 @@ class AdapterScriptTest {
 
     @Test
     void testGetName() {
-        assertThat(createContentlessJavaAdapterScript().getName(), equalTo(ADAPTER_NAME));
+        assertThat(defaultAdapterScriptBuilder().build().getName(), equalTo(ADAPTER_NAME));
     }
 
-    private AdapterScript createContentlessJavaAdapterScript() {
-        return new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, JAVA, "");
+    private AdapterScript.Builder defaultAdapterScriptBuilder() {
+        return AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(JAVA).content("");
     }
 
     @Test
     void testGetFullyQualifiedName() {
         Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"PARENT\"");
-        assertThat(createContentlessJavaAdapterScript().getFullyQualifiedName(),
+        assertThat(defaultAdapterScriptBuilder().build().getFullyQualifiedName(),
                 equalTo("\"PARENT\".\"" + ADAPTER_NAME + "\""));
     }
 
     @Test
     void testGetType() {
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, LUA, "").getType(),
-                equalTo("adapter script"));
+        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
+                .language(LUA).content("").build().getType(), equalTo("adapter script"));
     }
 
     @Test
     void testHasParent() {
-        assertThat(createContentlessJavaAdapterScript().hasParent(), equalTo(true));
+        assertThat(defaultAdapterScriptBuilder().build().hasParent(), equalTo(true));
     }
 
     @Test
     void testGetParent() {
-        assertThat(createContentlessJavaAdapterScript().getParent(), sameInstance(this.schemaMock));
+        assertThat(defaultAdapterScriptBuilder().build().getParent(), sameInstance(this.schemaMock));
     }
 
     @Test
     void testGetLaguage() {
-        final String expectedContent = "content";
-        assertThat(new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, R, expectedContent).getLanguage(),
-                equalTo(R));
+        assertThat(defaultAdapterScriptBuilder().language(R).build().getLanguage(), equalTo(R));
     }
 
     @Test
     void testGetContent() {
         final String expectedContent = "content";
-        assertThat(
-                new AdapterScript(this.writerMock, this.schemaMock, ADAPTER_NAME, PYTHON, expectedContent).getContent(),
+        assertThat(defaultAdapterScriptBuilder().content(expectedContent).build().getContent(),
                 equalTo(expectedContent));
+    }
+
+    @Test
+    void testGetDebuggerConnection() {
+        final String expectedDebuggerConnection = "127.0.0.2:8000";
+        assertThat(defaultAdapterScriptBuilder().debuggerConnection(expectedDebuggerConnection).build()
+                .getDebuggerConnection(), equalTo(expectedDebuggerConnection));
+    }
+
+    @Test
+    void testHasDebuggerConnectionWithoutConnection() {
+        assertThat(defaultAdapterScriptBuilder().build().hasDebuggerConnection(), is(false));
+    }
+
+    @Test
+    void testHasDebuggerConnectionWithConnection() {
+        assertThat(defaultAdapterScriptBuilder().debuggerConnection("localhost:8000").build().hasDebuggerConnection(),
+                is(true));
     }
 }

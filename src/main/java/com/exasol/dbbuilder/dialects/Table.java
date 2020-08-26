@@ -1,6 +1,8 @@
 package com.exasol.dbbuilder.dialects;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.exasol.db.Identifier;
 
@@ -17,6 +19,18 @@ public class Table extends AbstractSchemaChild {
         this.columns = builder.columns;
         this.writer = builder.writer;
         this.writer.write(this);
+    }
+
+    /**
+     * Create a builder for a {@link Table}.
+     *
+     * @param writer    database object writer
+     * @param schema    parent schema
+     * @param tableName name of the database table
+     * @return new {@link Table} instance
+     */
+    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
+        return new Builder(writer, schema, tableName);
     }
 
     @Override
@@ -72,18 +86,6 @@ public class Table extends AbstractSchemaChild {
         this.rows.add(Arrays.asList(values));
         this.writer.write(this, values);
         return this;
-    }
-
-    /**
-     * Create a builder for a {@link Table}.
-     *
-     * @param writer    database object writer
-     * @param schema    parent schema
-     * @param tableName name of the database table
-     * @return new {@link Table} instance
-     */
-    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
-        return new Builder(writer, schema, tableName);
     }
 
     /**

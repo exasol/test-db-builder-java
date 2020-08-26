@@ -1,6 +1,9 @@
 package com.exasol.dbbuilder.dialects;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import com.exasol.db.Identifier;
 
@@ -74,7 +77,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
     }
 
     @Override
-     // [impl->dsn~dropping-users~1]
+    // [impl->dsn~dropping-users~1]
     public void drop() {
         getWriter().drop(this);
     }

@@ -9,7 +9,7 @@ interface Privilege {
      * 
      * @return privilege as a string
      */
-    public default String getSqlName() {
+    default String getSqlName() {
         return this.name().replace("_", " ");
     }
 
@@ -18,5 +18,5 @@ interface Privilege {
      * 
      * @return privilege as a string
      */
-    public String name();
+    String name();
 }
