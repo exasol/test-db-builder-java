@@ -55,6 +55,12 @@ public class AdapterScript extends AbstractSchemaChild {
         return this.content;
     }
 
+    @Override
+    // [impl->dsn~dropping-adapter-scripts~1]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     /**
      * Get if this adapter script has a debugger connection.
      *

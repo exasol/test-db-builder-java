@@ -11,14 +11,14 @@ public interface DatabaseObjectWriter {
      *
      * @param schema schema to be written
      */
-    public void write(final Schema schema);
+    void write(final Schema schema);
 
     /**
      * Create a table in the database.
      *
      * @param table table to be written
      */
-    public void write(final Table table);
+    void write(final Table table);
 
     /**
      * Write data to a database table.
@@ -26,14 +26,14 @@ public interface DatabaseObjectWriter {
      * @param table  table to write to
      * @param values values to be written
      */
-    public void write(final Table table, final Object... values);
+    void write(final Table table, final Object... values);
 
     /**
      * Create a user in the database.
      *
      * @param user to be created
      */
-    public void write(final User user);
+    void write(final User user);
 
     /**
      * Grant system privileges to a user.
@@ -41,7 +41,7 @@ public interface DatabaseObjectWriter {
      * @param user       user who gets the privileges
      * @param privileges privileges to be assigned
      */
-    public void write(final User user, final GlobalPrivilege... privileges);
+    void write(final User user, final GlobalPrivilege... privileges);
 
     /**
      * Grant privileges to a database object to a user.
@@ -50,12 +50,33 @@ public interface DatabaseObjectWriter {
      * @param object           object the privileges apply to
      * @param objectPrivileges privileges to be assigned
      */
-    public void write(final User user, final DatabaseObject object, final ObjectPrivilege... objectPrivileges);
+    void write(final User user, final DatabaseObject object, final ObjectPrivilege... objectPrivileges);
 
     /**
      * Execute the contents of a SQL script file.
      *
      * @param sqlFiles path(s) to the script file(s)
      */
-    public void executeSqlFile(Path... sqlFiles);
+    void executeSqlFile(Path... sqlFiles);
+
+    /**
+     * Drop a table.
+     *
+     * @param table table to drop
+     */
+    void drop(Table table);
+
+    /**
+     * Drop a user.
+     * 
+     * @param user to drop
+     */
+    void drop(User user);
+
+    /**
+     * Drop a schema.
+     * 
+     * @param schema to drop
+     */
+    void drop(Schema schema);
 }

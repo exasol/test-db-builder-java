@@ -11,7 +11,7 @@ public interface Schema extends DatabaseObject {
      *
      * @return list of tables in this schema
      */
-    public List<Table> getTables();
+    List<Table> getTables();
 
     /**
      * Create a table with an arbitrary number of columns.
@@ -21,7 +21,7 @@ public interface Schema extends DatabaseObject {
      * @param columnTypes list of column types
      * @return table
      */
-    public Table createTable(String name, List<String> columnNames, List<String> columnTypes);
+    Table createTable(String name, List<String> columnNames, List<String> columnTypes);
 
     /**
      * Create a table with one column.
@@ -31,7 +31,7 @@ public interface Schema extends DatabaseObject {
      * @param column1Type type of the first column
      * @return table
      */
-    public Table createTable(String name, String column1Name, String column1Type);
+    Table createTable(String name, String column1Name, String column1Type);
 
     /**
      * Create a table with two columns.
@@ -43,8 +43,7 @@ public interface Schema extends DatabaseObject {
      * @param column2Type type of the second column
      * @return table
      */
-    public Table createTable(String name, String column1Name, String column1Type, String column2Name,
-            String column2Type);
+    Table createTable(String name, String column1Name, String column1Type, String column2Name, String column2Type);
 
     /**
      * Create a table with three columns.
@@ -58,21 +57,21 @@ public interface Schema extends DatabaseObject {
      * @param column3Type type of the third column
      * @return table
      */
-    public Table createTable(String name, String column1Name, String column1Type, String column2Name,
-            String column2Type, String column3Name, String column3Type);
+    Table createTable(String name, String column1Name, String column1Type, String column2Name, String column2Type,
+            String column3Name, String column3Type);
 
     @Override
-    public default String getType() {
+    default String getType() {
         return "schema";
     }
 
     @Override
-    public default boolean hasParent() {
+    default boolean hasParent() {
         return false;
     }
 
     @Override
-    public default DatabaseObject getParent() {
+    default DatabaseObject getParent() {
         throw new DatabaseObjectException(this,
                 "Illegal attempt to access parent object of a SCHEMA which is a top-level object.");
     }

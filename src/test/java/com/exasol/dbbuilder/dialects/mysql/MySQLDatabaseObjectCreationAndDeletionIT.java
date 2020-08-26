@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
@@ -26,7 +27,7 @@ import com.exasol.dbbuilder.dialects.*;
 @Tag("integration")
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
-class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
+class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.0.20";
     @Container
     private static final MySQLContainer<?> container = new MySQLContainer<>(MYSQL_DOCKER_IMAGE_REFERENCE)
@@ -43,34 +44,13 @@ class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
     }
 
     @Override
-    protected void assertSchemaExistsInDatabase(final Schema schema) {
-        final String sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \""
-                + schema.getName() + "\"";
-        assertObjectExistsInDatabase(sql, schema.getName());
+    protected Matcher<DatabaseObject> existsInDatabase() {
+        return new ExistsInDatabaseMatcher(this.adminConnection);
     }
 
-    @Override
-    protected void assertTableExistsInDatabase(final Table table) {
-        final String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
-                + "\"";
-        assertObjectExistsInDatabase(sql, table.getName());
-    }
-
-    @Override
-    protected void assertUserExistsInDatabase(final User user) {
-        final String sql = "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
-        assertObjectExistsInDatabase(sql, user.getName());
-    }
-
-    private void assertObjectExistsInDatabase(final String sql, final String objectName) {
-        try (final PreparedStatement objectExistenceStatement = this.adminConnection.prepareStatement(sql)) {
-            final ResultSet resultSet = objectExistenceStatement.executeQuery();
-            assertAll( //
-                    () -> assertThat(resultSet.next(), equalTo(true)), //
-                    () -> assertThat(resultSet.getString(1), equalTo(objectName)));
-        } catch (final SQLException exception) {
-            throw new AssertionError("Unable to determine existence of object: " + objectName, exception);
-        }
+    private void assertUserHasGlobalPrivilege(final String username, final String columnName) throws AssertionError {
+        final String sql = "SELECT `" + columnName + "` FROM mysql.user WHERE User = '" + username + "'";
+        assertStatementRendersToYes(columnName, sql);
     }
 
     @Test
@@ -80,9 +60,21 @@ class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
                 () -> assertUserHasGlobalPrivilege(user.getName(), "Create_role_priv"));
     }
 
-    private void assertUserHasGlobalPrivilege(final String username, final String columnName) throws AssertionError {
-        final String sql = "SELECT `" + columnName + "` FROM mysql.user WHERE User = '" + username + "'";
-        assertObjectExistsInDatabase(sql, "Y");
+    private void assertStatementRendersToYes(final String columnName, final String sql) {
+        try (final PreparedStatement objectExistenceStatement = MySQLDatabaseObjectCreationAndDeletionIT.this.adminConnection
+                .prepareStatement(sql); final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+            resultSet.next();
+            assertThat(resultSet.getString(1), equalTo("Y"));
+        } catch (final SQLException exception) {
+            throw new AssertionError("Unable to determine existence of object: " + columnName, exception);
+        }
+    }
+
+    private void assertUserHasSchemaPrivilege(final String username, final String objectName, final String columnName)
+            throws AssertionError {
+        final String sql = "SELECT `" + columnName + "` FROM mysql.db WHERE User = '" + username + "' AND Db = '"
+                + objectName + "'";
+        assertStatementRendersToYes(columnName, sql);
     }
 
     @Test
@@ -91,13 +83,6 @@ class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, SELECT, DELETE);
         assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Select_priv"),
                 () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
-    }
-
-    private void assertUserHasSchemaPrivilege(final String username, final String objectName, final String columnName)
-            throws AssertionError {
-        final String sql = "SELECT `" + columnName + "` FROM mysql.db WHERE User = '" + username + "' AND Db = '"
-                + objectName + "'";
-        assertObjectExistsInDatabase(sql, "Y");
     }
 
     @Test
@@ -136,6 +121,43 @@ class MySQLDatabaseObjectCreationIT extends AbstractDatabaseObjectCreationIT {
         } catch (final SQLException exception) {
             throw new AssertionError("Unable to validate contents of table " + table.getFullyQualifiedName(),
                     exception);
+        }
+    }
+
+    private static class ExistsInDatabaseMatcher
+            extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
+        private final Connection connection;
+
+        private ExistsInDatabaseMatcher(final Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        protected boolean matchesSafely(final DatabaseObject object) {
+            try (final PreparedStatement objectExistenceStatement = this.connection
+                    .prepareStatement(getCheckCommand(object));
+                    final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+                return resultSet.next() && resultSet.getString(1).equals(object.getName());
+            } catch (final SQLException exception) {
+                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
+            }
+        }
+
+        private String getCheckCommand(final DatabaseObject object) {
+            if (object instanceof User) {
+                final User user = (User) object;
+                return "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
+            } else if (object instanceof Table) {
+                final Table table = (Table) object;
+                return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
+                        + "\"";
+            } else if (object instanceof Schema) {
+                final Schema schema = (Schema) object;
+                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \"" + schema.getName()
+                        + "\"";
+            } else {
+                throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
+            }
         }
     }
 }

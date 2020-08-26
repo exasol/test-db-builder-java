@@ -88,4 +88,11 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      * @return instance of {@link Identifier}
      */
     protected abstract Identifier getIdentifier(String name);
+
+    @Override
+    // [impl->dsn~dropping-schemas~2]
+    public void drop() {
+        getWriter().drop(this);
+        this.tables.clear();
+    }
 }

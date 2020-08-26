@@ -115,4 +115,16 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             }
         }
     }
+
+    @Override
+    // [impl->dsn~dropping-tables~1]
+    public void drop(final Table table) {
+        writeToObject(table, "DROP TABLE " + table.getFullyQualifiedName());
+    }
+
+    @Override
+    // [impl->dsn~dropping-users~1]
+    public void drop(final User user) {
+        writeToObject(user, "DROP USER " + user.getFullyQualifiedName());
+    }
 }

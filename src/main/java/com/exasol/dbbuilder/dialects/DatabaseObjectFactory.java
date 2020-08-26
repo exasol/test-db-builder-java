@@ -21,7 +21,7 @@ public interface DatabaseObjectFactory {
      * @return new {@link User} instance
      */
     // [impl->dsn~creating-database-users~1]
-    public User createUser(final String name);
+    User createUser(final String name);
 
     /**
      * Create a new database user.
@@ -30,7 +30,7 @@ public interface DatabaseObjectFactory {
      * @param password login password
      * @return new {@link User} instance
      */
-    public User createUser(final String name, final String password);
+    User createUser(final String name, final String password);
 
     /**
      * Create user that can log into the database with a default password.
@@ -42,7 +42,7 @@ public interface DatabaseObjectFactory {
      * @param name user name
      * @return new {@link User} instance
      */
-    public User createLoginUser(final String name);
+    User createLoginUser(final String name);
 
     /**
      * Create user that can log into the database.
@@ -51,7 +51,7 @@ public interface DatabaseObjectFactory {
      * @param password login password
      * @return new {@link User} instance
      */
-    public User createLoginUser(final String name, final String password);
+    User createLoginUser(final String name, final String password);
 
     /**
      * Execute the contents of an SQL script file.
@@ -59,7 +59,7 @@ public interface DatabaseObjectFactory {
      * @param sqlFiles path to the script file
      */
     // [impl->dsn~creating-objects-through-sql-files~1]
-    public void executeSqlFile(final Path... sqlFiles);
+    void executeSqlFile(final Path... sqlFiles);
 
     /**
      * Create a new database schema.
@@ -67,5 +67,5 @@ public interface DatabaseObjectFactory {
      * @param name name of the schema
      * @return new {@link Schema}
      */
-    public Schema createSchema(String name);
+    Schema createSchema(String name);
 }

@@ -38,6 +38,12 @@ public class Table extends AbstractSchemaChild {
         return "table";
     }
 
+    @Override
+    // [impl->dsn~dropping-tables~1]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     /**
      * Get the columns of the table.
      *

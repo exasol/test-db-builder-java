@@ -95,6 +95,12 @@ public class Script extends AbstractSchemaChild {
         return this.writer.executeQuery(this, parameterValues);
     }
 
+    @Override
+    // [impl->dsn~dropping-scripts~1]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     /**
      * Builder for a {@link Script}.
      */

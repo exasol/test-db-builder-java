@@ -45,4 +45,10 @@ public class MySqlImmediateDatabaseObjectWriter extends AbstractImmediateDatabas
             super.write(user, object, privileges);
         }
     }
+
+    @Override
+    // [impl->dsn~dropping-schemas~2]
+    public void drop(final Schema schema) {
+        writeToObject(schema, "DROP SCHEMA " + schema.getFullyQualifiedName());
+    }
 }

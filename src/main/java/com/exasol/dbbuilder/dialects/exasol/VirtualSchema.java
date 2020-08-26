@@ -71,6 +71,12 @@ public class VirtualSchema extends AbstractDatabaseObject {
                 "Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.");
     }
 
+    @Override
+    // [impl->dsn~dropping-virtual-schemas~2]
+    public void drop() {
+        this.writer.drop(this);
+    }
+
     /**
      * Get the name of the source schema.
      *

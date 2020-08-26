@@ -75,4 +75,10 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
         getWriter().write(this, privileges);
         return this;
     }
+
+    @Override
+    // [impl->dsn~dropping-users~1]
+    public void drop() {
+        getWriter().drop(this);
+    }
 }
