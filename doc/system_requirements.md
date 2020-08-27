@@ -132,7 +132,7 @@ Covers:
 
 Needs: dsn
 
-### Granting System Privileges to Users
+#### Granting System Privileges to Users
 `req~granting-system-privileges-to-users~1`
 
 Users can grant System Privileges to created database users.
@@ -178,8 +178,7 @@ Needs: dsn
 
 Users can create Exasol adapter scripts using TDDB.
 
-Optionally they can define a debugger connection. 
-Users can control if the debugger is added by an switch that is independent of the source code. 
+ * (optional) debugger connection – Users can define a debugger connection. Users can control if the debugger is added by an switch that is independent of the source code. 
 
 Covers:
 
@@ -256,7 +255,7 @@ Users can drop database users using TDDB.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -267,7 +266,7 @@ Users can drop tables using TDDB.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -280,7 +279,7 @@ TDDB uses the `CASCADE` option to drop contained tables.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -291,7 +290,7 @@ Users can drop adapter scripts using TDDB.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -302,7 +301,7 @@ Users can drop connections using TDDB.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -313,7 +312,7 @@ Users can drop scripts using TDDB.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
@@ -322,11 +321,11 @@ Needs: dsn
 
 Users can drop virtual schemas using TDDB.
 
-TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
+* TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
 
 Covers:
 
-* `feat~dropping-existing-database-objects~2`
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
 
 Needs: dsn
 
