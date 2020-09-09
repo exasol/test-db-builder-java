@@ -159,6 +159,18 @@ public class AdapterScript extends AbstractSchemaChild {
         }
 
         /**
+         * Set the script content to a jar file from BucketFS.
+         *
+         * @param scriptClass         script class to execute
+         * @param pathToJarInBucketfs path to the jar in BucketFS
+         * @return self
+         */
+        public Builder bucketFsContent(final String scriptClass, final String pathToJarInBucketfs) {
+            this.content = "%scriptclass " + scriptClass + ";\n%jar " + pathToJarInBucketfs + ";\n";
+            return this;
+        }
+
+        /**
          * Set an optional connection to a debugger. See {@link ExasolConfiguration#isAdapterScriptDebuggingEnabled()}
          * 
          * @param debuggerConnection optional connection to a debugger
