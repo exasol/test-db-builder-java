@@ -159,7 +159,7 @@ public class AdapterScript extends AbstractSchemaChild {
         }
 
         /**
-         * Set the script content to a jar file from BucketFS.
+         * Set the script content to a JAR file from BucketFS.
          *
          * @param scriptClass         script class to execute
          * @param pathToJarInBucketfs path to the jar in BucketFS
