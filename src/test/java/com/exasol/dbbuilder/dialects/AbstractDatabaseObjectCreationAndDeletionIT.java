@@ -36,6 +36,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     protected abstract Matcher<DatabaseObject> existsInDatabase();
 
     @Test
+    // [itest->dsn~creating-schemas~1]
     void testCreateSchema() {
         assertThat(this.factory.createSchema("THE_SCHEMA"), existsInDatabase());
     }
@@ -62,6 +63,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     @Test
+    // [itest->dsn~creating-tables~1]
     void testCreateTable() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
         assertThat(schema.createTable("THE_TABLE", "COL1", "DATE", "COL2", "INT"), existsInDatabase());

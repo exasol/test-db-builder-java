@@ -29,6 +29,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * @param to   target the connection points to
      * @return new {@link ConnectionDefinition} instance
      */
+    // [impl->dsn~creating-connections~1]
     public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
         return new ConnectionDefinition(this.writer, name, to);
     }

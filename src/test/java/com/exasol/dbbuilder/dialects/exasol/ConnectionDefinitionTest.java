@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 
 @ExtendWith(MockitoExtension.class)
+// [utest->dsn~creating-connections~1]
 class ConnectionDefinitionTest {
     private static final String CONNECTION_TARGET = "THE_TARGET";
     private static final String CONNECTION_NAME = "THE_CONNECTION_NAME";

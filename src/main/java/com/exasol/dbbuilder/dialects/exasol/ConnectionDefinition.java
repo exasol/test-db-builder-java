@@ -25,6 +25,7 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      * @param name   name of the connection
      * @param target target the connection points to
      */
+    // [impl~creating-connections~1]
     public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final String name,
             final String target) {
         super(ExasolIdentifier.of(name), false);

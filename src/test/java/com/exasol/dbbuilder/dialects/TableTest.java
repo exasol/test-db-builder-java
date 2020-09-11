@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.Identifier;
 
+// [utest->dsn~creating-tables~1]
 @ExtendWith(MockitoExtension.class)
 class TableTest {
     @Mock
