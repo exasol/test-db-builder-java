@@ -42,7 +42,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
                         + "You can either disable debugging or provide a debug connection with the AdatperScript creation.");
             }
             final String debuggerConnection = adapterScript.getDebuggerConnection();
-            sqlBuilder.append("%jvmoption  -agentlib:jdwp=transport=dt_socket,server=n,address=" + debuggerConnection+";\n");
+            sqlBuilder.append("%jvmoption -agentlib:jdwp=transport=dt_socket,server=n,address=" + debuggerConnection+";\n");
         }
         sqlBuilder.append("/");
         writeToObject(adapterScript, sqlBuilder.toString());
