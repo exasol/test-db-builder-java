@@ -58,6 +58,15 @@ public class ExasolSchema extends AbstractSchema {
     }
 
     /**
+     * Create a builder for an adapter script.
+     *
+     * @return builder (parent schema and writer are already set)
+     */
+    public AdapterScript.Builder createAdapterScriptBuilder(){
+        return AdapterScript.builder().parentSchema(this).writer(this.writer);
+    }
+
+    /**
      * Create a script that does not return anything.
      *
      * @param name           name of the script

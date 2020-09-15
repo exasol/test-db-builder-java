@@ -1,5 +1,9 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.AbstractSchemaChild;
 import com.exasol.dbbuilder.dialects.Schema;
@@ -142,6 +146,30 @@ public class AdapterScript extends AbstractSchemaChild {
          */
         public Builder content(final String content) {
             this.content = content;
+            return this;
+        }
+
+        /**
+         * Load the adapter script content from a file.
+         *
+         * @param path path to file containing the script content
+         * @return {@code this} for fluent programming
+         * @throws IOException in case the file could not be read
+         */
+        public Builder content(final Path path) throws IOException {
+            this.content = Files.readString(path);
+            return this;
+        }
+
+        /**
+         * Set the script content to a JAR file from BucketFS.
+         *
+         * @param scriptClass         script class to execute
+         * @param pathToJarInBucketfs path to the jar in BucketFS
+         * @return self
+         */
+        public Builder bucketFsContent(final String scriptClass, final String pathToJarInBucketfs) {
+            this.content = "%scriptclass " + scriptClass + ";\n%jar " + pathToJarInBucketfs + ";\n";
             return this;
         }
 
