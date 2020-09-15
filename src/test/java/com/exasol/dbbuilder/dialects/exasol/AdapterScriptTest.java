@@ -30,6 +30,7 @@ class AdapterScriptTest {
         assertThat(defaultAdapterScriptBuilder().build().getName(), equalTo(ADAPTER_NAME));
     }
 
+    // [utest->dsn~creating-adapter-scripts~1]
     private AdapterScript.Builder defaultAdapterScriptBuilder() {
         return AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
                 .language(JAVA).content("");
@@ -95,11 +96,13 @@ class AdapterScriptTest {
     }
 
     @Test
+    // [utest->dsn~creating-adapter-scripts-with-debugger~1]
     void testHasDebuggerConnectionWithoutConnection() {
         assertThat(defaultAdapterScriptBuilder().build().hasDebuggerConnection(), is(false));
     }
 
     @Test
+    // [utest->dsn~creating-adapter-scripts-with-debugger~1]
     void testHasDebuggerConnectionWithConnection() {
         assertThat(defaultAdapterScriptBuilder().debuggerConnection("localhost:8000").build().hasDebuggerConnection(),
                 is(true));

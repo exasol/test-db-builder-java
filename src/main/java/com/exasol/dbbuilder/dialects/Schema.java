@@ -21,6 +21,7 @@ public interface Schema extends DatabaseObject {
      * @param columnTypes list of column types
      * @return table
      */
+    // [impl->dsn~creating-tables~1]
     Table createTable(String name, List<String> columnNames, List<String> columnTypes);
 
     /**
@@ -31,6 +32,7 @@ public interface Schema extends DatabaseObject {
      * @param column1Type type of the first column
      * @return table
      */
+    // [impl->dsn~creating-tables~1]
     Table createTable(String name, String column1Name, String column1Type);
 
     /**
@@ -43,6 +45,7 @@ public interface Schema extends DatabaseObject {
      * @param column2Type type of the second column
      * @return table
      */
+    // [impl->dsn~creating-tables~1]
     Table createTable(String name, String column1Name, String column1Type, String column2Name, String column2Type);
 
     /**
@@ -57,6 +60,7 @@ public interface Schema extends DatabaseObject {
      * @param column3Type type of the third column
      * @return table
      */
+    // [impl->dsn~creating-tables~1]
     Table createTable(String name, String column1Name, String column1Type, String column2Name, String column2Type,
             String column3Name, String column3Type);
 

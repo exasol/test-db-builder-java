@@ -50,6 +50,7 @@ public class ExasolSchema extends AbstractSchema {
      * @param debuggerConnection connection to a debugger
      * @return adapter script
      */
+    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
     public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
             final String content, final String debuggerConnection) {
         return AdapterScript.builder().writer(this.writer).parentSchema(this).name(name).language(language)

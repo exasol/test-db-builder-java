@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
+// [utest->dsn~creating-schemas~1]
 public abstract class AbstractSchemaTest {
     protected abstract Schema createSchema(String name);
 

@@ -18,6 +18,7 @@ import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
+// [utest->dsn~creating-virtual-schemas~1]
 class VirtualSchemaTest {
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;

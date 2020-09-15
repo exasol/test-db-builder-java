@@ -32,6 +32,7 @@ public class AdapterScript extends AbstractSchemaChild {
      *
      * @return builder for {@link AdapterScript}
      */
+    // [impl->dsn~creating-adapter-scripts~1]
     public static Builder builder() {
         return new Builder();
     }
@@ -70,6 +71,7 @@ public class AdapterScript extends AbstractSchemaChild {
      *
      * @return true if a debugger connection was set
      */
+    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
     public boolean hasDebuggerConnection() {
         return this.debuggerConnection != null;
     }
@@ -79,6 +81,7 @@ public class AdapterScript extends AbstractSchemaChild {
      *
      * @return debugger connection
      */
+    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
     public String getDebuggerConnection() {
         return this.debuggerConnection;
     }
@@ -176,6 +179,7 @@ public class AdapterScript extends AbstractSchemaChild {
          * @param debuggerConnection optional connection to a debugger
          * @return self
          */
+        // [impl->dsn~creating-adapter-scripts-with-debugger~1]
         public Builder debuggerConnection(final String debuggerConnection) {
             this.debuggerConnection = debuggerConnection;
             return this;
