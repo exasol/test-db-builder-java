@@ -15,15 +15,13 @@ public class AdapterScript extends AbstractSchemaChild {
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final Language language;
     private final String content;
-    private final String debuggerConnection;
 
     private AdapterScript(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
-            final String name, final Language language, final String content, final String debuggerConnection) {
+            final String name, final Language language, final String content) {
         super(parentSchema, ExasolIdentifier.of(name), false);
         this.writer = writer;
         this.language = language;
         this.content = content;
-        this.debuggerConnection = debuggerConnection;
         this.writer.write(this);
     }
 
@@ -64,26 +62,6 @@ public class AdapterScript extends AbstractSchemaChild {
     // [impl->dsn~dropping-adapter-scripts~1]
     public void drop() {
         this.writer.drop(this);
-    }
-
-    /**
-     * Get if this adapter script has a debugger connection.
-     *
-     * @return true if a debugger connection was set
-     */
-    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
-    public boolean hasDebuggerConnection() {
-        return this.debuggerConnection != null;
-    }
-
-    /**
-     * Get the debugger connection for this adapter script.
-     *
-     * @return debugger connection
-     */
-    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
-    public String getDebuggerConnection() {
-        return this.debuggerConnection;
     }
 
     public enum Language {
@@ -174,18 +152,6 @@ public class AdapterScript extends AbstractSchemaChild {
         }
 
         /**
-         * Set an optional connection to a debugger. See {@link ExasolConfiguration#isAdapterScriptDebuggingEnabled()}
-         * 
-         * @param debuggerConnection optional connection to a debugger
-         * @return self
-         */
-        // [impl->dsn~creating-adapter-scripts-with-debugger~1]
-        public Builder debuggerConnection(final String debuggerConnection) {
-            this.debuggerConnection = debuggerConnection;
-            return this;
-        }
-
-        /**
          * Set the name of the adapter script..
          * 
          * @param name name of the adapter script
@@ -207,8 +173,7 @@ public class AdapterScript extends AbstractSchemaChild {
             requireNotNull(this.name, "name");
             requireNotNull(this.language, "language");
             requireNotNull(this.content, "content");
-            return new AdapterScript(this.writer, this.parentSchema, this.name, this.language, this.content,
-                    this.debuggerConnection);
+            return new AdapterScript(this.writer, this.parentSchema, this.name, this.language, this.content);
         }
 
         private void requireNotNull(final Object object, final String name) {

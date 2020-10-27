@@ -15,14 +15,17 @@ import com.exasol.dbbuilder.dialects.*;
  * Database object writer that writes objects to the database immediately.
  */
 public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDatabaseObjectWriter {
+    private final ExasolObjectConfiguration configuration;
 
     /**
      * Create a new instance of an {@link ExasolImmediateDatabaseObjectWriter}.
      *
      * @param connection JDBC connection
      */
-    public ExasolImmediateDatabaseObjectWriter(final Connection connection) {
+    public ExasolImmediateDatabaseObjectWriter(final Connection connection,
+            final ExasolObjectConfiguration configuration) {
         super(connection);
+        this.configuration = configuration;
     }
 
     /**
@@ -31,18 +34,13 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param adapterScript the adapter script to be created
      */
     // [impl->dsn~creating-adapter-scripts~1]
-    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
+    // [impl->dsn~creating-java-scripts-with-jvm-options~1]
     public void write(final AdapterScript adapterScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
                 + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
-
-        if (ExasolConfiguration.getInstance().isAdapterScriptDebuggingEnabled()) {
-            if (!adapterScript.hasDebuggerConnection()) {
-                throw new IllegalStateException("Debugging is enabled but debug connection is missing. "
-                        + "You can either disable debugging or provide a debug connection with the AdatperScript creation.");
-            }
-            final String debuggerConnection = adapterScript.getDebuggerConnection();
-            sqlBuilder.append("%jvmoption -agentlib:jdwp=transport=dt_socket,server=n,address=" + debuggerConnection+";\n");
+        if (adapterScript.getLanguage().equals(AdapterScript.Language.JAVA)
+                && !this.configuration.getJvmOptions().isEmpty()) {
+            sqlBuilder.append("%jvmoption " + String.join(" ", this.configuration.getJvmOptions()) + ";\n");
         }
         sqlBuilder.append("/");
         writeToObject(adapterScript, sqlBuilder.toString());

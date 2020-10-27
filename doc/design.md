@@ -77,11 +77,13 @@ Covers:
 
 Needs: impl, utest, itest
 
-### Creating Adapter Scripts With Optional Debugger
-`dsn~creating-adapter-scripts-with-debugger~1`
+### Creating Exasol Objects With JVM Options 
+`dsn~creating-java-scripts-with-jvm-options~1`
 
-Users can create Exasol adapter scripts with debugger connection.
-Users can enable the debugger by setting the `test.debugAdapterScripts` to `"true"`.
+Users can create virtual schema adapters and UDFs with JVM options.
+They can set these options globally and TDB will add them to all JAVA adapters and scripts.
+
+Rationale: By that users can for example add a debugger or profiler to all JAVA scripts.
 
 Covers:
 

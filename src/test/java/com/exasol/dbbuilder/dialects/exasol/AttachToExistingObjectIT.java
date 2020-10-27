@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
@@ -20,6 +21,7 @@ import com.exasol.containers.ExasolContainer;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 
 @Testcontainers
+@Tag("integration")
 class AttachToExistingObjectIT {
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();

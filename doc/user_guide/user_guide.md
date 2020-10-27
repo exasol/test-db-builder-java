@@ -219,18 +219,18 @@ final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "P
 #### Debugging (Java only)
 
 Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)).
-This requires a special option for the `CREATE ADAPTER SCRIPT` command. The TDDB can also add this option. When this option is set, the Java environment the script runs in uses a debug agent that connects to a remote debugger.
+This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. 
+The TDDB can also add this JVM options. 
+For that initialize `ExasolObjectFactory` as follows:
 
-For that you need to run a debugger on your local machine (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)) that the debug agent connects to.
-
-Next pass a connection string to the `createAdapterScript` command. For example:
-
- ```java
- final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "PYTHON", "print \"Hello World\"", "10.2.0.1:8000");
- ```
-
-Finally enable debugging by setting the property `test.debugAdapterScripts` to `"true"`.
-In practice you can append `-Dtest.debugAdapterScripts="true"` to your test JVM parameters. 
+```
+final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
+    ExasolObjectConfiguration.builder()
+        .withJvmOptions("-agentlib:jdwp=transport=dt_socket,server=n,address=<host>:<port>,suspend=y")
+        .build()
+);
+``` 
+ 
 ### Creating Virtual Schemas
 
 Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDDB.

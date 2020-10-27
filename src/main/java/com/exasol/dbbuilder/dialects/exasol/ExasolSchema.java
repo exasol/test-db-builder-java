@@ -42,22 +42,6 @@ public class ExasolSchema extends AbstractSchema {
     }
 
     /**
-     * Create an adapter script with debugger connection.
-     *
-     * @param name               name of the adapter script
-     * @param language           language the adapter script is implemented in
-     * @param content            implementation of the script
-     * @param debuggerConnection connection to a debugger
-     * @return adapter script
-     */
-    // [impl->dsn~creating-adapter-scripts-with-debugger~1]
-    public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
-            final String content, final String debuggerConnection) {
-        return AdapterScript.builder().writer(this.writer).parentSchema(this).name(name).language(language)
-                .content(content).debuggerConnection(debuggerConnection).build();
-    }
-
-    /**
      * Create a builder for an adapter script.
      *
      * @return builder (parent schema and writer are already set)
