@@ -221,7 +221,7 @@ final AdapterScript adapterScript = schema.createAdapterScript("HELLO_WORLD", "P
 Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schemas/blob/master/doc/development/remote_debugging.md)).
 This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. 
 The TDDB can also add this JVM options. 
-For that initialize `ExasolObjectFactory` as follows:
+For that, initialize `ExasolObjectFactory` as follows:
 
 ```
 final ExasolObjectFactory factory = new ExasolObjectFactory(connection,

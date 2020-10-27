@@ -81,7 +81,7 @@ Needs: impl, utest, itest
 `dsn~creating-exasol-java-object-with-jvm-options~1`
 
 Users can create virtual schema adapters and UDFs with JVM options.
-They can set these options globally and TDB will add them to all JAVA adapters and scripts.
+They can set these options globally and TDDB will add them to all JAVA adapters and scripts.
 
 Rationale: By that users can for example add a debugger or profiler to all JAVA scripts.
 
