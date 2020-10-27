@@ -20,7 +20,8 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     /**
      * Create a new instance of an {@link ExasolImmediateDatabaseObjectWriter}.
      *
-     * @param connection JDBC connection
+     * @param connection    JDBC connection
+     * @param configuration global {@link ExasolObjectConfiguration}
      */
     public ExasolImmediateDatabaseObjectWriter(final Connection connection,
             final ExasolObjectConfiguration configuration) {
