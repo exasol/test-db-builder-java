@@ -51,7 +51,7 @@ public class ExasolObjectConfiguration {
          * @param jvmOptions one or more JVM options to add
          * @return self for fluent programming
          */
-        // [impl->dsn~creating-java-scripts-with-jvm-options~1]
+        // [impl->dsn~creating-exasol-java-object-with-jvm-options~1]
         public Builder withJvmOptions(final String... jvmOptions) {
             this.jvmOptions.addAll(Arrays.asList(jvmOptions));
             return this;

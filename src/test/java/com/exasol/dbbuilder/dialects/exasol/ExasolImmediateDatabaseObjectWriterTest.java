@@ -50,7 +50,7 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
     }
 
     @Test
-    // [utest->dsn~creating-java-scripts-with-jvm-options~1]
+    // [utest->dsn~creating-exasol-java-object-with-jvm-options~1]
     void testWriteAdapterScriptWithJvmOption() {
         final ExasolImmediateDatabaseObjectWriterStub objectWriter = spy(new ExasolImmediateDatabaseObjectWriterStub(
                 this.connectionMock, ExasolObjectConfiguration.builder().withJvmOptions("-DmyProp=1").build()));
@@ -59,6 +59,6 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
                 .language(AdapterScript.Language.JAVA).build();
         objectWriter.write(adapterScript);
         assertThat(objectWriter.getLastQuery(), equalTo(
-                "CREATE JAVA ADAPTER SCRIPT \"TEST_SCHEMA\".\"MY_ADAPTER\" AS\ncontent\n%jvmoption -DmyProp=1;\n/"));
+                "CREATE JAVA ADAPTER SCRIPT \"TEST_SCHEMA\".\"MY_ADAPTER\" AS\n%jvmoption -DmyProp=1;\ncontent\n/"));
     }
 }

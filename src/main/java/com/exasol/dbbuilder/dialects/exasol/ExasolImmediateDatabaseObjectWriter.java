@@ -35,14 +35,16 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param adapterScript the adapter script to be created
      */
     // [impl->dsn~creating-adapter-scripts~1]
-    // [impl->dsn~creating-java-scripts-with-jvm-options~1]
+    // [impl->dsn~creating-exasol-java-object-with-jvm-options~1]
     public void write(final AdapterScript adapterScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
-                + adapterScript.getFullyQualifiedName() + " AS\n" + adapterScript.getContent() + "\n");
+                + adapterScript.getFullyQualifiedName() + " AS\n");
         if (adapterScript.getLanguage().equals(AdapterScript.Language.JAVA)
                 && !this.configuration.getJvmOptions().isEmpty()) {
             sqlBuilder.append("%jvmoption " + String.join(" ", this.configuration.getJvmOptions()) + ";\n");
         }
+        sqlBuilder.append(adapterScript.getContent());
+        sqlBuilder.append("\n");
         sqlBuilder.append("/");
         writeToObject(adapterScript, sqlBuilder.toString());
     }
