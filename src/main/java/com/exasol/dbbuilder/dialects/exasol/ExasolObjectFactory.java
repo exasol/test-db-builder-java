@@ -14,12 +14,22 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     private final ExasolImmediateDatabaseObjectWriter writer;
 
     /**
-     * Create a new {@link ExasolObjectFactory} instance.
+     * Create a new {@link ExasolObjectFactory} instance without further configuration.
      *
      * @param connection JDBC connection
      */
     public ExasolObjectFactory(final Connection connection) {
-        this.writer = new ExasolImmediateDatabaseObjectWriter(connection);
+        this(connection, ExasolObjectConfiguration.builder().build());
+    }
+
+    /**
+     * Create a new {@link ExasolObjectFactory} instance.
+     *
+     * @param connection    JDBC connection
+     * @param configuration configuration for building Exasol objects
+     */
+    public ExasolObjectFactory(final Connection connection, final ExasolObjectConfiguration configuration) {
+        this.writer = new ExasolImmediateDatabaseObjectWriter(connection, configuration);
     }
 
     /**

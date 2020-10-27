@@ -2,7 +2,6 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,21 +41,5 @@ class ExasolSchemaTest extends AbstractSchemaTest {
         final AdapterScript adapterScript = exasolSchema.createAdapterScriptBuilder().name("TEST_SCRIPT")
                 .language(AdapterScript.Language.JAVA).content("test").build();
         assertThat(adapterScript.getParent(), equalTo(exasolSchema));
-    }
-
-    @Test
-    void testCreateAdapterScriptWithDebuggerConnection() {
-        final ExasolSchema exasolSchema = new ExasolSchema(this.writerMock, "THE_SCHEMA");
-        final String content = "print('hi');";
-        final String debuggerConnection = "127.0.0.2:8000";
-        final AdapterScript adapterScript = exasolSchema.createAdapterScript("test", AdapterScript.Language.PYTHON,
-                content, debuggerConnection);
-        assertAll(//
-                () -> assertThat(adapterScript.getFullyQualifiedName(), equalTo("\"THE_SCHEMA\".\"test\"")),
-                () -> assertThat(adapterScript.getLanguage(), equalTo(AdapterScript.Language.PYTHON)),
-                () -> assertThat(adapterScript.getContent(), equalTo(content)),
-                () -> assertThat(adapterScript.getDebuggerConnection(), equalTo(debuggerConnection)),
-                () -> assertThat(adapterScript.getParent(), equalTo(exasolSchema))//
-        );
     }
 }

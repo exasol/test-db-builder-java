@@ -2,7 +2,8 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.sameInstance;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -86,25 +87,5 @@ class AdapterScriptTest {
                         .bucketFsContent("com.exasol.adapter.RequestDispatcher", "/buckets/bfsdefault/default/test.jar")
                         .build().getContent(),
                 equalTo("%scriptclass com.exasol.adapter.RequestDispatcher;\n%jar /buckets/bfsdefault/default/test.jar;\n"));
-    }
-
-    @Test
-    void testGetDebuggerConnection() {
-        final String expectedDebuggerConnection = "127.0.0.2:8000";
-        assertThat(defaultAdapterScriptBuilder().debuggerConnection(expectedDebuggerConnection).build()
-                .getDebuggerConnection(), equalTo(expectedDebuggerConnection));
-    }
-
-    @Test
-    // [utest->dsn~creating-adapter-scripts-with-debugger~1]
-    void testHasDebuggerConnectionWithoutConnection() {
-        assertThat(defaultAdapterScriptBuilder().build().hasDebuggerConnection(), is(false));
-    }
-
-    @Test
-    // [utest->dsn~creating-adapter-scripts-with-debugger~1]
-    void testHasDebuggerConnectionWithConnection() {
-        assertThat(defaultAdapterScriptBuilder().debuggerConnection("localhost:8000").build().hasDebuggerConnection(),
-                is(true));
     }
 }
