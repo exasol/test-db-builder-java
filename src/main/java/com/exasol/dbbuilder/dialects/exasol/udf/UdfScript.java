@@ -164,7 +164,7 @@ public class UdfScript extends AbstractScript {
          * @param type type of the parameter
          * @return self for fluent programming
          */
-        public Builder addParameter(final String name, final String type) {
+        public Builder parameter(final String name, final String type) {
             this.parameters.add(new Column(name, type));
             return this;
         }

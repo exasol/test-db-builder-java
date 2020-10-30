@@ -213,7 +213,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_UDF_WITH_PARAMETER");
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.PYTHON)
-                .addParameter("test", "VARCHAR(254)").emits().content("print('HI')").build();
+                .parameter("test", "VARCHAR(254)").emits().content("print('HI')").build();
         assertThat(getScriptDescription(exasolSchema), table().row(
                 "CREATE PYTHON SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n" + "print('HI')\n")
                 .matches());
@@ -224,7 +224,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_UDF_WITH_PREDEFINED_EMITS");
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.PYTHON)
-                .addParameter("test", "VARCHAR(254)")
+                .parameter("test", "VARCHAR(254)")
                 .emits(new Column("C1", "VARCHAR(254)"), new Column("C2", "VARCHAR(254)")).content("print('HI')")
                 .build();
         assertThat(getScriptDescription(exasolSchema), table().row(

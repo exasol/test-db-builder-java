@@ -48,7 +48,7 @@ class UdfScriptTest {
 
     @Test
     void testWithParameters() {
-        assertThat(getDefaultBuilder().addParameter("test", "VARCHAR(254)").build().getParameters().size(), equalTo(1));
+        assertThat(getDefaultBuilder().parameter("test", "VARCHAR(254)").build().getParameters().size(), equalTo(1));
     }
 
     @Test
