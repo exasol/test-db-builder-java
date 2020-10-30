@@ -18,7 +18,7 @@ Code name:
 * Updated `com.exasol:exasol-jdbc` from 6.2.5 to 7.0.3
 * Updated `mysql:mysql-connector-java` from 8.0.20 to 8.0.22
 * Updated `com.exasol:db-fundamentals-java` from 0.1.0 to 0.1.1
-* Updated `com.exasol:exasol-testcontainers` from 2.0.3 to 3.3.0
+* Updated `com.exasol:exasol-testcontainers` from 2.0.3 to 3.2.0
 * Updated `com.exasol:hamcrest-resultset-matcher` from 1.1.1 to 1.2.1
 * Updated `org.mockito:mockito-junit-jupiter` from 3.3.3 to 3.6.0
 * Updated `nl.jqno.equalsverifier:equalsverifier` from 3.4.1 to 3.5
