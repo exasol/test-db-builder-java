@@ -38,7 +38,7 @@ class ExasolSchemaTest extends AbstractSchemaTest {
     @Test
     void testCreateAdapterScriptBuilder() {
         final ExasolSchema exasolSchema = new ExasolSchema(this.writerMock, "THE_SCHEMA");
-        final AdapterScript adapterScript = exasolSchema.createAdapterScriptBuilder().name("TEST_SCRIPT")
+        final AdapterScript adapterScript = exasolSchema.createAdapterScriptBuilder("TEST_SCRIPT")
                 .language(AdapterScript.Language.JAVA).content("test").build();
         assertThat(adapterScript.getParent(), equalTo(exasolSchema));
     }

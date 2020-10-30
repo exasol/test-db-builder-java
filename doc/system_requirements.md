@@ -158,6 +158,17 @@ Covers:
 
 Needs: dsn
 
+#### Creating UDFs
+`req~creating-udf~1`
+
+Users can create UDFs with content from file
+
+Covers:
+
+* [feat~creating-database-objects~1](#creating-database-objects)
+
+Needs: dsn
+
 #### Creating Scripts From Files
 `req~creating-scripts-from-files~1`
 
@@ -309,6 +320,17 @@ Needs: dsn
 `req~dropping-scripts~1`
 
 Users can drop scripts using TDDB.
+
+Covers:
+
+* [feat~dropping-existing-database-objects~2](#dropping-database-objects)
+
+Needs: dsn
+
+### Dropping UDFs
+`req~dropping-udfs~1`
+
+Users can drop UDFs using TDDB.
 
 Covers:
 

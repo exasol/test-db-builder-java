@@ -8,8 +8,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypePredefinedEmits;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeReturns;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeVisitor;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
 
 /**
  * Database object writer that writes objects to the database immediately.
@@ -35,18 +40,25 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param adapterScript the adapter script to be created
      */
     // [impl->dsn~creating-adapter-scripts~1]
-    // [impl->dsn~creating-exasol-java-object-with-jvm-options~1]
     public void write(final AdapterScript adapterScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE " + adapterScript.getLanguage() + " ADAPTER SCRIPT "
                 + adapterScript.getFullyQualifiedName() + " AS\n");
-        if (adapterScript.getLanguage().equals(AdapterScript.Language.JAVA)
-                && !this.configuration.getJvmOptions().isEmpty()) {
-            sqlBuilder.append("%jvmoption " + String.join(" ", this.configuration.getJvmOptions()) + ";\n");
+        if (adapterScript.getLanguage().equals(AdapterScript.Language.JAVA)) {
+            sqlBuilder.append(getJvmOptions());
         }
         sqlBuilder.append(adapterScript.getContent());
         sqlBuilder.append("\n");
         sqlBuilder.append("/");
         writeToObject(adapterScript, sqlBuilder.toString());
+    }
+
+    // [impl->dsn~creating-exasol-java-object-with-jvm-options~1]
+    private String getJvmOptions() {
+        if (this.configuration.getJvmOptions().isEmpty()) {
+            return "";
+        } else {
+            return "%jvmoption " + String.join(" ", this.configuration.getJvmOptions()) + ";\n";
+        }
     }
 
     /**
@@ -134,6 +146,65 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      */
     public void drop(final Script script) {
         writeToObject(script, "DROP SCRIPT " + script.getFullyQualifiedName());
+    }
+
+    // [impl->dsn~creating-udfs~1]
+    public void write(final UdfScript udfScript) {
+        final StringBuilder sqlBuilder = new StringBuilder("CREATE ");
+        sqlBuilder.append(udfScript.getLanguage());
+        sqlBuilder.append(" ");
+        sqlBuilder.append(udfScript.getInputType());
+        sqlBuilder.append(" SCRIPT ");
+        sqlBuilder.append(udfScript.getFullyQualifiedName());
+        sqlBuilder.append("( ");
+        if (udfScript.getParameters().isEmpty()) {
+            sqlBuilder.append("...");
+        } else {
+            sqlBuilder.append(udfScript.getParameters().stream()
+                    .map(column -> column.getName() + " " + column.getType()).collect(Collectors.joining(", ")));
+        }
+        sqlBuilder.append(") ");
+        udfScript.getReturnType().accept(new UdfReturnTypeWriter(sqlBuilder));
+        sqlBuilder.append("AS ");
+        if (udfScript.getLanguage().equals(UdfScript.Language.JAVA)) {
+            sqlBuilder.append(getJvmOptions());
+        }
+        sqlBuilder.append("\n");
+        sqlBuilder.append(udfScript.content);
+        sqlBuilder.append("\n/");
+        writeToObject(udfScript, sqlBuilder.toString());
+    }
+
+    // [impl->dsn~dropping-udfs~1]
+    public void drop(final UdfScript udfScript) {
+        writeToObject(udfScript, "DROP SCRIPT " + udfScript.getFullyQualifiedName());
+    }
+
+    private static class UdfReturnTypeWriter implements UdfReturnTypeVisitor {
+        private final StringBuilder sqlBuilder;
+
+        private UdfReturnTypeWriter(final StringBuilder sqlBuilder) {
+            this.sqlBuilder = sqlBuilder;
+        }
+
+        @Override
+        public void visit(final UdfReturnTypeReturns returns) {
+            this.sqlBuilder.append("RETURNS ");
+            this.sqlBuilder.append(returns.getType());
+        }
+
+        @Override
+        public void visit(final UdfScript.UdfReturnTypeDynamicEmits emits) {
+            this.sqlBuilder.append("EMITS(...) ");
+        }
+
+        @Override
+        public void visit(final UdfReturnTypePredefinedEmits emits) {
+            this.sqlBuilder.append("EMITS(");
+            this.sqlBuilder.append(emits.getColumns().stream().map(column -> column.getName() + " " + column.getType())
+                    .collect(Collectors.joining(", ")));
+            this.sqlBuilder.append(")");
+        }
     }
 
     @Override

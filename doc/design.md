@@ -157,6 +157,17 @@ Covers:
 
 Needs: impl, itest
 
+### Creating UDFs
+`dsn~creating-udfs~1`
+
+Users can create UDF objects from inside schema objects by providing the script from file.
+
+Covers:
+
+* `req~creating-udf~1`
+
+Needs: impl, itest
+
 ### Creating Scripts from Files
 `dsn~creating-scripts-from-files~1`
 
@@ -275,6 +286,17 @@ Users can drop scripts using TDDB.
 Covers:
 
 * `req~dropping-scripts~1`
+
+Needs: impl, itest
+
+### Dropping UDFs
+`dsn~dropping-udfs~1`
+
+Users can drop UDFs using TDDB.
+
+Covers:
+
+* `req~dropping-udfs~1`
 
 Needs: impl, itest
 
