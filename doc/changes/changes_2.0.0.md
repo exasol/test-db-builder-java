@@ -1,12 +1,15 @@
-# Test Database Builder 2.0.0, released 2020-XX-XX
+# Test Database Builder 2.0.0, released 2020-11-11
 
-Code name: 
+Code name: UDF support
 
 ## Refactoring
 
 * #40: Refactored debugger connection to global JVM options
    This change caused an API change for adding a debugger. 
-   See the [user guide](../user_guide/user_guide.md). 
+   See the [user guide](../user_guide/user_guide.md).
+   
+ ## Features / Enhancements
+  
 * #42: UDF support
     For supporting UDFs we unified the API for Script, UDF and Adapter scripts.
     We changed `ExasolSchema#createAdapterScriptBuilder()` into `ExasolSchema#createAdapterScriptBuilder(name)`
