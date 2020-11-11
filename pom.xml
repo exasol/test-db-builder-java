@@ -1,5 +1,5 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
@@ -152,11 +152,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.and.failsafe.plugin.version}</version>
                 <configuration>
-                    <!-- Set the highest log level for coverage testing, so that we have a chance to 
+                    <!-- Set the highest log level for coverage testing, so that we have a chance to
                         reach branches in the logging lambdas too. -->
-                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties
-                        ${argLine}
-                    </argLine>
+                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties ${argLine}</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -206,11 +204,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${surefire.and.failsafe.plugin.version}</version>
                 <configuration>
-                    <!-- Set the highest log level for coverage testing, so that we have a chance to 
+                    <!-- Set the highest log level for coverage testing, so that we have a chance to
                         reach branches in the logging lambdas too. -->
-                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties
-                        ${argLine}
-                    </argLine>
+                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties ${argLine}</argLine>
                 </configuration>
                 <executions>
                     <execution>
@@ -248,7 +244,7 @@
                 </executions>
                 <configuration>
                     <charset>UTF-8</charset>
-                    <doclint></doclint>
+                    <doclint/>
                     <serialwarn>true</serialwarn>
                     <failOnError>true</failOnError>
                     <failOnWarnings>true</failOnWarnings>
@@ -310,6 +306,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <rulesUri>file:///${project.basedir}/versionsMavenPluginRules.xml</rulesUri>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -330,6 +329,24 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.exasol</groupId>
+                <artifactId>project-keeper-maven-plugin</artifactId>
+                <version>0.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <modules>
+                        <module>maven_central</module>
+                        <module>integration_tests</module>
+                    </modules>
+                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>
