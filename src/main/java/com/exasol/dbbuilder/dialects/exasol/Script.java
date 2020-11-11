@@ -1,29 +1,21 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractSchemaChild;
 import com.exasol.dbbuilder.dialects.Schema;
 
 /**
  * Exasol database (Lua) Script.
  */
-public class Script extends AbstractSchemaChild {
-    private final ExasolImmediateDatabaseObjectWriter writer;
-    private final String content;
+public class Script extends AbstractScript {
     private final List<ScriptParameter> parameters;
     private final boolean returnsTable;
 
     private Script(final Builder builder) {
-        super(builder.parentSchema, builder.name, builder.owned);
-        this.writer = builder.writer;
-        this.content = builder.content;
+        super(builder);
         this.parameters = builder.parameters;
         this.returnsTable = builder.returnsTable;
     }
@@ -53,15 +45,6 @@ public class Script extends AbstractSchemaChild {
      */
     public List<ScriptParameter> getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Get the script content (i.e. the implementation).
-     *
-     * @return script content
-     */
-    public String getContent() {
-        return this.content;
     }
 
     /**
@@ -104,20 +87,13 @@ public class Script extends AbstractSchemaChild {
     /**
      * Builder for a {@link Script}.
      */
-    public static class Builder {
-        private final ExasolImmediateDatabaseObjectWriter writer;
-        private final Schema parentSchema;
-        private final Identifier name;
+    public static class Builder extends AbstractScript.Builder<Builder> {
         private final List<ScriptParameter> parameters = new ArrayList<>();
-        private String content;
         private boolean returnsTable = false;
-        private boolean owned = true;
 
         private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
                 final Identifier name) {
-            this.writer = writer;
-            this.parentSchema = parentSchema;
-            this.name = name;
+            super(writer, parentSchema, name);
         }
 
         /**
@@ -147,29 +123,6 @@ public class Script extends AbstractSchemaChild {
         }
 
         /**
-         * Set the content of the script (i.e. the implementation).
-         *
-         * @param content script content
-         * @return {@code this} for fluent programming
-         */
-        public Builder content(final String content) {
-            this.content = content;
-            return this;
-        }
-
-        /**
-         * Load the script content from a file.
-         *
-         * @param path path to file containing the script content
-         * @return {@code this} for fluent programming
-         * @throws IOException in case the file could not be read
-         */
-        public Builder content(final Path path) throws IOException {
-            this.content = Files.readString(path);
-            return this;
-        }
-
-        /**
          * Set the return type of the script to a table.
          *
          * @return {@code this} for fluent programming
@@ -179,14 +132,15 @@ public class Script extends AbstractSchemaChild {
             return this;
         }
 
-        /**
-         * Create a new instance of a {@link Script}.
-         *
-         * @return new instance
-         */
+        @Override
+        protected Builder getSelf() {
+            return this;
+        }
+
         public Script build() {
+            validate();
             final Script script = new Script(this);
-            this.writer.write(script);
+            this.getWriter().write(script);
             return script;
         }
 

@@ -1,6 +1,7 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.*;
+import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.JAVA;
+import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.LUA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.shaded.com.google.common.io.Files;
 
+import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,8 +35,8 @@ class AdapterScriptTest {
 
     // [utest->dsn~creating-adapter-scripts~1]
     private AdapterScript.Builder defaultAdapterScriptBuilder() {
-        return AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
-                .language(JAVA).content("");
+        return AdapterScript.builder(this.writerMock, this.schemaMock, ExasolIdentifier.of(ADAPTER_NAME)).language(JAVA)
+                .content("");
     }
 
     @Test
@@ -46,8 +48,7 @@ class AdapterScriptTest {
 
     @Test
     void testGetType() {
-        assertThat(AdapterScript.builder().writer(this.writerMock).parentSchema(this.schemaMock).name(ADAPTER_NAME)
-                .language(LUA).content("").build().getType(), equalTo("adapter script"));
+        assertThat(defaultAdapterScriptBuilder().build().getType(), equalTo("adapter script"));
     }
 
     @Test
@@ -62,7 +63,7 @@ class AdapterScriptTest {
 
     @Test
     void testGetLaguage() {
-        assertThat(defaultAdapterScriptBuilder().language(R).build().getLanguage(), equalTo(R));
+        assertThat(defaultAdapterScriptBuilder().language(LUA).build().getLanguage(), equalTo(LUA));
     }
 
     @Test

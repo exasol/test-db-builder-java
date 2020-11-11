@@ -42,7 +42,7 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
         final ExasolImmediateDatabaseObjectWriterStub objectWriter = spy(new ExasolImmediateDatabaseObjectWriterStub(
                 this.connectionMock, ExasolObjectConfiguration.builder().build()));
         final ExasolSchema schema = new ExasolSchema(objectWriter, "TEST_SCHEMA");
-        final AdapterScript adapterScript = schema.createAdapterScriptBuilder().name("MY_ADAPTER").content("content")
+        final AdapterScript adapterScript = schema.createAdapterScriptBuilder("MY_ADAPTER").content("content")
                 .language(AdapterScript.Language.JAVA).build();
         objectWriter.write(adapterScript);
         assertThat(objectWriter.getLastQuery(),
@@ -52,10 +52,10 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
     @Test
     // [utest->dsn~creating-exasol-java-object-with-jvm-options~1]
     void testWriteAdapterScriptWithJvmOption() {
-        final ExasolImmediateDatabaseObjectWriterStub objectWriter = spy(new ExasolImmediateDatabaseObjectWriterStub(
-                this.connectionMock, ExasolObjectConfiguration.builder().withJvmOptions("-DmyProp=1").build()));
+        final ExasolImmediateDatabaseObjectWriterStub objectWriter = new ExasolImmediateDatabaseObjectWriterStub(
+                this.connectionMock, ExasolObjectConfiguration.builder().withJvmOptions("-DmyProp=1").build());
         final ExasolSchema schema = new ExasolSchema(objectWriter, "TEST_SCHEMA");
-        final AdapterScript adapterScript = schema.createAdapterScriptBuilder().name("MY_ADAPTER").content("content")
+        final AdapterScript adapterScript = schema.createAdapterScriptBuilder("MY_ADAPTER").content("content")
                 .language(AdapterScript.Language.JAVA).build();
         objectWriter.write(adapterScript);
         assertThat(objectWriter.getLastQuery(), equalTo(

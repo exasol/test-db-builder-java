@@ -8,6 +8,7 @@ import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractSchema;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
 
 /**
  * Exasol database schema.
@@ -37,17 +38,28 @@ public class ExasolSchema extends AbstractSchema {
      */
     public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
             final String content) {
-        return AdapterScript.builder().writer(this.writer).parentSchema(this).name(name).language(language)
-                .content(content).build();
+        return AdapterScript.builder(this.writer, this, ExasolIdentifier.of(name)).language(language).content(content)
+                .build();
     }
 
     /**
      * Create a builder for an adapter script.
      *
+     * @param name name of the adapter script
      * @return builder (parent schema and writer are already set)
      */
-    public AdapterScript.Builder createAdapterScriptBuilder(){
-        return AdapterScript.builder().parentSchema(this).writer(this.writer);
+    public AdapterScript.Builder createAdapterScriptBuilder(final Identifier name) {
+        return AdapterScript.builder(this.writer, this, name);
+    }
+
+    /**
+     * Create a builder for an adapter script.
+     *
+     * @param name name of the adapter script
+     * @return builder (parent schema and writer are already set)
+     */
+    public AdapterScript.Builder createAdapterScriptBuilder(final String name) {
+        return createAdapterScriptBuilder(ExasolIdentifier.of(name));
     }
 
     /**
@@ -99,6 +111,16 @@ public class ExasolSchema extends AbstractSchema {
      */
     public Script getScript(final String name) {
         return createScriptBuilder(name).attach();
+    }
+
+    /**
+     * Create a builder for a UDF.
+     *
+     * @param name name of the UDF
+     * @return builder
+     */
+    public UdfScript.Builder createUdfBuilder(final String name) {
+        return UdfScript.builder(this.writer, this, ExasolIdentifier.of(name));
     }
 
     @Override
