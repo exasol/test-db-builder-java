@@ -25,3 +25,4 @@ Code name: UDF support
 * Updated `com.exasol:hamcrest-resultset-matcher` from 1.1.1 to 1.2.1
 * Updated `org.mockito:mockito-junit-jupiter` from 3.3.3 to 3.6.0
 * Updated `nl.jqno.equalsverifier:equalsverifier` from 3.4.1 to 3.5
+* Added `com.exasol:project-keeper` 0.2.0
