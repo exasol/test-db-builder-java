@@ -11,10 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.exasol.dbbuilder.dialects.*;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypePredefinedEmits;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeReturns;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeVisitor;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
+import com.exasol.dbbuilder.dialects.exasol.udf.*;
 
 /**
  * Database object writer that writes objects to the database immediately.
@@ -194,7 +191,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         }
 
         @Override
-        public void visit(final UdfScript.UdfReturnTypeDynamicEmits emits) {
+        public void visit(final UdfReturnTypeDynamicEmits emits) {
             this.sqlBuilder.append("EMITS(...) ");
         }
 

@@ -49,14 +49,6 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         return container.createConnection("");
     }
 
-    private static String getTableSysName(final DatabaseObject object) {
-        if (object instanceof AdapterScript || object instanceof UdfScript) {
-            return "SCRIPT";
-        } else {
-            return object.getType().toUpperCase().replace(" ", "_");
-        }
-    }
-
     @Test
     // [itest->dsn~creating-adapter-scripts~1]
     void testCreateAdapterScript() {
@@ -424,6 +416,14 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
             } catch (final SQLException exception) {
                 throw new AssertionError("Unable to determine existence of " + object.getType() + " "
                         + object.getFullyQualifiedName() + ".", exception);
+            }
+        }
+
+        private static String getTableSysName(final DatabaseObject object) {
+            if (object instanceof AdapterScript || object instanceof UdfScript) {
+                return "SCRIPT";
+            } else {
+                return object.getType().toUpperCase().replace(" ", "_");
             }
         }
     }

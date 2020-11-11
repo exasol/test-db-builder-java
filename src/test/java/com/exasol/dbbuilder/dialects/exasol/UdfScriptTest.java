@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.Column;
 import com.exasol.dbbuilder.dialects.Schema;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeDynamicEmits;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypePredefinedEmits;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeReturns;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
@@ -53,12 +54,11 @@ class UdfScriptTest {
 
     @Test
     void testEmitsWithDynamicEmitsReturnType() {
-        assertThat(getDefaultBuilder().emits().build().getReturnType(),
-                instanceOf(UdfScript.UdfReturnTypeDynamicEmits.class));
+        assertThat(getDefaultBuilder().emits().build().getReturnType(), instanceOf(UdfReturnTypeDynamicEmits.class));
     }
 
     @Test
-    void testEmitsWithPredefinedEmitsReturnTyp() {
+    void testEmitsWithPredefinedEmitsReturnType() {
         final Column column1 = new Column("col1", "VARCHAR");
         final Column column2 = new Column("col2", "VARCHAR");
         final UdfReturnTypePredefinedEmits result = (UdfReturnTypePredefinedEmits) getDefaultBuilder()
@@ -87,7 +87,7 @@ class UdfScriptTest {
         final UdfScript.Builder builder = getDefaultBuilder().language(null);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
         assertThat(exception.getMessage(),
-                equalTo("language is a required field. Please call language() before build()."));
+                equalTo("language is a required field. Please provide a value by calling language() before build()."));
     }
 
     private UdfScript.Builder getDefaultBuilder() {

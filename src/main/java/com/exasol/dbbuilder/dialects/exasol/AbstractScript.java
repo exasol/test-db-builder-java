@@ -40,7 +40,7 @@ public abstract class AbstractScript extends AbstractSchemaChild {
      * 
      * @param <T> this type
      */
-    public abstract static class Builder<T extends Builder<T>> extends AbstractSchemaChild.Builder<T> {
+    public abstract static class Builder<T extends Builder<T>> extends AbstractSchemaChild.Builder {
         private final ExasolImmediateDatabaseObjectWriter writer;
         private String content;
 

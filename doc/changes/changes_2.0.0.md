@@ -8,8 +8,8 @@ Code name:
    This change caused an API change for adding a debugger. 
    See the [user guide](../user_guide/user_guide.md). 
 * #42: UDF support
-    For supporting UDFs we unified the API for of Script, Udf and Adapter scripts.
-    We changed `Schema#createAdapterScriptBuilder()` into `Schema#createAdapterScriptBuilder(name)`
+    For supporting UDFs we unified the API for Script, UDF and Adapter scripts.
+    We changed `ExasolSchema#createAdapterScriptBuilder()` into `ExasolSchema#createAdapterScriptBuilder(name)`
     and removed `AdapterScript.Builder#name(name)`.
     We also removed `AdapterScript.Builder#parentSchema(schema)` and `AdapterScript.Builder#writer(writer)` but these methods should not be used from outside anyway.  
     

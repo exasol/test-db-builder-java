@@ -26,7 +26,7 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
      * 
      * @param builder builder to read the parameters from
      */
-    protected AbstractSchemaChild(final Builder<?> builder) {
+    protected AbstractSchemaChild(final Builder builder) {
         super(builder.name, builder.owned);
         this.parentSchema = builder.parentSchema;
     }
@@ -43,10 +43,8 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
 
     /**
      * Builder for {@link AbstractSchemaChild}.
-     * 
-     * @param <T> this type
      */
-    public abstract static class Builder<T extends Builder<T>> {
+    public abstract static class Builder {
 
         private final Schema parentSchema;
         private final Identifier name;
@@ -73,8 +71,8 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
          */
         protected void requireNotNull(final Object object, final String name) {
             if (object == null) {
-                throw new IllegalStateException(
-                        name + " is a required field. Please call " + name + "() before build().");
+                throw new IllegalStateException(name + " is a required field. Please provide a value by calling " + name
+                        + "() before build().");
             }
         }
     }
