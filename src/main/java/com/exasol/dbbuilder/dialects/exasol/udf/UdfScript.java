@@ -1,15 +1,11 @@
 package com.exasol.dbbuilder.dialects.exasol.udf;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.Column;
 import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.exasol.AbstractScript;
-import com.exasol.dbbuilder.dialects.exasol.BucketFsContentAdapterScriptBuilder;
-import com.exasol.dbbuilder.dialects.exasol.ExasolImmediateDatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.exasol.*;
 
 /**
  * This class represents UDF scripts.
@@ -30,7 +26,7 @@ public class UdfScript extends AbstractScript {
 
     /**
      * Get a builder for {@link UdfScript}.
-     * 
+     *
      * @param writer       data object writer
      * @param parentSchema parent schema
      * @param name         name of the script
@@ -48,7 +44,7 @@ public class UdfScript extends AbstractScript {
 
     /**
      * Get the input parameters for this UDF.
-     * 
+     *
      * @return list of input parameters
      */
     public List<Column> getParameters() {
@@ -57,7 +53,7 @@ public class UdfScript extends AbstractScript {
 
     /**
      * Get the {@link UdfReturnType} of this UDF.
-     * 
+     *
      * @return {@link UdfReturnType} of this UDF
      */
     public UdfReturnType getReturnType() {
@@ -66,7 +62,7 @@ public class UdfScript extends AbstractScript {
 
     /**
      * Get the {@link InputType} of this UDF.
-     * 
+     *
      * @return {@link InputType} of this UDF
      */
     public InputType getInputType() {
@@ -91,7 +87,7 @@ public class UdfScript extends AbstractScript {
      * Languages supported by UDFs
      */
     public enum Language {
-        JAVA, PYTHON, LUA, R
+        JAVA, PYTHON, LUA
     }
 
     /**
@@ -137,7 +133,7 @@ public class UdfScript extends AbstractScript {
 
         /**
          * Set input type of the UDF.
-         * 
+         *
          * @param inputType type
          * @return self for fluent programming
          */
@@ -148,7 +144,7 @@ public class UdfScript extends AbstractScript {
 
         /**
          * Set return type fo this UDF to EMITS(param_name type, ...).
-         * 
+         *
          * @param columns {@link Column}s that the UDF emits
          * @return self for fluent programming
          */
@@ -159,7 +155,7 @@ public class UdfScript extends AbstractScript {
 
         /**
          * Add an input parameter to this UDF.
-         * 
+         *
          * @param name name of the parameter
          * @param type type of the parameter
          * @return self for fluent programming
@@ -181,7 +177,7 @@ public class UdfScript extends AbstractScript {
 
         /**
          * Set return type fo this UDF to EMITS(...).
-         * 
+         *
          * @param returnType return type of the UDF
          * @return self for fluent programming
          */
@@ -192,7 +188,7 @@ public class UdfScript extends AbstractScript {
 
         /**
          * Build the UDF script.
-         * 
+         *
          * @return built UDF script
          */
         public UdfScript build() {
