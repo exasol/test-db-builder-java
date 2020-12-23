@@ -12,7 +12,7 @@ Code name: Added PostgreSQL dialect
 
 * Removed `org.junit.platform:junit-platform-runner`
 * Updated `com.exasol:exasol-jdbc:7.0.3` to `7.0.4`
-* Updated `com.exasol:exasol-testcontainers:3.3.1` to `3.4.1`
+* Updated `com.exasol:exasol-testcontainers:3.3.1` to `3.4.0`
 * Updated `com.exasol:hamcrest-resultset-matcher:1.2.1` to `1.3.0`
 * Updated `org.mockito:mockito-junit-jupiter:3.6.0` to `3.6.28`
 * Updated `org.testcontainers:junit-jupiter:1.14.3` to `1.15.1`
