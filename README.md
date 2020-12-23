@@ -27,14 +27,14 @@ The main design goals are to make the code of the integration test compact and r
 
 ```java
 // Precondition: Get a JDBC connection and store it in variable "connection"
-final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
+final DatabaseObjectFactory factory=new ExasolObjectFactory(connection);
 final Schema schema factory.createSchema("ONLINESHOP");
-final Table table = schema.createTable("ITEMS", "PRODUCT_ID", "DECIMAL(18,0)", "NAME", "VARCHAR(40)")
-        .insert("1", "Cat food")
-        .insert("2", "Toy mouse");
-final User user = factory.createUser("KIMIKO")
+final Table table=schema.createTable("ITEMS","PRODUCT_ID","DECIMAL(18,0)","NAME","VARCHAR(40)")
+        .insert("1","Cat food")
+        .insert("2","Toy mouse");
+final User user=factory.createUser("KIMIKO")
         .grant(CREATE_SESSION)
-        .grant(table, SELECT, UDPATE);
+        .grant(table,SELECT,UDPATE);
 ```
 
 For more details, please refer to the [user guide](doc/user_guide/user_guide.md).
@@ -48,12 +48,13 @@ This module is designed to be used in test code. It helps you write tests, quick
 TDDB is not suited for production code. We sacrifice speed and features for compactness and ease-of-use. If you are looking for code that helps writing production code, please refer to
 
 * [SQL Statement Builder](https://github.com/exasol/sql-statement-builder)
- 
- ## Supported Databases
- 
+
+## Supported Databases
+
 * Exasol
-* MySQL 
- 
+* MySQL
+* PostgreSQL
+
 ## Features
 
 * Create: schemas, tables, adapter scripts, users, connection definitions, virtual schemas
@@ -82,6 +83,7 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Exasol JDBC Driver][exasol-jdbc-driver]                                            | JDBC driver for Exasol database                        | MIT License                      |
 | [Exasol Database Fundamentals for Java][db-fundamentals-java]                       | Base objects and ground rules for the Exasol database  | MIT License                      |
 | [MySQL JDBC Driver][mysql-jdbc-driver]                                              | JDBC driver for MySQL database                         | GNU GPL Version 2.0              |
+| [PostgreSQL JDBC Driver][postgresql-jdbc-driver]                                    | JDBC driver for PostgreSQL database                    | BSD-2-Clause License             |
 
 ### Test Dependencies
 
@@ -115,11 +117,21 @@ Running the Test Database Builder requires a Java Runtime version 11 or later.
 | [Projekt Keeper](https://github.com/exasol/project-keeper/)                         | Enforcing project structure                            | MIT License                      |
 
 [exasol-jdbc-driver]: https://www.exasol.com/portal/display/DOWNLOAD/Exasol+Download+Section
+
 [mysql-jdbc-driver]: https://dev.mysql.com/downloads/connector/j/
+
 [db-fundamentals-java]: https://github.com/exasol/db-fundamentals-java
+
 [exasol-testcontainers]: https://github.com/exasol/exasol-testcontainers
+
 [hamcrest-resultset-matcher]: https://github.com/exasol/hamcrest-resultset-matcher
+
 [maven-enforcer-plugin]: http://maven.apache.org/enforcer/maven-enforcer-plugin/
+
 [open-fast-trace-maven-plugin]: https://github.com/itsallcode/openfasttrace-maven-plugin
+
 [sonatype-oss-index-maven-plugin]: https://sonatype.github.io/ossindex-maven/maven-plugin/
+
 [versions-maven-plugin]: https://www.mojohaus.org/versions-maven-plugin/
+
+[postgresql-jdbc-driver]: https://jdbc.postgresql.org/

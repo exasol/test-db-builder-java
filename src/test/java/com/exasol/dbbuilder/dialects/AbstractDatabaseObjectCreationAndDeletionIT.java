@@ -8,12 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.hamcrest.*;
+import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Tag("integration")
@@ -25,8 +21,13 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     @BeforeEach
     void beforeEach() throws SQLException {
-        this.factory = getDatabaseObjectFactory();
         this.adminConnection = getAdminConnection();
+        this.factory = getDatabaseObjectFactory();
+    }
+
+    @AfterEach
+    void afterEach() throws SQLException {
+        this.adminConnection.close();
     }
 
     protected abstract Connection getAdminConnection() throws SQLException;
