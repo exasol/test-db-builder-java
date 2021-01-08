@@ -20,8 +20,8 @@ class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObje
     }
 
     @Override
-    protected DatabaseObjectFactory getDatabaseObjectFactory() throws SQLException {
-        return new PostgreSqlObjectFactory(this.adminConnection);
+    protected DatabaseObjectFactory getDatabaseObjectFactory(final Connection adminConnection) throws SQLException {
+        return new PostgreSqlObjectFactory(adminConnection);
     }
 
     @Override

@@ -22,7 +22,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     @BeforeEach
     void beforeEach() throws SQLException {
         this.adminConnection = getAdminConnection();
-        this.factory = getDatabaseObjectFactory();
+        this.factory = getDatabaseObjectFactory(this.adminConnection);
     }
 
     @AfterEach
@@ -32,7 +32,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     protected abstract Connection getAdminConnection() throws SQLException;
 
-    protected abstract DatabaseObjectFactory getDatabaseObjectFactory() throws SQLException;
+    protected abstract DatabaseObjectFactory getDatabaseObjectFactory(Connection adminConnection) throws SQLException;
 
     protected abstract Matcher<DatabaseObject> existsInDatabase();
 

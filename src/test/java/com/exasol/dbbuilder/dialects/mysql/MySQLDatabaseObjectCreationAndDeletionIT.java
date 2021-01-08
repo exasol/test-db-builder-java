@@ -10,10 +10,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Tag;
@@ -39,7 +36,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
     }
 
     @Override
-    protected DatabaseObjectFactory getDatabaseObjectFactory() throws SQLException {
+    protected DatabaseObjectFactory getDatabaseObjectFactory(final Connection adminConnection) throws SQLException {
         return new MySqlObjectFactory(container.createConnection(""));
     }
 
