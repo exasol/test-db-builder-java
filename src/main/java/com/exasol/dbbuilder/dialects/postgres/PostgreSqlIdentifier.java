@@ -15,7 +15,7 @@ public class PostgreSqlIdentifier implements Identifier {
     }
 
     /**
-     * Get an PostgreSQL {@link Identifier} identifier for a given string.
+     * Get a PostgreSQL {@link Identifier} for a given string.
      * 
      * @param id id for the identifier
      * @return built identifier
