@@ -50,15 +50,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
                 List.of(column1Type, column2Type, column3Type));
     }
 
-    /**
-     * Create a builder for a table.
-     * <p>
-     * In cases where you need a more complex table than can be created by the convenience methods {@code createTable},
-     * this method provides a builder.
-     *
-     * @param name table name
-     * @return builder for the table
-     */
+    @Override
     public Table.Builder createTableBuilder(final String name) {
         return Table.builder(getWriter(), this, getIdentifier(name));
     }
