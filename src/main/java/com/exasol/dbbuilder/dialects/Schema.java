@@ -64,6 +64,17 @@ public interface Schema extends DatabaseObject {
     Table createTable(String name, String column1Name, String column1Type, String column2Name, String column2Type,
             String column3Name, String column3Type);
 
+    /**
+     * Create a builder for a table.
+     * <p>
+     * In cases where you need a more complex table that can be created by the convenience methods {@code createTable},
+     * this method provides a builder.
+     *
+     * @param name table name
+     * @return builder for the table
+     */
+    public Table.Builder createTableBuilder(final String name);
+
     @Override
     default String getType() {
         return "schema";

@@ -5,6 +5,7 @@ Code name: Added PostgreSQL dialect
 ## Features / Enhancements
 
 * #50: Added PostgreSQL dialect
+* #56: Added createTableBuilder to the Schema interface
 
 ## Dependency Updates
 
