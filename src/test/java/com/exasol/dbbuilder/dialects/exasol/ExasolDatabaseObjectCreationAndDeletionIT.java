@@ -79,7 +79,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Override
-    protected DatabaseObjectFactory getDatabaseObjectFactory() throws SQLException {
+    protected DatabaseObjectFactory getDatabaseObjectFactory(final Connection adminConnection) throws SQLException {
         return new ExasolObjectFactory(container.createConnection(""),
                 ExasolObjectConfiguration.builder().withJvmOptions("-DsomeProperty=\"1\"").build());
     }
