@@ -20,3 +20,4 @@ Code name: Added PostgreSQL dialect
 * Added `org.postgresql:postgresql:42.2.18`
 * Added `org.testcontainers:postgresql:1.15.1`
 * Updated `com.exasol:project-keeper:0.2.0` to `0.4.2`
+* Added `org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8`
