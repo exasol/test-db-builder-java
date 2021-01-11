@@ -19,3 +19,4 @@ Code name: Added PostgreSQL dialect
 * Updated `org.junit.jupiter:junit-jupiter-params:5.6.2` to `5.7.0`
 * Added `org.postgresql:postgresql:42.2.18`
 * Added `org.testcontainers:postgresql:1.15.1`
+* Updated `com.exasol:project-keeper:0.2.0` to `0.4.2`
