@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>test-db-builder-java</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder</url>
@@ -140,14 +140,19 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>3.6.28</version>
+            <version>3.7.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>3.5</version>
+            <version>3.5.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.exasol</groupId>
+            <artifactId>error-reporting-java</artifactId>
+            <version>0.2.2</version>
         </dependency>
     </dependencies>
     <build>
@@ -381,6 +386,18 @@
                         <phase>deploy</phase>
                         <goals>
                             <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.exasol</groupId>
+                <artifactId>error-code-crawler-maven-plugin</artifactId>
+                <version>0.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>

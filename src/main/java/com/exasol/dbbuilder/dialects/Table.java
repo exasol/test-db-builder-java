@@ -1,8 +1,7 @@
 package com.exasol.dbbuilder.dialects;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 import com.exasol.db.Identifier;
 
@@ -12,7 +11,6 @@ import com.exasol.db.Identifier;
 public class Table extends AbstractSchemaChild {
     private final DatabaseObjectWriter writer;
     private final List<Column> columns;
-    private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
         super(builder.parentSchema, builder.name, false);
@@ -64,15 +62,6 @@ public class Table extends AbstractSchemaChild {
     }
 
     /**
-     * Get the table's contents (aka. "rows")
-     *
-     * @return rows in the table
-     */
-    public List<List<Object>> getRows() {
-        return this.rows;
-    }
-
-    /**
      * Insert a row of values to the table.
      *
      * @param values cell values
@@ -84,8 +73,20 @@ public class Table extends AbstractSchemaChild {
                     "Column count mismatch. Tried to insert row with " + values.length + " values into table \""
                             + this.getFullyQualifiedName() + "\" which has " + this.columns.size() + " columns");
         }
-        this.rows.add(Arrays.asList(values));
-        this.writer.write(this, values);
+        final List<Object> row = Arrays.asList(values);
+        this.writer.write(this, Stream.of(row));
+        return this;
+    }
+
+    /**
+     * Insert multiple rows at once. Compared to inserting each row using {@link #insert(Object...)} this is a lot
+     * faster.
+     * 
+     * @param rows stream of rows to insert
+     * @return {@code this} for fluent programming
+     */
+    public Table bulkInsert(final Stream<List<Object>> rows) {
+        this.writer.write(this, rows);
         return this;
     }
 

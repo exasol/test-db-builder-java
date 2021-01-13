@@ -4,13 +4,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.Identifier;
@@ -75,8 +79,22 @@ class TableTest {
                 .build() //
                 .insert("Claudia", "2001-01-01") //
                 .insert("Steven", "2002-02-02");
-        final List<List<Object>> rows = table.getRows();
-        assertThat(rows, contains(contains("Claudia", "2001-01-01"), contains("Steven", "2002-02-02")));
+        final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
+        verify(this.writerMock, times(2)).write(eq(table), streamCapture.capture());
+        assertThat(streamCapture.getAllValues().stream().flatMap(each -> each).collect(Collectors.toList()),
+                containsInAnyOrder(List.of("Claudia", "2001-01-01"), List.of("Steven", "2002-02-02")));
+    }
+
+    @Test
+    void testBulkInsert() {
+        final Stream<List<Object>> rows = Stream.of(List.of("Claudia", "2001-01-01"), List.of("Steven", "2002-02-02"));
+        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("TABLEWITHCONTENT2")) //
+                .column("NAME", "VARCHAR(40)") //
+                .column("BIRTHDAY", "DATE") //
+                .build() //
+                .bulkInsert(rows);
+        final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
+        verify(this.writerMock, times(1)).write(table, rows);
     }
 
     @Test

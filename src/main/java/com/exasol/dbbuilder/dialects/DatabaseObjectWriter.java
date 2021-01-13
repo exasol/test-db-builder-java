@@ -1,6 +1,8 @@
 package com.exasol.dbbuilder.dialects;
 
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Interface for writers that persist database objects.
@@ -21,12 +23,12 @@ public interface DatabaseObjectWriter {
     void write(final Table table);
 
     /**
-     * Write data to a database table.
+     * Bulk write data to a database table.
      *
-     * @param table  table to write to
-     * @param values values to be written
+     * @param table table to write to
+     * @param rows  stream of rows to be written
      */
-    void write(final Table table, final Object... values);
+    void write(final Table table, final Stream<List<Object>> rows);
 
     /**
      * Create a user in the database.
