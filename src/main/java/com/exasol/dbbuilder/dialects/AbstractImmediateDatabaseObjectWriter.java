@@ -3,10 +3,11 @@ package com.exasol.dbbuilder.dialects;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.List;
+import java.util.stream.Stream;
+
+import com.exasol.errorreporting.ExaError;
 
 /**
  * This class contains common logic for writers that persist database objects.
@@ -66,10 +67,38 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     protected abstract String getQuotedColumnName(String columnName);
 
     @Override
-    public void write(final Table table, final Object... values) {
+    public void write(final Table table, final Stream<List<Object>> rows) {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
         final String sql = "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")";
-        writeToObject(table, sql, values);
+        try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
+            final boolean autoCommitOriginalState = this.connection.getAutoCommit();
+            this.connection.setAutoCommit(false);
+            rows.forEach(row -> writeRow(table, sql, preparedStatement, row));
+            if (autoCommitOriginalState) {
+                this.connection.commit();
+                this.connection.setAutoCommit(true);
+            }
+        } catch (final SQLException exception) {
+            throw new DatabaseObjectException(table,
+                    ExaError.messageBuilder("E-TDBJ-2")
+                            .message("Failed to create prepared statement {{statement}} for insert.")
+                            .parameter("statement", sql).toString(),
+                    exception);
+        }
+    }
+
+    private void writeRow(final Table table, final String sql, final PreparedStatement preparedStatement,
+            final List<Object> row) {
+        try {
+            for (int i = 0; i < row.size(); ++i) {
+                preparedStatement.setObject(i + 1, row.get(i));
+            }
+            preparedStatement.execute();
+        } catch (final SQLException exception) {
+            throw new DatabaseObjectException(table, ExaError.messageBuilder("E-TDBJ-1")
+                    .message("Failed to execute insert query: {{statement}}").parameter("statement", sql).toString(),
+                    exception);
+        }
     }
 
     protected String createCommaSeparatedSystemPrivilegeList(final GlobalPrivilege[] privileges) {

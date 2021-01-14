@@ -9,9 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.junit.jupiter.Container;
@@ -24,7 +22,8 @@ import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 @Tag("integration")
 class AttachToExistingObjectIT {
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>();
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
+            .withReuse(true);
     private static ExasolObjectFactory factory;
 
     @BeforeAll

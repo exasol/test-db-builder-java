@@ -1,10 +1,10 @@
 package com.exasol.dbbuilder.dialects;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 import com.exasol.db.Identifier;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Database table.
@@ -12,7 +12,6 @@ import com.exasol.db.Identifier;
 public class Table extends AbstractSchemaChild {
     private final DatabaseObjectWriter writer;
     private final List<Column> columns;
-    private final List<List<Object>> rows = new ArrayList<>();
 
     private Table(final Builder builder) {
         super(builder.parentSchema, builder.name, false);
@@ -64,28 +63,35 @@ public class Table extends AbstractSchemaChild {
     }
 
     /**
-     * Get the table's contents (aka. "rows")
-     *
-     * @return rows in the table
-     */
-    public List<List<Object>> getRows() {
-        return this.rows;
-    }
-
-    /**
      * Insert a row of values to the table.
      *
      * @param values cell values
      * @return {@code this} for fluent programming
      */
     public Table insert(final Object... values) {
-        if (values.length != this.columns.size()) {
-            throw new IllegalArgumentException(
-                    "Column count mismatch. Tried to insert row with " + values.length + " values into table \""
-                            + this.getFullyQualifiedName() + "\" which has " + this.columns.size() + " columns");
-        }
-        this.rows.add(Arrays.asList(values));
-        this.writer.write(this, values);
+        this.bulkInsert(Stream.of(Arrays.asList(values)));
+        return this;
+    }
+
+    /**
+     * Insert multiple rows at once. Compared to inserting each row using {@link #insert(Object...)} this is a lot
+     * faster.
+     * 
+     * @param rows stream of rows to insert
+     * @return {@code this} for fluent programming
+     */
+    @SuppressWarnings("java:S3864") // usage pf peek is safe here
+    public Table bulkInsert(final Stream<List<Object>> rows) {
+        this.writer.write(this, rows.peek(row -> {
+            if (row.size() != getColumnCount()) {
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-3").message(
+                        "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.")
+                        .parameter("actual", row.size())//
+                        .parameter("table name", getFullyQualifiedName())//
+                        .parameter("expected", getColumnCount())//
+                        .toString());
+            }
+        }));
         return this;
     }
 
