@@ -94,7 +94,9 @@ class TableTest {
                 .build() //
                 .bulkInsert(rows);
         final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
-        verify(this.writerMock, times(1)).write(table, rows);
+        verify(this.writerMock, times(1)).write(eq(table), streamCapture.capture());
+        assertThat(streamCapture.getAllValues().stream().flatMap(each -> each).collect(Collectors.toList()),
+                containsInAnyOrder(List.of("Claudia", "2001-01-01"), List.of("Steven", "2002-02-02")));
     }
 
     @Test
@@ -102,9 +104,14 @@ class TableTest {
         final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("ONECOLUMNTABLE")) //
                 .column("FOO", "DATE") //
                 .build();
+        table.insert("1", "2");
+        final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
+        verify(this.writerMock).write(eq(table), streamCapture.capture());
+        final Stream<List<Object>> stream = streamCapture.getValue();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> table.insert("1", "2"));
-        assertThat(exception.getMessage(), startsWith("Column count mismatch"));
+                () -> stream.forEach(each -> { // just consume the items
+                }));
+        assertThat(exception.getMessage(), startsWith("E-TDBJ-3: Column count mismatch."));
     }
 
     static class DummyIdentifier implements Identifier {

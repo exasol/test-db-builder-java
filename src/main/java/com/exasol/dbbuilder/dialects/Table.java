@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import com.exasol.db.Identifier;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Database table.
@@ -68,13 +69,7 @@ public class Table extends AbstractSchemaChild {
      * @return {@code this} for fluent programming
      */
     public Table insert(final Object... values) {
-        if (values.length != this.columns.size()) {
-            throw new IllegalArgumentException(
-                    "Column count mismatch. Tried to insert row with " + values.length + " values into table \""
-                            + this.getFullyQualifiedName() + "\" which has " + this.columns.size() + " columns");
-        }
-        final List<Object> row = Arrays.asList(values);
-        this.writer.write(this, Stream.of(row));
+        this.bulkInsert(Stream.of(Arrays.asList(values)));
         return this;
     }
 
@@ -85,8 +80,18 @@ public class Table extends AbstractSchemaChild {
      * @param rows stream of rows to insert
      * @return {@code this} for fluent programming
      */
+    @SuppressWarnings("java:S3864") // usage pf peek is safe here
     public Table bulkInsert(final Stream<List<Object>> rows) {
-        this.writer.write(this, rows);
+        this.writer.write(this, rows.peek(row -> {
+            if (row.size() != getColumnCount()) {
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-3").message(
+                        "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.")
+                        .parameter("actual", row.size())//
+                        .parameter("table name", getFullyQualifiedName())//
+                        .parameter("expected", getColumnCount())//
+                        .toString());
+            }
+        }));
         return this;
     }
 
