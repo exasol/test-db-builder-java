@@ -4,7 +4,7 @@ Code name: Bulk insert for tables
 
 ## Summary
 
-In this release, we removed the `Table#getRows()` method and by that cause an API change. We removed the method, since it requires all rows to be kept in memory which limits the size of the tables that can be built.
+In this release, we removed the `Table#getRows()` method and by that cause an API change. We removed this method, since it requires all rows to be kept in memory which limits the size of the tables that can be built.
 
 The new `Table#bulkInsert()` method allows you to insert multiple rows to a table in one transaction and by that much faster than using multiple calls to `Table#insert()`.
 
