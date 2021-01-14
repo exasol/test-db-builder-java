@@ -1,4 +1,4 @@
-# Test Database Builder 3.0.0, released 2021-01-XX
+# Test Database Builder 3.0.0, released 2021-01-14
 
 Code name: Bulk insert for tables
 
