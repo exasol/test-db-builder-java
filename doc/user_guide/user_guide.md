@@ -157,8 +157,8 @@ You can create a definition with only a URL or with additional credentials.
 Here are the two variants
 
 ```java
-final Connection connectionA = factory.createConnection("PUBLIC_CONNECTION", "https://example.org/api/v1");
-final Connection connectionB = factory.createConnection("PRIVILEGED_CONNECTION", "https://example.org/api/v1", "FRED", "super secret!");
+final ConnectionDefinition connectionA = factory.createConnectionDefinition("PUBLIC_CONNECTION", "https://example.org/api/v1");
+final ConnectionDefinition connectionB = factory.createConnectionDefinition("PRIVILEGED_CONNECTION", "https://example.org/api/v1", "FRED", "super secret!");
 ```
 
 As always the first parameter is the object name of the connection definition. Then there is the URL (e.g. a JDBC URL) and optionally username and password.
