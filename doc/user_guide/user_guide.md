@@ -200,6 +200,58 @@ Add `returnsTable()` to the builder if you want the script to return a table.
 
 See section ["Running Scripts"](#executing-scripts) for information about executing scripts.
 
+### Creating UDF Scripts
+
+User defined function (UDF) scripts allow you to run external applications that are implemented using high-level languages such as Java, Python or Lua.
+
+To create an UDF script you need the following:
+
+* UDF script name
+* Programming Language
+* Input type &mdash; SCALAR or SET
+* Columns emitted as return type
+* Optional bucket filesystem content
+
+For example, the following code:
+
+```java
+final UdfScript udfScript = schema.createUdfBuilder("UDF_SCRIPT")
+  .language(UdfScript.Language.JAVA)
+  .inputType(UdfScript.InputType.SCALAR)
+  .emits(new Column("COLUMN_NAME", "VARCHAR(2000)"))
+  .bucketFsContent("com.exasol.script.UdfScript", "/buckets/bfsdefault/artifacts/udfscript-1.0.0.jar")
+  .build()
+```
+
+It creates the following UDF script:
+
+```sql
+CREATE JAVA SCALAR SCRIPT UDF_SCRIPT(...) EMITS ("COLUMN_NAME" VARCHAR(2000)) AS
+  %scriptclass com.exasol.script.UdfScript;
+  %jar /buckets/bfsdefault/artifacts/udfscript-1.0.0.jar;
+/
+```
+
+Similarly, the following code snippet:
+
+```java
+final UdfScript udfScript = schema.createUdfBuilder("UDF_SCRIPT")
+  .language(UdfScript.Language.PYTHON)
+  .inputType(UdfScript.InputType.SET)
+  .parameter("INPUT", "VARCHAR(256)")
+  .emits(new Column("COLUMN_ONE", "VARCHAR(256)"), new Column("COLUMN_TWO", "VARCHAR(256)"))
+  .content("print('Hello, World!')")
+  .build();
+```
+
+It creates the following Python UDF script:
+
+```sql
+CREATE PYTHON SET SCRIPT UDF_SCRIPT("INPUT" VARCHAR(256))
+EMITS ("COLUMN_ONE" VARCHAR(256), "COLUMN_TWO" VARCHAR(256)) AS
+  print('Hello, World!')
+```
+
 ### Creating Adapter Scripts
 
 Adapter Scripts are what drive Virtual Schema adapters. They are scoped inside a schema. 
