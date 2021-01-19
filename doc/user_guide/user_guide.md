@@ -250,6 +250,7 @@ It creates the following Python UDF script:
 CREATE PYTHON SET SCRIPT UDF_SCRIPT("INPUT" VARCHAR(256))
 EMITS ("COLUMN_ONE" VARCHAR(256), "COLUMN_TWO" VARCHAR(256)) AS
   print('Hello, World!')
+/
 ```
 
 ### Creating Adapter Scripts
