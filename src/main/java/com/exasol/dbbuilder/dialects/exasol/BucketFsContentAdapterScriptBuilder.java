@@ -5,7 +5,7 @@ import com.exasol.dbbuilder.dialects.Schema;
 
 /**
  * Builder for {@link AbstractScript}, that can in addition add JAVA content from BucketFS.
- * 
+ *
  * @param <T> this type
  */
 public abstract class BucketFsContentAdapterScriptBuilder<T extends BucketFsContentAdapterScriptBuilder<T>>
@@ -17,14 +17,19 @@ public abstract class BucketFsContentAdapterScriptBuilder<T extends BucketFsCont
     }
 
     /**
-     * Set the script's content to a JAR file from BucketFS.
+     * Set the script's content to a JAR files from BucketFS.
      *
-     * @param scriptClass         script class to execute
-     * @param pathToJarInBucketfs path to the jar in BucketFS
+     * @param scriptClass        script class to execute
+     * @param jarPathsInBucketfs paths to the jar files in BucketFS
      * @return self
      */
-    public T bucketFsContent(final String scriptClass, final String pathToJarInBucketfs) {
-        this.content("%scriptclass " + scriptClass + ";\n%jar " + pathToJarInBucketfs + ";\n");
+    public T bucketFsContent(final String scriptClass, final String... jarPathsInBucketfs) {
+        final StringBuilder bucketContent = new StringBuilder();
+        bucketContent.append("%scriptclass ").append(scriptClass).append(";\n");
+        for (final String jarPath : jarPathsInBucketfs) {
+            bucketContent.append("%jar ").append(jarPath).append(";\n");
+        }
+        this.content(bucketContent.toString());
         return getSelf();
     }
 }
