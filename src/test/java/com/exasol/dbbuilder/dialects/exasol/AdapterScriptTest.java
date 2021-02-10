@@ -89,4 +89,13 @@ class AdapterScriptTest {
                         .build().getContent(),
                 equalTo("%scriptclass com.exasol.adapter.RequestDispatcher;\n%jar /buckets/bfsdefault/default/test.jar;\n"));
     }
+
+    @Test
+    void testBucketFsContentWithMultipleJars() {
+        assertThat(
+                defaultAdapterScriptBuilder()
+                        .bucketFsContent("com.exasol.adapter.RequestDispatcher", "/buckets/bfs/jars/test1.jar", "/buckets/bfs/jars/test2.jar")
+                        .build().getContent(),
+                equalTo("%scriptclass com.exasol.adapter.RequestDispatcher;\n%jar /buckets/bfs/jars/test1.jar;\n%jar /buckets/bfs/jars/test2.jar;\n"));
+    }
 }
