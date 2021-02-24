@@ -1,10 +1,18 @@
-# Test Database Builder 3.0.1, released 2021-MM-DD
+# Test Database Builder 3.1.0, released 2021-02-24
+
+Code name: Made `script.execute` robust against quotes
 
 ## Summary
 
+TDDB 3.1.0 allows you to create and execute Exasol scripts. In this released we fixed a bug in the implementation of execute that lead to an exception when string parameters containing quotes were passed to the execute function.
+
 ## Features
 
-* #48: Added support for multiple jars in BucketFS content.
+* #48: Added support for multiple JARs in BucketFS content.
+
+## Bugfixes
+
+* #70: Made `script.execute` robust against quotes
 
 ## Documentation
 

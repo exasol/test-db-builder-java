@@ -153,9 +153,53 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         script.execute(param1, param2);
         final Statement statement = this.adminConnection.createStatement();
         final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
-        assertAll(() -> assertThat("Result has entry", result.next(), equalTo(true)),
+        assertThat("Result has entry", result.next(), equalTo(true));
+        assertAll(//
                 () -> assertThat(result.getString(1), equalTo(param1)),
                 () -> assertThat(result.getDouble(2), equalTo(param2)));
+    }
+
+    // [itest->dsn~running-scripts-that-have-no-return~1]
+    @ParameterizedTest
+    @ValueSource(strings = { "test", "test \"quoted\"", "test 'quoted'", "lots'''of'single''quotes", "test \\\"",
+            "test \\" })
+    void testExecuteScriptWithStringParameters(final String parameterValue) throws SQLException {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_PARAMETERS_2");
+        final Table table = exasolSchema.createTable("LUA_RESULT_OF_QUOTING_TESTS", "A", "VARCHAR(40)");
+        final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (:p1)]], {p1=param1})";
+        final Script script = exasolSchema.createScript("LUA_SCRIPT_FOR_QUOTING_TEST", content, "param1");
+        try {
+            script.execute(parameterValue);
+            final Statement statement = this.adminConnection.createStatement();
+            final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
+            assertThat("Result has entry", result.next(), equalTo(true));
+            assertThat(result.getString(1), equalTo(parameterValue));
+        } finally {
+            script.drop();
+            table.drop();
+            exasolSchema.drop();
+        }
+    }
+
+    @Test
+    void testExecuteScriptWithNullParameter() throws SQLException {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_NULL_PARAMETER");
+        final Table table = exasolSchema.createTable("LUA_RESULT_OF_NULL_SCRIPT_EXEC_TEST", "A", "VARCHAR(40)");
+        final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (:p1)]], {p1=param1})";
+        final Script script = exasolSchema.createScript("LUA_SCRIPT_FOR_NULL_SCRIPT_EXEC_TEST", content, "param1");
+        try {
+            script.execute((Object) null);
+            final Statement statement = this.adminConnection.createStatement();
+            final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
+            assertThat("Result has entry", result.next(), equalTo(true));
+            assertThat(result.getString(1), equalTo(null));
+        } finally {
+            script.drop();
+            table.drop();
+            exasolSchema.drop();
+        }
     }
 
     @Test
@@ -178,6 +222,35 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 .build();
         final List<List<Object>> result = script.executeQuery();
         assertThat(result, contains(contains("foo", true), contains("bar", false)));
+    }
+
+    @Test
+    void testExecuteScriptWithArrayParameter() {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_ARRAY_PARAMETER");
+        final Script script = exasolSchema.createScriptBuilder("SUM_UP") //
+                .arrayParameter("operands") //
+                .content("s = 0\n" //
+                        + "for _, operand in ipairs(operands) do\n" //
+                        + "    s = s + operand\n" //
+                        + "end\n" //
+                        + "exit({rows_affected = s})") //
+                .build();
+        final int sum = script.execute(List.of(1, 2, 3, 4, 5));
+        assertThat(sum, equalTo(15));
+    }
+
+    @ValueSource(booleans = { true, false })
+    @ParameterizedTest
+    void testExecuteScriptThrowsExceptionOnLuaError(final boolean returnsTable) {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema(
+                "PARENT_SCHEMA_FOR_SCRIPT" + (returnsTable ? "_RETURING_TABLE" : "") + "_THROWING_EXCEPTION");
+        final Script.Builder builder = exasolSchema.createScriptBuilder("LUA_SCRIPT").content("error()");
+        if (returnsTable) {
+            builder.returnsTable();
+        }
+        final Script build = builder.build();
+        assertThrows(DatabaseObjectException.class, build::executeQuery);
     }
 
     @Test
@@ -250,35 +323,6 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 + "'";
         final ResultSet result = getAdminConnection().createStatement().executeQuery(sql);
         return result;
-    }
-
-    @ValueSource(booleans = { true, false })
-    @ParameterizedTest
-    void testExecuteScriptThrowsException(final boolean returnsTable) {
-        final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema(
-                "PARENT_SCHEMA_FOR_SCRIPT" + (returnsTable ? "_RETURING_TABLE" : "") + "_THROWING_EXCEPTION");
-        final Script.Builder builder = exasolSchema.createScriptBuilder("LUA_SCRIPT").content("error()");
-        if (returnsTable) {
-            builder.returnsTable();
-        }
-        final Script build = builder.build();
-        assertThrows(DatabaseObjectException.class, build::executeQuery);
-    }
-
-    @Test
-    void testExecuteScriptWithArrayParameter() {
-        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
-                .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_ARRAY_PARAMETER");
-        final Script script = exasolSchema.createScriptBuilder("SUM_UP") //
-                .arrayParameter("operands") //
-                .content("s = 0\n" //
-                        + "for i=1, #operands do\n" //
-                        + "    s = s + operands[i]\n" //
-                        + "end\n" //
-                        + "exit({rows_affected=s})") //
-                .build();
-        final int sum = script.execute(List.of(1, 2, 3, 4, 5));
-        assertThat(sum, equalTo(15));
     }
 
     @Test
