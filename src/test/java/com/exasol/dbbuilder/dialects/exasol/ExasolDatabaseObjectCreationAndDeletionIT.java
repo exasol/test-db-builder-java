@@ -161,11 +161,12 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     // [itest->dsn~running-scripts-that-have-no-return~1]
     @ParameterizedTest
-    @ValueSource(strings = { "test", "test \"quoted\"", "test 'quoted'", "lots'''of'single''quotes", "test \\\"", "test \\" })
+    @ValueSource(strings = { "test", "test \"quoted\"", "test 'quoted'", "lots'''of'single''quotes", "test \\\"",
+            "test \\" })
     void testExecuteScriptWithStringParameters(final String parameterValue) throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_PARAMETERS_2");
-        final Table table = exasolSchema.createTable("LUA_RESULT_OF_QUOTING_TESTS", "A", "VARCHAR(20)");
+        final Table table = exasolSchema.createTable("LUA_RESULT_OF_QUOTING_TESTS", "A", "VARCHAR(40)");
         final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (:p1)]], {p1=param1})";
         final Script script = exasolSchema.createScript("LUA_SCRIPT_FOR_QUOTING_TEST", content, "param1");
         try {
