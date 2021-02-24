@@ -183,6 +183,26 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
+    void testExecuteScriptWithNullParameter() throws SQLException {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_NULL_PARAMETER");
+        final Table table = exasolSchema.createTable("LUA_RESULT_OF_NULL_SCRIPT_EXEC_TEST", "A", "VARCHAR(40)");
+        final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (:p1)]], {p1=param1})";
+        final Script script = exasolSchema.createScript("LUA_SCRIPT_FOR_NULL_SCRIPT_EXEC_TEST", content, "param1");
+        try {
+            script.execute((Object) null);
+            final Statement statement = this.adminConnection.createStatement();
+            final ResultSet result = statement.executeQuery("SELECT * FROM " + table.getFullyQualifiedName());
+            assertThat("Result has entry", result.next(), equalTo(true));
+            assertThat(result.getString(1), equalTo(null));
+        } finally {
+            script.drop();
+            table.drop();
+            exasolSchema.drop();
+        }
+    }
+
+    @Test
     void testExecuteScriptReturningRowCount() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_SCRIPT_RETURNING_ROW_COUNT");

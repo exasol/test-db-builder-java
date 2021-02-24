@@ -299,6 +299,8 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     private String formatScriptScalarParameter(final Object value) {
         if (value instanceof String) {
             return "'" + SINGLE_QUOTE_ESCAPER.escape(value.toString()) + "'";
+        } else if (value == null) {
+            return "NULL";
         } else {
             return value.toString();
         }
