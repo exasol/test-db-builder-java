@@ -161,13 +161,13 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     // [itest->dsn~running-scripts-that-have-no-return~1]
     @ParameterizedTest
-    @ValueSource(strings = { "test", "test \"quoted\"", "test 'quoted'", "test \\\"", "test \\" })
+    @ValueSource(strings = { "test", "test \"quoted\"", "test 'quoted'", "lots'''of'single''quotes", "test \\\"", "test \\" })
     void testExecuteScriptWithStringParameters(final String parameterValue) throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_SCRIPT_WITH_PARAMETERS_2");
-        final Table table = exasolSchema.createTable("LUA_RESULT_2", "A", "VARCHAR(20)");
+        final Table table = exasolSchema.createTable("LUA_RESULT_OF_QUOTING_TESTS", "A", "VARCHAR(20)");
         final String content = "query([[INSERT INTO " + table.getFullyQualifiedName() + " VALUES (:p1)]], {p1=param1})";
-        final Script script = exasolSchema.createScript("LUA_SCRIPT_2", content, "param1");
+        final Script script = exasolSchema.createScript("LUA_SCRIPT_FOR_QUOTING_TEST", content, "param1");
         try {
             script.execute(parameterValue);
             final Statement statement = this.adminConnection.createStatement();
@@ -210,10 +210,10 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final Script script = exasolSchema.createScriptBuilder("SUM_UP") //
                 .arrayParameter("operands") //
                 .content("s = 0\n" //
-                        + "for i=1, #operands do\n" //
-                        + "    s = s + operands[i]\n" //
+                        + "for _, operand in ipairs(operands) do\n" //
+                        + "    s = s + operand\n" //
                         + "end\n" //
-                        + "exit({rows_affected=s})") //
+                        + "exit({rows_affected = s})") //
                 .build();
         final int sum = script.execute(List.of(1, 2, 3, 4, 5));
         assertThat(sum, equalTo(15));
@@ -221,7 +221,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     @ValueSource(booleans = { true, false })
     @ParameterizedTest
-    void testExecuteScriptThrowsException(final boolean returnsTable) {
+    void testExecuteScriptThrowsExceptionOnLuaError(final boolean returnsTable) {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema(
                 "PARENT_SCHEMA_FOR_SCRIPT" + (returnsTable ? "_RETURING_TABLE" : "") + "_THROWING_EXCEPTION");
         final Script.Builder builder = exasolSchema.createScriptBuilder("LUA_SCRIPT").content("error()");

@@ -1,12 +1,12 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
 /**
- * This class escapes a string so that it can be used in an exasol string literal.
+ * This class escapes a string so that it can be used in an Exasol string literal.
  */
 public class ExasolStringLiteralEscaper {
 
     /**
-     * Escape a goven message for the use in an Exasol string literal.
+     * Escape a given message for the use in an Exasol string literal.
      * 
      * @param message message to escape
      * @return escaped message

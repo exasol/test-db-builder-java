@@ -8,7 +8,7 @@ TDB allows you to create and execute Exasol scripts. In this released we fixed a
 
 ## Features
 
-* #48: Added support for multiple jars in BucketFS content.
+* #48: Added support for multiple JARs in BucketFS content.
 
 ## Bugfixes
 
