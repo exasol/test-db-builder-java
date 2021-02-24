@@ -4,7 +4,7 @@ Code name: Made `script.execute` robust against quotes
 
 ## Summary
 
-TDB allows you to create and execute Exasol scripts. In this released a bug in the implementation of execute that lead to an exception when string parameters containing quotes were passed to the execute function.
+TDB allows you to create and execute Exasol scripts. In this released we fixed a bug in the implementation of execute that lead to an exception when string parameters containing quotes were passed to the execute function.
 
 ## Features
 
