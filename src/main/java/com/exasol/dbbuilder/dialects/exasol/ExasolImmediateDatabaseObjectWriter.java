@@ -1,22 +1,18 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.dbbuilder.dialects.exasol.udf.*;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Database object writer that writes objects to the database immediately.
  */
 public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDatabaseObjectWriter {
+    private static final ExasolStringLiteralEscaper SINGLE_QUOTE_ESCAPER = new ExasolStringLiteralEscaper();
     private final ExasolObjectConfiguration configuration;
 
     /**
@@ -257,16 +253,21 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     /**
      * Execute a script.
      *
+     * @implNote this method does not use prepared statements but string concatenation, since Exasol currently does not
+     *           support prepared statements for script execution (see https://www.exasol.com/support/browse/IDEA-42).
+     * 
      * @param script          script to execute
      * @param parameterValues script parameters
      * @return row count
      */
     public int execute(final Script script, final Object... parameterValues) {
+        final String query = getScriptExecutionSql(script, parameterValues);
         try (final Statement statement = this.connection.createStatement()) {
-            statement.execute(getScriptExecutionSql(script, parameterValues));
+            statement.execute(query);
             return statement.getUpdateCount();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(script, "Failed to execute script " + script.getFullyQualifiedName(),
+            throw new DatabaseObjectException(script, ExaError.messageBuilder("E-TDBJ-4")
+                    .message("Failed to execute script query {{query}}.").parameter("query", query).toString(),
                     exception);
         }
     }
@@ -276,41 +277,27 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         builder.append(script.getFullyQualifiedName());
         if (parameterValues.length > 0) {
             builder.append(" (");
-            boolean first = true;
-            for (final Object parameter : parameterValues) {
-                if (first) {
-                    first = false;
-                } else {
-                    builder.append(", ");
-                }
-                appendScriptParameterValue(builder, parameter);
-            }
+            builder.append(Arrays.stream(parameterValues).map(this::formatScriptParameterValue)
+                    .collect(Collectors.joining(", ")));
             builder.append(")");
         }
         return builder.toString();
     }
 
-    private void appendScriptParameterValue(final StringBuilder builder, final Object parameter) {
+    private String formatScriptParameterValue(final Object parameter) {
         if (parameter instanceof Collection) {
-            builder.append(" ARRAY(");
-            int i = 0;
-            for (final Object arrayItem : (Collection<?>) parameter) {
-                if (i++ > 0) {
-                    builder.append(", ");
-                }
-                appendScriptScalarParameter(builder, arrayItem);
-            }
-            builder.append(")");
+            return " ARRAY(" + ((Collection<?>) parameter).stream().map(this::formatScriptScalarParameter)
+                    .collect(Collectors.joining(", ")) + ")";
         } else {
-            appendScriptScalarParameter(builder, parameter);
+            return formatScriptScalarParameter(parameter);
         }
     }
 
-    private void appendScriptScalarParameter(final StringBuilder builder, final Object value) {
+    private String formatScriptScalarParameter(final Object value) {
         if (value instanceof String) {
-            builder.append("'").append(value).append("'");
+            return "'" + SINGLE_QUOTE_ESCAPER.escape(value.toString()) + "'";
         } else {
-            builder.append(value);
+            return value.toString();
         }
     }
 
