@@ -253,8 +253,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     /**
      * Execute a script.
      *
-     * @implNote this method does not use prepared statements but string concatenation, since Exasol currently does not
-     *           support prepared statements for script execution (see https://www.exasol.com/support/browse/IDEA-42).
+     * <p>
+     * Implementation note: This method does not use prepared statements but string concatenation, since Exasol
+     * currently does not support prepared statements for script execution (see
+     * https://www.exasol.com/support/browse/IDEA-42).
+     * </p>
      * 
      * @param script          script to execute
      * @param parameterValues script parameters
