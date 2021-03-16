@@ -471,28 +471,16 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     private static class ExistsInDatabaseMatcher
             extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
-        private final Connection connection;
-
         private ExistsInDatabaseMatcher(final Connection connection) {
-            this.connection = connection;
+            super(connection);
         }
 
         @Override
-        protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = this.connection
-                    .prepareStatement("SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE "
-                            + getSysName(object) + "_NAME=?")) {
-                objectExistenceStatement.setString(1, object.getName());
-                try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                    return resultSet.next();
-                }
-            } catch (final SQLException exception) {
-                throw new AssertionError("Unable to determine existence of " + object.getType() + " "
-                        + object.getFullyQualifiedName() + ".", exception);
-            }
+        protected String getCheckCommand(final DatabaseObject object) {
+            return "SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE " + getSysName(object) + "_NAME=?";
         }
 
-        private static String getTableSysName(final DatabaseObject object) {
+        private String getTableSysName(final DatabaseObject object) {
             if (object instanceof AdapterScript || object instanceof UdfScript) {
                 return "SCRIPT";
             } else {

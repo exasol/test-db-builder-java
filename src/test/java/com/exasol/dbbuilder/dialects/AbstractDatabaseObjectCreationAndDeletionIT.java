@@ -5,8 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.hamcrest.*;
 import org.junit.jupiter.api.*;
@@ -108,6 +107,41 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     protected abstract static class ExistsInDatabaseMatcher extends TypeSafeMatcher<DatabaseObject> {
+        private final Connection connection;
+
+        protected ExistsInDatabaseMatcher(final Connection connection) {
+            this.connection = connection;
+        }
+
+        /**
+         * Get a SQL command that checks if the database object exists in the database.
+         * <p>
+         * The sql command must have one placeholder that will be filled with the name of the sql object to match.
+         * </p>
+         * 
+         * @param object database object to match
+         * @return sql statement
+         */
+        protected abstract String getCheckCommand(final DatabaseObject object);
+
+        private boolean matchResult(final DatabaseObject object, final PreparedStatement objectExistenceStatement)
+                throws SQLException {
+            try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+
+        @Override
+        protected boolean matchesSafely(final DatabaseObject object) {
+            try (final PreparedStatement objectExistenceStatement = this.connection
+                    .prepareStatement(getCheckCommand(object))) {
+                objectExistenceStatement.setString(1, object.getName());
+                return matchResult(object, objectExistenceStatement);
+            } catch (final SQLException exception) {
+                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
+            }
+        }
+
         @Override
         public void describeTo(final Description description) {
             description.appendText("database object exists in database");
