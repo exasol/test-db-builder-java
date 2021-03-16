@@ -6,6 +6,7 @@ import static com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege.KILL_AN
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.DELETE;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.UPDATE;
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -199,6 +200,34 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
             script.drop();
             table.drop();
             exasolSchema.drop();
+        }
+    }
+
+    @Test
+    @Override
+    @SuppressWarnings("java:S5786") // this method needs to be protected for overriding the one from the abstract test
+    protected void testCreateSchemaIsSqlInjectionSafe() {
+        final AssertionError assertionError = assertThrows(AssertionError.class,
+                () -> this.factory.createSchema("INJECTION_TEST\""));
+        assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+    }
+
+    @Test
+    @Override
+    @SuppressWarnings("java:S5786") // this method needs to be protected for overriding the one from the abstract test
+    protected void testCreateTableIsSqlInjectionSafe() {
+        testCreateTableIsSqlInjectionSafe("\"", "");
+        testCreateTableIsSqlInjectionSafe("", "\"");
+    }
+
+    private void testCreateTableIsSqlInjectionSafe(final String quotesForTable, final String quotesForColumn) {
+        final Schema schema = this.factory.createSchema("INJECTION_TEST");
+        try {
+            final AssertionError assertionError = assertThrows(AssertionError.class,
+                    () -> schema.createTable("test" + quotesForTable, "test" + quotesForColumn, "INTEGER"));
+            assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+        } finally {
+            schema.drop();
         }
     }
 
@@ -442,28 +471,16 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
     private static class ExistsInDatabaseMatcher
             extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
-        private final Connection connection;
-
         private ExistsInDatabaseMatcher(final Connection connection) {
-            this.connection = connection;
+            super(connection);
         }
 
         @Override
-        protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = this.connection
-                    .prepareStatement("SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE "
-                            + getSysName(object) + "_NAME=?")) {
-                objectExistenceStatement.setString(1, object.getName());
-                try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                    return resultSet.next();
-                }
-            } catch (final SQLException exception) {
-                throw new AssertionError("Unable to determine existence of " + object.getType() + " "
-                        + object.getFullyQualifiedName() + ".", exception);
-            }
+        protected String getCheckCommand(final DatabaseObject object) {
+            return "SELECT 1 FROM SYS.EXA_ALL_" + getTableSysName(object) + "S WHERE " + getSysName(object) + "_NAME=?";
         }
 
-        private static String getTableSysName(final DatabaseObject object) {
+        private String getTableSysName(final DatabaseObject object) {
             if (object instanceof AdapterScript || object instanceof UdfScript) {
                 return "SCRIPT";
             } else {

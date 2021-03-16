@@ -32,7 +32,7 @@ public class MySqlImmediateDatabaseObjectWriter extends AbstractImmediateDatabas
 
     @Override
     protected String getQuotedColumnName(final String columnName) {
-        return "`" + columnName + "`";
+        return MySQLIdentifier.of(columnName).quote();
     }
 
     @Override

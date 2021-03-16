@@ -17,4 +17,9 @@ class PostgreSqlIdentifierTest {
     void testQuote() {
         assertThat(PostgreSqlIdentifier.of("test").quote(), equalTo("\"test\""));
     }
+
+    @Test
+    void testQuoteIsInjectionSafe() {
+        assertThat(PostgreSqlIdentifier.of("test \"").quote(), equalTo("\"test \"\"\""));
+    }
 }

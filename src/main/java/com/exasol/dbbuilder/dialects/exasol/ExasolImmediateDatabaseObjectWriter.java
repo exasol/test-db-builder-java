@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.dbbuilder.dialects.exasol.udf.*;
 import com.exasol.errorreporting.ExaError;
@@ -98,7 +99,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     @Override
     protected String getQuotedColumnName(final String columnName) {
-        return "\"" + columnName + "\"";
+        return ExasolIdentifier.of(columnName).quote();
     }
 
     /**

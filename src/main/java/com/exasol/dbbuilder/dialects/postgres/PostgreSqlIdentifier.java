@@ -31,7 +31,7 @@ public class PostgreSqlIdentifier implements Identifier {
 
     @Override
     public String quote() {
-        return "\"" + this.id + "\"";
+        return "\"" + this.id.replace("\"", "\"\"") + "\"";
     }
 
     @Override

@@ -123,35 +123,17 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
 
     private static class ExistsInDatabaseMatcher
             extends AbstractDatabaseObjectCreationAndDeletionIT.ExistsInDatabaseMatcher {
-        private final Connection connection;
-
         private ExistsInDatabaseMatcher(final Connection connection) {
-            this.connection = connection;
+            super(connection);
         }
 
-        @Override
-        protected boolean matchesSafely(final DatabaseObject object) {
-            try (final PreparedStatement objectExistenceStatement = this.connection
-                    .prepareStatement(getCheckCommand(object));
-                    final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getString(1).equals(object.getName());
-            } catch (final SQLException exception) {
-                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
-            }
-        }
-
-        private String getCheckCommand(final DatabaseObject object) {
+        protected String getCheckCommand(final DatabaseObject object) {
             if (object instanceof User) {
-                final User user = (User) object;
-                return "SELECT user FROM mysql.user WHERE user = \"" + user.getName() + "\"";
+                return "SELECT 1 FROM mysql.user WHERE user = ?";
             } else if (object instanceof Table) {
-                final Table table = (Table) object;
-                return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = \"" + table.getName()
-                        + "\"";
+                return "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?";
             } else if (object instanceof Schema) {
-                final Schema schema = (Schema) object;
-                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = \"" + schema.getName()
-                        + "\"";
+                return "SELECT 1 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?";
             } else {
                 throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
             }
