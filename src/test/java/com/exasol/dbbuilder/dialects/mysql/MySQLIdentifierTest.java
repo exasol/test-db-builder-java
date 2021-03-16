@@ -38,4 +38,10 @@ class MySQLIdentifierTest {
     void equalsContract() {
         EqualsVerifier.simple().forClass(MySQLIdentifier.class).verify();
     }
+
+    @Test
+    void testIdentifierIsInjectionSafe() {
+        assertThat(MySQLIdentifier.of("test`, `secret_column`, `other").quote(),
+                equalTo("`test``, ``secret_column``, ``other`"));
+    }
 }

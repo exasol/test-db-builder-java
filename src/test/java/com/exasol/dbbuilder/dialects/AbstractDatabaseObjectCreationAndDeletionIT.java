@@ -16,6 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
+    private static final String QUOTES = "` `` ' '' \" \"\"";
     protected DatabaseObjectFactory factory;
     protected Connection adminConnection;
 
@@ -64,6 +65,12 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     @Test
+    protected void testCreateSchemaIsSqlInjectionSafe() {
+        final Schema schema = this.factory.createSchema("INJECTION_TEST" + QUOTES);
+        assertThat(schema, existsInDatabase());
+    }
+
+    @Test
     // [itest->dsn~creating-tables~1]
     void testCreateTable() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
@@ -77,6 +84,13 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
         final Table table = schema.createTable("THE_TABLE_TO_DROP", "COL1", "DATE", "COL2", "INT");
         table.drop();
         assertThat(table, not(existsInDatabase()));
+    }
+
+    @Test
+    protected void testCreateTableIsSqlInjectionSafe() {
+        final Table table = this.factory.createSchema("INJECTION_TEST").createTable("INJECTION_TEST_TABLE " + QUOTES,
+                "MY_COL" + QUOTES, "INTEGER");
+        assertThat(table, existsInDatabase());
     }
 
     @Test

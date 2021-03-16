@@ -40,25 +40,31 @@ class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObje
         @Override
         protected boolean matchesSafely(final DatabaseObject object) {
             final String checkCommand = getCheckCommand(object);
-            try (final PreparedStatement objectExistenceStatement = this.connection.prepareStatement(checkCommand);
-                    final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
-                return resultSet.next() && resultSet.getString(1).equals(object.getName());
+            try (final PreparedStatement objectExistenceStatement = this.connection.prepareStatement(checkCommand)) {
+                objectExistenceStatement.setString(1, object.getName());
+                return matchResult(object, objectExistenceStatement);
             } catch (final SQLException exception) {
                 throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
+            }
+        }
+
+        private boolean matchResult(final DatabaseObject object, final PreparedStatement objectExistenceStatement)
+                throws SQLException {
+            try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
+                return resultSet.next() && resultSet.getString(1).equals(object.getName());
             }
         }
 
         private String getCheckCommand(final DatabaseObject object) {
             if (object instanceof User) {
                 final User user = (User) object;
-                return "SELECT rolname FROM pg_catalog.pg_roles WHERE rolname = '" + user.getName() + "'";
+                return "SELECT rolname FROM pg_catalog.pg_roles WHERE rolname = ?";
             } else if (object instanceof Table) {
                 final Table table = (Table) object;
-                return "SELECT table_name FROM information_schema.tables WHERE table_name = '" + table.getName() + "'";
+                return "SELECT table_name FROM information_schema.tables WHERE table_name = ?";
             } else if (object instanceof Schema) {
                 final Schema schema = (Schema) object;
-                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" + schema.getName()
-                        + "'";
+                return "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?";
             } else {
                 throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
             }

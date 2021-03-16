@@ -6,6 +6,7 @@ import static com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege.KILL_AN
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.DELETE;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.UPDATE;
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -199,6 +200,34 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
             script.drop();
             table.drop();
             exasolSchema.drop();
+        }
+    }
+
+    @Test
+    @Override
+    @SuppressWarnings("java:S5786") // this method needs to be protected for overriding the one from the abstract test
+    protected void testCreateSchemaIsSqlInjectionSafe() {
+        final AssertionError assertionError = assertThrows(AssertionError.class,
+                () -> this.factory.createSchema("INJECTION_TEST\""));
+        assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+    }
+
+    @Test
+    @Override
+    @SuppressWarnings("java:S5786") // this method needs to be protected for overriding the one from the abstract test
+    protected void testCreateTableIsSqlInjectionSafe() {
+        testCreateTableIsSqlInjectionSafe("\"", "");
+        testCreateTableIsSqlInjectionSafe("", "\"");
+    }
+
+    private void testCreateTableIsSqlInjectionSafe(final String quotesForTable, final String quotesForColumn) {
+        final Schema schema = this.factory.createSchema("INJECTION_TEST");
+        try {
+            final AssertionError assertionError = assertThrows(AssertionError.class,
+                    () -> schema.createTable("test" + quotesForTable, "test" + quotesForColumn, "INTEGER"));
+            assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+        } finally {
+            schema.drop();
         }
     }
 
