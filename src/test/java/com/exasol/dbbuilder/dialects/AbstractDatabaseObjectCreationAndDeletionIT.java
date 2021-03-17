@@ -1,5 +1,6 @@
 package com.exasol.dbbuilder.dialects;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -83,6 +84,23 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
         final Table table = schema.createTable("THE_TABLE_TO_DROP", "COL1", "DATE", "COL2", "INT");
         table.drop();
         assertThat(table, not(existsInDatabase()));
+    }
+
+    @Test
+    void testTruncateTable() throws SQLException {
+        final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TRUNCATE_TABLE");
+        final Table table = schema.createTable("MY_TABLE", "COL1", "INTEGER").insert(1);
+        table.truncate();
+        assertThat(getTableSize(table), equalTo(0));
+    }
+
+    private int getTableSize(final Table table) throws SQLException {
+        try (final Statement statement = getAdminConnection().createStatement();
+                final ResultSet resultSet = statement
+                        .executeQuery("SELECT COUNT(*) FROM " + table.getFullyQualifiedName())) {
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
     }
 
     @Test

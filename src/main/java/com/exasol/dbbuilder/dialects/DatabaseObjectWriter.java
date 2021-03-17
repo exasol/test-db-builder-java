@@ -31,6 +31,13 @@ public interface DatabaseObjectWriter {
     void write(final Table table, final Stream<List<Object>> rows);
 
     /**
+     * Truncate a table.
+     * 
+     * @param table table to truncate
+     */
+    void truncate(Table table);
+
+    /**
      * Create a user in the database.
      *
      * @param user to be created

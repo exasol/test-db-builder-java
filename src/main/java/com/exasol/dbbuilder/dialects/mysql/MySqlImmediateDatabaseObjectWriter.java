@@ -19,6 +19,11 @@ public class MySqlImmediateDatabaseObjectWriter extends AbstractImmediateDatabas
     }
 
     @Override
+    public void truncate(final Table table) {
+        writeToObject(table, "TRUNCATE " + table.getFullyQualifiedName());
+    }
+
+    @Override
     public void write(final User user) {
         writeToObject(user,
                 "CREATE USER " + user.getFullyQualifiedName() + " IDENTIFIED BY '" + user.getPassword() + "'");
