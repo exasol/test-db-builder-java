@@ -202,11 +202,6 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
     }
 
     @Override
-    public void truncate(final Table table) {
-        writeToObject(table, "DELETE FROM " + table.getFullyQualifiedName());
-    }
-
-    @Override
     public void write(final User user) {
         writeToObject(user,
                 "CREATE USER " + user.getFullyQualifiedName() + " IDENTIFIED BY \"" + user.getPassword() + "\"");

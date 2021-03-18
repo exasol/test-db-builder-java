@@ -24,11 +24,6 @@ public class PostgreSqlImmediateDatabaseObjectWriter extends AbstractImmediateDa
     }
 
     @Override
-    public void truncate(final Table table) {
-        writeToObject(table, "TRUNCATE " + table.getFullyQualifiedName());
-    }
-
-    @Override
     public void write(final User user) {
         writeToObject(user, "CREATE USER " + user.getFullyQualifiedName() + " PASSWORD '" + user.getPassword() + "'");
     }
