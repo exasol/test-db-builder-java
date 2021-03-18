@@ -58,6 +58,11 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         writeToObject(table, builder.toString());
     }
 
+    @Override
+    public void truncate(final Table table) {
+        writeToObject(table, "TRUNCATE TABLE " + table.getFullyQualifiedName());
+    }
+
     /**
      * Get a quoted column name.
      * 

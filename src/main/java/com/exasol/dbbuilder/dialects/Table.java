@@ -74,6 +74,13 @@ public class Table extends AbstractSchemaChild {
     }
 
     /**
+     * Remove all rows from this table.
+     */
+    public void truncate() {
+        this.writer.truncate(this);
+    }
+
+    /**
      * Insert multiple rows at once. Compared to inserting each row using {@link #insert(Object...)} this is a lot
      * faster.
      * 
