@@ -8,6 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import com.exasol.dbbuilder.dialects.*;
+import com.exasol.errorreporting.ExaError;
 
 class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:13.1";
@@ -44,7 +45,7 @@ class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObje
             } else if (object instanceof Schema) {
                 return "SELECT 1 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?";
             } else {
-                throw new AssertionError("Assertion for " + object.getType() + " is not yet implemented.");
+                throw new AssertionError(ExaError.messageBuilder("").message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
             }
         }
     }

@@ -34,7 +34,7 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
         when(definition.hasPassword()).thenReturn(true);
         final DatabaseObjectException exception = assertThrows(DatabaseObjectException.class,
                 () -> writer.write(definition));
-        assertThat(exception.getMessage(), startsWith("User name missing"));
+        assertThat(exception.getMessage(), startsWith("E-TDBJ-5: User name missing"));
     }
 
     @Test

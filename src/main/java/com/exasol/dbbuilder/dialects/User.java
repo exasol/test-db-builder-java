@@ -3,6 +3,8 @@ package com.exasol.dbbuilder.dialects;
 import java.util.Map;
 import java.util.Set;
 
+import com.exasol.errorreporting.ExaError;
+
 /**
  * Database user.
  */
@@ -66,7 +68,6 @@ public interface User extends DatabaseObject {
 
     @Override
     default DatabaseObject getParent() {
-        throw new DatabaseObjectException(this,
-                "Illegal attempt to access parent object of a USER which is a top-level object.");
+        throw new DatabaseObjectException(this,ExaError.messageBuilder("E-TDBJ-17").message("Illegal attempt to access parent object of a USER which is a top-level object.").toString());
     }
 }

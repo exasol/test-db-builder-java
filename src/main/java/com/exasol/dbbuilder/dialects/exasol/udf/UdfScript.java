@@ -10,6 +10,7 @@ import com.exasol.dbbuilder.dialects.Schema;
 import com.exasol.dbbuilder.dialects.exasol.AbstractScript;
 import com.exasol.dbbuilder.dialects.exasol.BucketFsContentAdapterScriptBuilder;
 import com.exasol.dbbuilder.dialects.exasol.ExasolImmediateDatabaseObjectWriter;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * This class represents UDF scripts.
@@ -200,8 +201,8 @@ public class UdfScript extends AbstractScript {
             requireNotNull(this.language, "language");
             requireNotNull(this.inputType, "inputType");
             if (this.returnType == null) {
-                throw new IllegalStateException(
-                        "Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder.");
+                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-7")
+                        .message("Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder.").toString());
             }
             final UdfScript udf = new UdfScript(this);
             this.getWriter().write(udf);

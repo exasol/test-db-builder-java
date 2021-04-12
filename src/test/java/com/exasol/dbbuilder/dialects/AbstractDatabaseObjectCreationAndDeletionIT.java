@@ -12,6 +12,8 @@ import org.hamcrest.*;
 import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import com.exasol.errorreporting.ExaError;
+
 @Tag("integration")
 @Testcontainers
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
@@ -156,7 +158,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
                 objectExistenceStatement.setString(1, object.getName());
                 return matchResult(object, objectExistenceStatement);
             } catch (final SQLException exception) {
-                throw new AssertionError("Unable to determine existence of object: " + object.getName(), exception);
+                throw new AssertionError(ExaError.messageBuilder("").message("Unable to determine existence of object: {{object}}", object.getName()).toString(), exception);
             }
         }
 

@@ -79,15 +79,14 @@ class UdfScriptTest {
                 .inputType(UdfScript.InputType.SET).language(UdfScript.Language.JAVA);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
         assertThat(exception.getMessage(), equalTo(
-                "Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder."));
+                "E-TDBJ-7: Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder."));
     }
 
     @Test
     void testMissingLanguage() {
         final UdfScript.Builder builder = getDefaultBuilder().language(null);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
-        assertThat(exception.getMessage(),
-                equalTo("language is a required field. Please provide a value by calling language() before build()."));
+        assertThat(exception.getMessage(), equalTo("E-TDBJ-15: language is a required field. Please provide a value by calling language() before build()."));
     }
 
     private UdfScript.Builder getDefaultBuilder() {

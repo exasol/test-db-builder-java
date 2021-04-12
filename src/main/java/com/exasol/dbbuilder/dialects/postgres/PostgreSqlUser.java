@@ -2,6 +2,7 @@ package com.exasol.dbbuilder.dialects.postgres;
 
 import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * PostgreSQL {@link User}.
@@ -41,7 +42,6 @@ public class PostgreSqlUser extends AbstractUser {
 
     @Override
     public User grantAllAccess(final DatabaseObject object) {
-        throw new UnsupportedOperationException(
-                "Creating users with privileges is not implemented in this version of the test-db-builder.");
+        throw new UnsupportedOperationException(ExaError.messageBuilder("E-TDBJ-12").message("Creating users with privileges is not implemented in this version of the test-db-builder.").toString());
     }
 }
