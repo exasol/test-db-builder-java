@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.exasol.db.Identifier;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * This class contains common logic for a database schema.
@@ -68,8 +69,11 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
             this.tables.add(table);
             return table;
         } else {
-            throw new IllegalArgumentException("Got " + columnNames.size() + " column names but " + columnTypes
-                    + " column types. Please provide the same number of parameters for both when creating a table.");
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-5").message(
+                    "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.")
+                    .parameter("column names size", columnNames.size())
+                    .parameter("column types", columnTypes)
+                    .toString());
         }
     }
 
