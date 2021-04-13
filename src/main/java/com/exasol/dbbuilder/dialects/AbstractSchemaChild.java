@@ -72,7 +72,7 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
          */
         protected void requireNotNull(final Object object, final String name) {
             if (object == null) {
-                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-15").message("{{name|uq}} is a required field. Please provide a value by calling {{name|uq}}() before build().", name).toString());
+                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-15").message("{{name}} is a required field. Please provide a value by calling {{name|uq}}() before build().", name).toString());
             }
         }
     }

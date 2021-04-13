@@ -45,7 +45,7 @@ class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObje
             } else if (object instanceof Schema) {
                 return "SELECT 1 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?";
             } else {
-                throw new AssertionError(ExaError.messageBuilder("").message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
+                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-27").message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
             }
         }
     }

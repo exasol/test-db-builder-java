@@ -421,7 +421,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
             assertThat("User " + user.getFullyQualifiedName() + " has global privilege " + expectedPrivilege,
                     result.next(), equalTo(true));
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("")
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-20")
                 .message("Unable to determine if user {{user}} has global privilege {{privilege}}.", user.getFullyQualifiedName(), expectedPrivilege).toString(), exception);
         }
     }
@@ -445,7 +445,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
             assertThat("User " + user.getFullyQualifiedName() + " has privilege " + expectedObjectPrivilege + " on "
                     + object.getFullyQualifiedName(), result.next(), equalTo(true));
         } catch (final Exception exception) {
-            throw new AssertionError(ExaError.messageBuilder("")
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-21")
                 .message("Unable to determine if user {{user}} has privilege {{privilege}} on {{object}}", user.getFullyQualifiedName(), expectedObjectPrivilege, object.getFullyQualifiedName()).toString(), exception);
         }
     }
@@ -460,7 +460,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                     .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
             assertThat(result, table().row(1L, "FOO").row(2L, "BAR").matches());
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("").message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName()).toString(), exception);
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-22").message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName()).toString(), exception);
         }
     }
 

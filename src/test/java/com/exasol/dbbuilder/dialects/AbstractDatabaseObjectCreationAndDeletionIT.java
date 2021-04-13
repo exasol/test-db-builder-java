@@ -158,7 +158,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
                 objectExistenceStatement.setString(1, object.getName());
                 return matchResult(object, objectExistenceStatement);
             } catch (final SQLException exception) {
-                throw new AssertionError(ExaError.messageBuilder("").message("Unable to determine existence of object: {{object}}", object.getName()).toString(), exception);
+                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-19").message("Unable to determine existence of object: {{object}}", object.getName()).toString(), exception);
             }
         }
 

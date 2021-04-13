@@ -86,7 +86,7 @@ class UdfScriptTest {
     void testMissingLanguage() {
         final UdfScript.Builder builder = getDefaultBuilder().language(null);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
-        assertThat(exception.getMessage(), equalTo("E-TDBJ-15: language is a required field. Please provide a value by calling language() before build()."));
+        assertThat(exception.getMessage(), equalTo("E-TDBJ-15: \'language\' is a required field. Please provide a value by calling language() before build()."));
     }
 
     private UdfScript.Builder getDefaultBuilder() {
