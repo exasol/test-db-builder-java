@@ -78,9 +78,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         } else {
             if (definition.hasPassword()) {
                 throw new DatabaseObjectException(definition,
-                        "User name missing when trying to write connection definition "
-                                + definition.getFullyQualifiedName()
-                                + ". Please always provide user name and password together or not at all.");
+                    ExaError.messageBuilder("E-TDBJ-5").message("User name missing when trying to write connection definition {{definition name}}. Please always provide user name and password together or not at all.", definition.getFullyQualifiedName()).toString());
             } else {
                 writeToObject(definition, "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '"
                         + definition.getTarget() + "'");
@@ -271,7 +269,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
             return statement.getUpdateCount();
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(script, ExaError.messageBuilder("E-TDBJ-4")
-                    .message("Failed to execute script query {{query}}.").parameter("query", query).toString(),
+                    .message("Failed to execute script query {{query}}.", query).toString(),
                     exception);
         }
     }
@@ -331,7 +329,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
             return table;
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(script,
-                    "Failed to execute script returning table" + script.getFullyQualifiedName(), exception);
+                ExaError.messageBuilder("E-TDBJ-6").message("Failed to execute script returning table {{script name}}", script.getFullyQualifiedName()).toString(), exception);
         }
     }
 }

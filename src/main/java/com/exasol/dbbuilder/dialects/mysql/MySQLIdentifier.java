@@ -3,6 +3,7 @@ package com.exasol.dbbuilder.dialects.mysql;
 import java.util.Objects;
 
 import com.exasol.db.Identifier;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * MySQL-specific identifier.
@@ -24,10 +25,8 @@ public class MySQLIdentifier implements Identifier {
         if (validate(id)) {
             return new MySQLIdentifier(id);
         } else {
-            throw new AssertionError("E-ID-1: Unable to create identifier \"" + id //
-                    + "\" because it contains illegal characters." //
-                    + " For information about valid identifiers, please refer to" //
-                    + " https://dev.mysql.com/doc/refman/8.0/en/identifiers.html");
+            throw new AssertionError(ExaError.messageBuilder("E-ID-1")
+                .message("Unable to create identifier {{id}} because it contains illegal characters. For information about valid identifiers, please refer to https://dev.mysql.com/doc/refman/8.0/en/identifiers.html", id).toString());
         }
     }
 

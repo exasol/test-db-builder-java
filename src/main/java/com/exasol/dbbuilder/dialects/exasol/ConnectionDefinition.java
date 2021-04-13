@@ -4,6 +4,7 @@ import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Definition of a connection to another database or service.
@@ -92,8 +93,7 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
 
     @Override
     public DatabaseObject getParent() {
-        throw new DatabaseObjectException(this,
-                "Illegal attempt to access parent object of a CONNECTION which is a top-level object.");
+        throw new DatabaseObjectException(this, ExaError.messageBuilder("E-TDBJ-8").message("Illegal attempt to access parent object of a CONNECTION which is a top-level object.").toString());
     }
 
     @Override

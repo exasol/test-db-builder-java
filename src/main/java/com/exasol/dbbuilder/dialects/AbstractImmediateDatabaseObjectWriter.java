@@ -31,7 +31,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(object, "Failed to write to object: " + sql, exception);
+            throw new DatabaseObjectException(object, ExaError.messageBuilder("E-TDBJ-13").message("Failed to write to object: {{sql}}", sql).toString(), exception);
         }
     }
 
@@ -86,8 +86,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(table,
                     ExaError.messageBuilder("E-TDBJ-2")
-                            .message("Failed to create prepared statement {{statement}} for insert.")
-                            .parameter("statement", sql).toString(),
+                            .message("Failed to create prepared statement {{statement}} for insert.", sql).toString(),
                     exception);
         }
     }
@@ -101,7 +100,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             preparedStatement.execute();
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(table, ExaError.messageBuilder("E-TDBJ-1")
-                    .message("Failed to execute insert query: {{statement}}").parameter("statement", sql).toString(),
+                    .message("Failed to execute insert query: {{statement}}", sql).toString(),
                     exception);
         }
     }
@@ -146,7 +145,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
                 final String sql = Files.readString(sqlFile);
                 statement.execute(sql);
             } catch (final IOException | SQLException exception) {
-                throw new DatabaseObjectException("Unable to execute SQL from file: " + sqlFile, exception);
+                throw new DatabaseObjectException(ExaError.messageBuilder("E-TDBJ-14").message("Unable to execute SQL from file: {{sqlFile}}", sqlFile).toString(), exception);
             }
         }
     }

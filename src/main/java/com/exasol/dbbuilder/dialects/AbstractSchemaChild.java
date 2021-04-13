@@ -1,6 +1,7 @@
 package com.exasol.dbbuilder.dialects;
 
 import com.exasol.db.Identifier;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Base class for all database objects in the scope of a database schema.
@@ -71,8 +72,7 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
          */
         protected void requireNotNull(final Object object, final String name) {
             if (object == null) {
-                throw new IllegalStateException(name + " is a required field. Please provide a value by calling " + name
-                        + "() before build().");
+                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-15").message("{{name}} is a required field. Please provide a value by calling {{name|uq}}() before build().", name).toString());
             }
         }
     }

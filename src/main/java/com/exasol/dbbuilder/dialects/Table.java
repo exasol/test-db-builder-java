@@ -92,11 +92,8 @@ public class Table extends AbstractSchemaChild {
         this.writer.write(this, rows.peek(row -> {
             if (row.size() != getColumnCount()) {
                 throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-3").message(
-                        "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.")
-                        .parameter("actual", row.size())//
-                        .parameter("table name", getFullyQualifiedName())//
-                        .parameter("expected", getColumnCount())//
-                        .toString());
+                    "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.", row.size(), getFullyQualifiedName(), getColumnCount())
+                    .toString());
             }
         }));
         return this;

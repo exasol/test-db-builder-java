@@ -2,6 +2,8 @@ package com.exasol.dbbuilder.dialects;
 
 import java.util.List;
 
+import com.exasol.errorreporting.ExaError;
+
 /**
  * Database schema.
  */
@@ -87,7 +89,6 @@ public interface Schema extends DatabaseObject {
 
     @Override
     default DatabaseObject getParent() {
-        throw new DatabaseObjectException(this,
-                "Illegal attempt to access parent object of a SCHEMA which is a top-level object.");
+        throw new DatabaseObjectException(this,ExaError.messageBuilder("E-TDBJ-16").message("Illegal attempt to access parent object of a SCHEMA which is a top-level object.").toString());
     }
 }

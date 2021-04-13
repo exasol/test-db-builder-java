@@ -9,6 +9,7 @@ import com.exasol.dbbuilder.dialects.AbstractSchema;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Exasol database schema.
@@ -89,7 +90,7 @@ public class ExasolSchema extends AbstractSchema {
             return createScriptBuilder(name).parameter(parameterNames).content(path).build();
         } catch (final IOException exception) {
             throw new DatabaseObjectException(this,
-                    "Unable to create script \"" + name + "\" from file \"" + path + "\".", exception);
+                ExaError.messageBuilder("E-TDBJ-9").message("Unable to create script {{script name}} from file {{path}}.", name, path).toString(), exception);
         }
     }
 
