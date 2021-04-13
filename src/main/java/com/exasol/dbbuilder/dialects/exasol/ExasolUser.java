@@ -1,6 +1,6 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import com.exasol.db.ExasolIdentifier;
+import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractUser;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
@@ -19,8 +19,8 @@ public class ExasolUser extends AbstractUser {
      * @param writer database object writer
      * @param name   user name
      */
-    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        super(ExasolIdentifier.of(name));
+    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
+        super(name);
         this.writer = writer;
         this.writer.write(this);
     }
@@ -32,8 +32,8 @@ public class ExasolUser extends AbstractUser {
      * @param name     user name
      * @param password login password
      */
-    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final String name, final String password) {
-        super(ExasolIdentifier.of(name), password);
+    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name, final String password) {
+        super(name, password);
         this.writer = writer;
         writer.write(this);
     }

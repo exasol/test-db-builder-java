@@ -24,12 +24,12 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public User createUser(final String name) {
-        return new MySqlUser(this.writer, name);
+        return new MySqlUser(this.writer, MySQLIdentifier.of(name));
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new MySqlUser(this.writer, name, password);
+        return new MySqlUser(this.writer, MySQLIdentifier.of(name), password);
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public MySqlSchema createSchema(final String name) {
-        return new MySqlSchema(this.writer, name);
+        return new MySqlSchema(this.writer, MySQLIdentifier.of(name));
     }
 
     @Override

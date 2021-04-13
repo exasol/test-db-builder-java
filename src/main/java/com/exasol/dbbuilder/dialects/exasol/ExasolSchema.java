@@ -23,8 +23,8 @@ public class ExasolSchema extends AbstractSchema {
      * @param writer database object writer
      * @param name   name of the database schema
      */
-    public ExasolSchema(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        super(ExasolIdentifier.of(name));
+    public ExasolSchema(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
+        super(name);
         this.writer = writer;
         writer.write(this);
     }

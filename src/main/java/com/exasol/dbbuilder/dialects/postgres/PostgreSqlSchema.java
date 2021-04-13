@@ -15,8 +15,8 @@ public class PostgreSqlSchema extends AbstractSchema {
      * @param writer object writer
      * @param name   name of the schema
      */
-    public PostgreSqlSchema(final PostgreSqlImmediateDatabaseObjectWriter writer, final String name) {
-        super(PostgreSqlIdentifier.of(name));
+    public PostgreSqlSchema(final PostgreSqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+        super(name);
         this.writer = writer;
         this.writer.write(this);
     }

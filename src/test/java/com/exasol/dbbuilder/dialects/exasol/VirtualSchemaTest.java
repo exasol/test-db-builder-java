@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
+import com.exasol.db.ExasolIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +27,7 @@ class VirtualSchemaTest {
 
     @BeforeEach
     void beforeEach() {
-        this.builder = VirtualSchema.builder(this.writerMock, "VS");
+        this.builder = VirtualSchema.builder(this.writerMock, ExasolIdentifier.of("VS"));
     }
 
     @Test

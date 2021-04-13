@@ -14,6 +14,6 @@ class PostgreSqlSchemaTest extends AbstractSchemaTest {
 
     @Override
     protected Schema createSchema(final String name) {
-        return new PostgreSqlSchema(this.writerMock, name);
+        return new PostgreSqlSchema(this.writerMock, PostgreSqlIdentifier.of(name));
     }
 }
