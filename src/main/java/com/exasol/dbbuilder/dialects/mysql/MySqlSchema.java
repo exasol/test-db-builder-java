@@ -16,8 +16,8 @@ public class MySqlSchema extends AbstractSchema {
      * @param writer database object writer
      * @param name   name of the database schema
      */
-    public MySqlSchema(final MySqlImmediateDatabaseObjectWriter writer, final String name) {
-        super(MySQLIdentifier.of(name));
+    public MySqlSchema(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+        super(name);
         this.writer = writer;
         this.writer.write(this);
     }

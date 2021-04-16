@@ -1,6 +1,6 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import com.exasol.db.ExasolIdentifier;
+import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
@@ -27,9 +27,9 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      * @param target target the connection points to
      */
     // [impl~creating-connections~1]
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final String name,
+    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name,
             final String target) {
-        super(ExasolIdentifier.of(name), false);
+        super(name, false);
         this.writer = writer;
         this.target = target;
         this.writer.write(this);
@@ -44,9 +44,9 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      * @param userName user as which to connect
      * @param password password or password-like credential
      */
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final String name,
+    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name,
             final String target, final String userName, final String password) {
-        super(ExasolIdentifier.of(name), false);
+        super(name, false);
         this.target = target;
         this.writer = writer;
         this.userName = userName;

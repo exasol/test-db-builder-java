@@ -7,11 +7,13 @@ Code name: Truncating tables
 In this release following changes are made:
 * Added support for truncating tables. 
 * Used Error Message Builder for Error Messages.
+* Unified the interfaces for creation of dB Objects
 
 ## Features
 
 * #67: Add Table#truncate()
 * #60: Used Error Message Builder for Error Messages
+* #55: Unified the interfaces for creation of dB Objects
 
 ## Dependency Updates
 

@@ -1,5 +1,6 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
+import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractUser;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
@@ -18,8 +19,8 @@ public class MySqlUser extends AbstractUser {
      * @param writer database object writer
      * @param name   user name
      */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final String name) {
-        super(MySQLIdentifier.of(name));
+    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+        super(name);
         this.writer = writer;
         this.writer.write(this);
     }
@@ -31,8 +32,8 @@ public class MySqlUser extends AbstractUser {
      * @param name     user name
      * @param password login password
      */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final String name, final String password) {
-        super(MySQLIdentifier.of(name), password);
+    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name, final String password) {
+        super(name, password);
         this.writer = writer;
         this.writer.write(this);
     }

@@ -46,6 +46,6 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public Schema createSchema(final String name) {
-        return new PostgreSqlSchema(this.writer, name);
+        return new PostgreSqlSchema(this.writer, PostgreSqlIdentifier.of(name));
     }
 }

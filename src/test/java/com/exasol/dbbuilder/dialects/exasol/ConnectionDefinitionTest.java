@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.exasol.db.ExasolIdentifier;
+import com.exasol.db.Identifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,14 +18,15 @@ import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 // [utest->dsn~creating-connections~1]
 class ConnectionDefinitionTest {
     private static final String CONNECTION_TARGET = "THE_TARGET";
-    private static final String CONNECTION_NAME = "THE_CONNECTION_NAME";
+    private static final Identifier CONNECTION_NAME = ExasolIdentifier.of("THE_CONNECTION_NAME");
+
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
 
     @Test
     void testGetName() {
         assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).getName(),
-                equalTo(CONNECTION_NAME));
+                equalTo(CONNECTION_NAME.toString()));
     }
 
     @Test

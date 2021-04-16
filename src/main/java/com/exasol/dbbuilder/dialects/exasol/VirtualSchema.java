@@ -3,7 +3,6 @@ package com.exasol.dbbuilder.dialects.exasol;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
@@ -40,8 +39,8 @@ public class VirtualSchema extends AbstractDatabaseObject {
      * @param name   name of the Virtual Schema to be built
      * @return builder instance
      */
-    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final String name) {
-        return new Builder(writer, ExasolIdentifier.of(name));
+    public static Builder builder(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
+        return new Builder(writer, name);
     }
 
     private void addReservedProperties(final Builder builder) {
