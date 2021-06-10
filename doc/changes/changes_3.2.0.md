@@ -18,7 +18,7 @@ In this release following changes are made:
 
 # Refactoring:
 
-#82: Added release_config.yml
+* #82: Added release_config.yml
 
 ## Bug Fixes:
 
