@@ -1,0 +1,28 @@
+release-platforms:
+  - GitHub
+  - Community
+  - Maven
+community-tags:
+  - Java
+  - Testing
+community-project-name: Test Database Builder (Java)
+community-project-description: |
+  Exasol's **Test Database Builder for Java** (TDDB) is a library that makes writing integration tests for database applications easier.
+
+  The main design goals are to make the code of the integration test compact and readable at the same time.
+
+  ## In a Nutshell
+
+  ```java
+  // Precondition: Get a JDBC connection and store it in variable "connection"
+  final DatabaseObjectFactory factory=new ExasolObjectFactory(connection);
+  final Schema schema factory.createSchema("ONLINESHOP");
+  final Table table=schema.createTable("ITEMS","PRODUCT_ID","DECIMAL(18,0)","NAME","VARCHAR(40)")
+          .insert("1","Cat food")
+          .insert("2","Toy mouse");
+  final User user=factory.createUser("KIMIKO")
+          .grant(CREATE_SESSION)
+          .grant(table,SELECT,UDPATE);
+  ```
+
+  For more details, please refer to the [user guide](doc/user_guide/user_guide.md).

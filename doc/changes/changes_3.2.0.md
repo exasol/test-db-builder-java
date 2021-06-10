@@ -16,6 +16,10 @@ In this release following changes are made:
 * #60: Used Error Message Builder for Error Messages
 * #55: Unified the interfaces for creation of dB Objects
 
+# Refactoring:
+
+* #82: Added release_config.yml
+
 ## Bug Fixes:
 
 * #80: Fixed broken url link in the pom.xml
