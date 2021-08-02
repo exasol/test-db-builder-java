@@ -59,13 +59,13 @@
 
 [31]: https://www.eclemma.org/jacoco/index.html
 [51]: https://github.com/exasol/project-keeper-maven-plugin
-[25]: LICENSE-exasol-jdbc.txt
 [2]: https://github.com/exasol/error-reporting-java
 [0]: https://github.com/exasol/db-fundamentals-java
 [27]: https://jdbc.postgresql.org
 [23]: http://www.apache.org/licenses/LICENSE-2.0.txt
 [29]: https://maven.apache.org/surefire/maven-surefire-plugin/
 [55]: http://www.sonatype.com/public-parent/nexus-maven-plugins/nexus-staging/nexus-staging-maven-plugin/
+[25]: https://www.exasol.com/support/secure/attachment/155343/EXASOL_SDK-7.0.11.tar.gz
 [28]: https://jdbc.postgresql.org/about/license.html
 [61]: http://maven.apache.org/plugins/maven-clean-plugin/
 [1]: https://opensource.org/licenses/MIT
