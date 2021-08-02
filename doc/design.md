@@ -28,6 +28,7 @@ Please refer to the [System Requirement Specification](system_requirements.md) f
 This section introduces the building blocks of the software. Together those building blocks make up the big picture of the software structure.
 
 ## `ExasolObjectFactory`
+
 `dsn~exasol-object-factory~1`
 
 The `ExasolObjectFactory` is a factory that allows users to create Exasol-specific database objects.
@@ -39,6 +40,7 @@ Covers:
 Needs: impl, itest
 
 ## `MySqlObjectFactory`
+
 `dsn~mysql-object-factory~1`
 
 The `MySqlObjectFactory` is a factory that allows users to create MySQL-specific database objects.
@@ -56,6 +58,7 @@ This section describes the runtime behavior of the software.
 ## Creating Database Objects
 
 ### Creating Database Users
+
 `dsn~creating-database-users~1`
 
 Users can create database users by providing a username and a password.
@@ -67,6 +70,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Creating Adapter Scripts
+
 `dsn~creating-adapter-scripts~1`
 
 Users can create Exasol adapter scripts.
@@ -77,11 +81,11 @@ Covers:
 
 Needs: impl, utest, itest
 
-### Creating Exasol Objects With JVM Options 
+### Creating Exasol Objects With JVM Options
+
 `dsn~creating-exasol-java-object-with-jvm-options~1`
 
-Users can create virtual schema adapters and UDFs with JVM options.
-They can set these options globally and TDDB will add them to all JAVA adapters and scripts.
+Users can create virtual schema adapters and UDFs with JVM options. They can set these options globally and TDDB will add them to all JAVA adapters and scripts.
 
 Rationale: By that users can for example add a debugger or profiler to all JAVA scripts.
 
@@ -92,6 +96,7 @@ Covers:
 Needs: impl, utest
 
 ### Creating Connection
+
 `dsn~creating-connections~1`
 
 Users can create Exasol connection definitions.
@@ -103,6 +108,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Creating Schemas
+
 `dsn~creating-schemas~1`
 
 Users can create dialect specific schemas.
@@ -114,6 +120,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Creating Virtual Schemas
+
 `dsn~creating-virtual-schemas~1`
 
 Users can create exasol virtual schemas.
@@ -125,6 +132,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Creating Tables
+
 `dsn~creating-tables~1`
 
 Users can create tables.
@@ -136,6 +144,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Granting System Privileges to Database Users
+
 `dsn~granting-system-privileges-to-database-users~1`
 
 Users can select and grant System Privileges to created database users from the list of supported System Privileges.
@@ -147,6 +156,7 @@ Covers:
 Needs: impl, utest, itest
 
 ### Creating Scripts
+
 `dsn~creating-scripts~1`
 
 Users can create script objects from inside schema objects by providing the script content programmatically.
@@ -158,6 +168,7 @@ Covers:
 Needs: impl, itest
 
 ### Creating UDFs
+
 `dsn~creating-udfs~1`
 
 Users can create UDF objects from inside schema objects by providing the script from file.
@@ -169,6 +180,7 @@ Covers:
 Needs: impl, itest
 
 ### Creating Scripts from Files
+
 `dsn~creating-scripts-from-files~1`
 
 Users can create scripts from inside a schema object by loading the script contents from a file.
@@ -180,9 +192,10 @@ Covers:
 Needs: impl, itest
 
 ### Creating Object Through SQL Files
+
 `dsn~creating-objects-through-sql-files~1`
 
-Users can create database objects by executing the statements in an SQL file. 
+Users can create database objects by executing the statements in an SQL file.
 
 Covers:
 
@@ -195,6 +208,7 @@ Needs: impl, itest
 ## Running Executable Database Content
 
 ### Running Scripts That Have no Return
+
 `dsn~running-scripts-that-have-no-return~1`
 
 Users can execute scripts directly from a script Java object.
@@ -208,6 +222,7 @@ Needs: impl, itest
 ## Controlling Existing Database Objects
 
 ### Controlling Existing Scripts
+
 `dsn~controlling-existing-scripts~1`
 
 Users get a control object for a script from within a schema by specifying the existing scripts name.
@@ -222,6 +237,7 @@ Needs: impl, itest
 ## Dropping database objects
 
 ### Dropping Users
+
 `dsn~dropping-users~1`
 
 Users can drop database users using TDDB.
@@ -233,6 +249,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Tables
+
 `dsn~dropping-tables~1`
 
 Users can drop tables using TDDB.
@@ -244,6 +261,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Schemas
+
 `dsn~dropping-schemas~2`
 
 Users can drop schemas using TDDB.
@@ -257,6 +275,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Adapter Scripts
+
 `dsn~dropping-adapter-scripts~1`
 
 Users can drop adapter scripts using TDDB.
@@ -268,6 +287,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Connections
+
 `dsn~dropping-connections~1`
 
 Users can drop connections using TDDB.
@@ -279,6 +299,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Scripts
+
 `dsn~dropping-scripts~1`
 
 Users can drop scripts using TDDB.
@@ -290,6 +311,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping UDFs
+
 `dsn~dropping-udfs~1`
 
 Users can drop UDFs using TDDB.
@@ -301,6 +323,7 @@ Covers:
 Needs: impl, itest
 
 ### Dropping Virtual Schemas
+
 `dsn~dropping-virtual-schemas~2`
 
 Users can drop virtual schemas using TDDB.
@@ -319,7 +342,7 @@ Needs: impl, itest
 
 ## How Do we Let Users Attach to Existing Database Object
 
-As explained in [the system requirements section "Controlling Existing Database Objects"](system_requirements#Controlling-existing-database-objects), sometimes users need to control existing database objects in integration tests.
+As explained in [the system requirements section "Controlling Existing Database Objects"](system_requirements.md#Controlling-existing-database-objects), sometimes users need to control existing database objects in integration tests.
 
 The decision on how to do this is architecture relevant because it impacts usability, code maintainability (both of the TDDB and integration tests written with it) and safety of the created code.
 
@@ -336,6 +359,7 @@ Depending on the type of the object this can require administrative privileges. 
 ### Decisions
 
 #### Attaching to Existing Database Object by Name
+
 `dsn~attaching-to-existing-database-object-by-name~1`
 
 When users attach to an existing database object, all they need is a fully-qualified name. The control object holds no metadata of that object.

@@ -376,6 +376,11 @@
                         <module>maven_central</module>
                         <module>integration_tests</module>
                     </modules>
+                    <linkReplacements>
+                        <linkReplacement>
+                            LICENSE-exasol-jdbc.txt|https://www.exasol.com/support/secure/attachment/155343/EXASOL_SDK-7.0.11.tar.gz
+                        </linkReplacement>
+                    </linkReplacements>
                 </configuration>
             </plugin>
             <plugin>
