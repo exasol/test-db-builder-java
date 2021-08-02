@@ -1,10 +1,10 @@
-# Test Database Builder for Java 3.2.1, released 2021-??-??
+# Test Database Builder for Java 3.2.1, released 2021-08-02
 
-Code name:
+Code name: Dependency Updates
 
-## Features
+## Summary
 
-* ISSUE_NUMBER: description
+In this release we updated the dependencies. By that we fixed transitive CVE-2021-36090.
 
 ## Dependency Updates
 

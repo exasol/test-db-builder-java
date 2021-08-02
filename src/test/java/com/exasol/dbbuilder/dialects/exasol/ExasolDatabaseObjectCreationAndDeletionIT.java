@@ -226,7 +226,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         try {
             final AssertionError assertionError = assertThrows(AssertionError.class,
                     () -> schema.createTable("test" + quotesForTable, "test" + quotesForColumn, "INTEGER"));
-            assertThat(assertionError.getMessage(), containsString("E-TDBJ-28"));
+            assertThat(assertionError.getMessage(), containsString("E-ID-1"));
         } finally {
             schema.drop();
         }
