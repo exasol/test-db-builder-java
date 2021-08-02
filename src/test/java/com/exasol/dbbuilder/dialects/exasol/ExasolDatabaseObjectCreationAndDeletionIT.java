@@ -210,7 +210,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     protected void testCreateSchemaIsSqlInjectionSafe() {
         final AssertionError assertionError = assertThrows(AssertionError.class,
                 () -> this.factory.createSchema("INJECTION_TEST\""));
-        assertThat(assertionError.getMessage(), containsString("E-TDBJ-28"));
+        assertThat(assertionError.getMessage(), containsString("E-ID-1"));
     }
 
     @Test
