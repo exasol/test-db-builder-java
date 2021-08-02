@@ -2,6 +2,7 @@ release-platforms:
   - GitHub
   - Community
   - Maven
+  - Jira
 community-tags:
   - Java
   - Testing

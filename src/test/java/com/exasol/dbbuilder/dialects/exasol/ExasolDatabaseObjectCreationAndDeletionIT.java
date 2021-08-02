@@ -210,7 +210,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     protected void testCreateSchemaIsSqlInjectionSafe() {
         final AssertionError assertionError = assertThrows(AssertionError.class,
                 () -> this.factory.createSchema("INJECTION_TEST\""));
-        assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+        assertThat(assertionError.getMessage(), containsString("E-TDBJ-28"));
     }
 
     @Test
@@ -226,7 +226,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         try {
             final AssertionError assertionError = assertThrows(AssertionError.class,
                     () -> schema.createTable("test" + quotesForTable, "test" + quotesForColumn, "INTEGER"));
-            assertThat(assertionError.getMessage(), containsString("E-ID-1"));
+            assertThat(assertionError.getMessage(), containsString("E-TDBJ-28"));
         } finally {
             schema.drop();
         }
@@ -422,7 +422,9 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                     result.next(), equalTo(true));
         } catch (final SQLException exception) {
             throw new AssertionError(ExaError.messageBuilder("E-TDBJ-20")
-                .message("Unable to determine if user {{user}} has global privilege {{privilege}}.", user.getFullyQualifiedName(), expectedPrivilege).toString(), exception);
+                    .message("Unable to determine if user {{user}} has global privilege {{privilege}}.",
+                            user.getFullyQualifiedName(), expectedPrivilege)
+                    .toString(), exception);
         }
     }
 
@@ -446,7 +448,9 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                     + object.getFullyQualifiedName(), result.next(), equalTo(true));
         } catch (final Exception exception) {
             throw new AssertionError(ExaError.messageBuilder("E-TDBJ-21")
-                .message("Unable to determine if user {{user}} has privilege {{privilege}} on {{object}}", user.getFullyQualifiedName(), expectedObjectPrivilege, object.getFullyQualifiedName()).toString(), exception);
+                    .message("Unable to determine if user {{user}} has privilege {{privilege}} on {{object}}",
+                            user.getFullyQualifiedName(), expectedObjectPrivilege, object.getFullyQualifiedName())
+                    .toString(), exception);
         }
     }
 
@@ -460,7 +464,9 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                     .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
             assertThat(result, table().row(1L, "FOO").row(2L, "BAR").matches());
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-22").message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName()).toString(), exception);
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-22")
+                    .message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName())
+                    .toString(), exception);
         }
     }
 
