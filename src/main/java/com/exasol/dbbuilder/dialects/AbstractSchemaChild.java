@@ -7,6 +7,7 @@ import com.exasol.errorreporting.ExaError;
  * Base class for all database objects in the scope of a database schema.
  */
 public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
+    /** Parent schema */
     protected final Schema parentSchema;
 
     /**
@@ -49,8 +50,15 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
 
         private final Schema parentSchema;
         private final Identifier name;
+        /** Is this schema child owned? */
         protected boolean owned = true;
 
+        /**
+         * Create a new abstract builder.
+         * 
+         * @param parentSchema parent schema
+         * @param name         object name
+         */
         protected Builder(final Schema parentSchema, final Identifier name) {
             this.parentSchema = parentSchema;
             this.name = name;
@@ -72,7 +80,9 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
          */
         protected void requireNotNull(final Object object, final String name) {
             if (object == null) {
-                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-15").message("{{name}} is a required field. Please provide a value by calling {{name|uq}}() before build().", name).toString());
+                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-15").message(
+                        "{{name}} is a required field. Please provide a value by calling {{name|uq}}() before build().",
+                        name).toString());
             }
         }
     }

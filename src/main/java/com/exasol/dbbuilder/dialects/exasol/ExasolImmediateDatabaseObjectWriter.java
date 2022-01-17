@@ -135,6 +135,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         writeToObject(script, "DROP SCRIPT " + script.getFullyQualifiedName());
     }
 
+    /**
+     * Write an {@link UdfScript} to the Exasol database.
+     * 
+     * @param udfScript UDF script to write
+     */
     // [impl->dsn~creating-udfs~1]
     public void write(final UdfScript udfScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE ");
@@ -162,6 +167,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         writeToObject(udfScript, sqlBuilder.toString());
     }
 
+    /**
+     * Drop a UDF script
+     * 
+     * @param udfScript script to drop
+     */
     // [impl->dsn~dropping-udfs~1]
     public void drop(final UdfScript udfScript) {
         writeToObject(udfScript, "DROP SCRIPT " + udfScript.getFullyQualifiedName());

@@ -1,10 +1,7 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractUser;
-import com.exasol.dbbuilder.dialects.DatabaseObject;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
-import com.exasol.dbbuilder.dialects.User;
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * MySQL database user.
@@ -14,10 +11,9 @@ public class MySqlUser extends AbstractUser {
 
     /**
      * Create a new database user with a default password.
-     * <p>
      *
      * @param writer database object writer
-     * @param name   user name
+     * @param name   username
      */
     public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name) {
         super(name);

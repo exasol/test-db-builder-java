@@ -1,15 +1,11 @@
 package com.exasol.dbbuilder.dialects.exasol.udf;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.Column;
 import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.exasol.AbstractScript;
-import com.exasol.dbbuilder.dialects.exasol.BucketFsContentAdapterScriptBuilder;
-import com.exasol.dbbuilder.dialects.exasol.ExasolImmediateDatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.exasol.*;
 import com.exasol.errorreporting.ExaError;
 
 /**
@@ -92,7 +88,22 @@ public class UdfScript extends AbstractScript {
      * Languages supported by UDFs
      */
     public enum Language {
-        JAVA, PYTHON, LUA, R
+        /**
+         * Java language.
+         */
+        JAVA,
+        /**
+         * Python language.
+         */
+        PYTHON,
+        /**
+         * Lua language.
+         */
+        LUA,
+        /**
+         * R language.
+         */
+        R
     }
 
     /**
@@ -201,8 +212,9 @@ public class UdfScript extends AbstractScript {
             requireNotNull(this.language, "language");
             requireNotNull(this.inputType, "inputType");
             if (this.returnType == null) {
-                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-7")
-                        .message("Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder.").toString());
+                throw new IllegalStateException(ExaError.messageBuilder("E-TDBJ-7").message(
+                        "Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder.")
+                        .toString());
             }
             final UdfScript udf = new UdfScript(this);
             this.getWriter().write(udf);

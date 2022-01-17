@@ -137,6 +137,11 @@ public class Script extends AbstractScript {
             return this;
         }
 
+        /**
+         * Build the script.
+         *
+         * @return built script
+         */
         public Script build() {
             validate();
             final Script script = new Script(this);

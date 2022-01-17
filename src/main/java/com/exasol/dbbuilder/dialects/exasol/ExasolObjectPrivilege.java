@@ -9,5 +9,32 @@ import com.exasol.dbbuilder.dialects.ObjectPrivilege;
  *      documentation</a>*
  */
 public enum ExasolObjectPrivilege implements ObjectPrivilege {
-    SELECT, INSERT, DELETE, UPDATE, ALTER, REFERENCES, EXECUTE
+    /**
+     * Select exasol object privilege.
+     */
+    SELECT,
+    /**
+     * Insert exasol object privilege.
+     */
+    INSERT,
+    /**
+     * Delete exasol object privilege.
+     */
+    DELETE,
+    /**
+     * Update exasol object privilege.
+     */
+    UPDATE,
+    /**
+     * Alter exasol object privilege.
+     */
+    ALTER,
+    /**
+     * References exasol object privilege.
+     */
+    REFERENCES,
+    /**
+     * Execute exasol object privilege.
+     */
+    EXECUTE
 }
