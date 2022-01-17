@@ -1,9 +1,6 @@
 package com.exasol.dbbuilder.dialects;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.exasol.db.Identifier;
 
@@ -11,8 +8,11 @@ import com.exasol.db.Identifier;
  * This class contains common logic for a database user.
  */
 public abstract class AbstractUser extends AbstractDatabaseObject implements User {
+    /** Password */
     protected final String password;
+    /** Object privileges */
     protected final Map<DatabaseObject, ObjectPrivilege[]> objectPrivileges = new HashMap<>();
+    /** Global privileges */
     protected final Set<GlobalPrivilege> globalPrivileges = new HashSet<>();
 
     /**

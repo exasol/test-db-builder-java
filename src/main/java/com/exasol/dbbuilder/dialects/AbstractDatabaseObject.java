@@ -14,7 +14,9 @@ import com.exasol.db.Identifier;
  * </p>
  */
 public abstract class AbstractDatabaseObject implements DatabaseObject {
+    /** Is this object owned? */
     protected final boolean owned;
+    /** Identifier */
     protected Identifier name;
 
     /**

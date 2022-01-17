@@ -48,8 +48,14 @@ public class AdapterScript extends AbstractScript {
         this.writer.drop(this);
     }
 
+    /** Enum with script languages */
     public enum Language {
-        JAVA, PYTHON, LUA
+        /** Java */
+        JAVA,
+        /** Python */
+        PYTHON,
+        /** Lua */
+        LUA
     }
 
     /**

@@ -13,6 +13,7 @@ import com.exasol.errorreporting.ExaError;
  * This class contains common logic for writers that persist database objects.
  */
 public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseObjectWriter {
+    /** Connection */
     protected final Connection connection;
 
     /**
@@ -24,6 +25,13 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         this.connection = connection;
     }
 
+    /**
+     * Write a given object to the database.
+     *
+     * @param object     the object to write
+     * @param sql        the SQL statement
+     * @param parameters the parameters
+     */
     protected void writeToObject(final DatabaseObject object, final String sql, final Object... parameters) {
         try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             for (int i = 0; i < parameters.length; ++i) {
@@ -31,7 +39,9 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(object, ExaError.messageBuilder("E-TDBJ-13").message("Failed to write to object: {{sql}}", sql).toString(), exception);
+            throw new DatabaseObjectException(object,
+                    ExaError.messageBuilder("E-TDBJ-13").message("Failed to write to object: {{sql}}", sql).toString(),
+                    exception);
         }
     }
 
@@ -100,11 +110,16 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             preparedStatement.execute();
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(table, ExaError.messageBuilder("E-TDBJ-1")
-                    .message("Failed to execute insert query: {{statement}}", sql).toString(),
-                    exception);
+                    .message("Failed to execute insert query: {{statement}}", sql).toString(), exception);
         }
     }
 
+    /**
+     * Join a given array for {@link GlobalPrivilege}s with {@code ,}.
+     * 
+     * @param privileges privileges
+     * @return comma separated string
+     */
     protected String createCommaSeparatedSystemPrivilegeList(final GlobalPrivilege[] privileges) {
         final StringBuilder builder = new StringBuilder();
         int i = 0;
@@ -124,6 +139,12 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
                 + " TO " + user.getFullyQualifiedName());
     }
 
+    /**
+     * Join the given {@link ObjectPrivilege}s with a {@code ,}.
+     * 
+     * @param privileges privileges to join
+     * @return comma separated string
+     */
     protected String createCommaSeparatedObjectPrivilegeList(final ObjectPrivilege[] privileges) {
         final StringBuilder builder = new StringBuilder();
         boolean first = true;
@@ -145,7 +166,10 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
                 final String sql = Files.readString(sqlFile);
                 statement.execute(sql);
             } catch (final IOException | SQLException exception) {
-                throw new DatabaseObjectException(ExaError.messageBuilder("E-TDBJ-14").message("Unable to execute SQL from file: {{sqlFile}}", sqlFile).toString(), exception);
+                throw new DatabaseObjectException(
+                        ExaError.messageBuilder("E-TDBJ-14")
+                                .message("Unable to execute SQL from file: {{sqlFile}}", sqlFile).toString(),
+                        exception);
             }
         }
     }

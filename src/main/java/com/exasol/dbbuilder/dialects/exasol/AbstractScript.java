@@ -12,7 +12,9 @@ import com.exasol.dbbuilder.dialects.Schema;
  * Abstract basis for Exasol scripts.
  */
 public abstract class AbstractScript extends AbstractSchemaChild {
+    /** The Writer. */
     protected final ExasolImmediateDatabaseObjectWriter writer;
+    /** The Content. */
     protected final String content;
 
     /**
@@ -44,6 +46,13 @@ public abstract class AbstractScript extends AbstractSchemaChild {
         private final ExasolImmediateDatabaseObjectWriter writer;
         private String content;
 
+        /**
+         * Create a builder.
+         * 
+         * @param writer       object writer
+         * @param parentSchema parent schema
+         * @param name         script name
+         */
         protected Builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
                 final Identifier name) {
             super(parentSchema, name);

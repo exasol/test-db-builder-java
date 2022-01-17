@@ -10,6 +10,7 @@ import com.exasol.errorreporting.ExaError;
  * This class contains common logic for a database schema.
  */
 public abstract class AbstractSchema extends AbstractDatabaseObject implements Schema {
+    /** List of tables */
     protected final List<Table> tables = new ArrayList<>();
 
     /**
@@ -70,8 +71,8 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
             return table;
         } else {
             throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-18").message(
-                "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.", columnNames.size(), columnTypes.size())
-                .toString());
+                    "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.",
+                    columnNames.size(), columnTypes.size()).toString());
         }
     }
 

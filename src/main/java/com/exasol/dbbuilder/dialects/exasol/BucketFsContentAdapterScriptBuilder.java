@@ -11,6 +11,13 @@ import com.exasol.dbbuilder.dialects.Schema;
 public abstract class BucketFsContentAdapterScriptBuilder<T extends BucketFsContentAdapterScriptBuilder<T>>
         extends AbstractScript.Builder<T> {
 
+    /**
+     * Create a new instance of {@link BucketFsContentAdapterScriptBuilder}.
+     *
+     * @param writer       the writer
+     * @param parentSchema the parent schema
+     * @param name         the name
+     */
     protected BucketFsContentAdapterScriptBuilder(final ExasolImmediateDatabaseObjectWriter writer,
             final Schema parentSchema, final Identifier name) {
         super(writer, parentSchema, name);

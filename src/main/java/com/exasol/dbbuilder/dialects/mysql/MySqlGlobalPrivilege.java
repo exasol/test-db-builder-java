@@ -8,8 +8,140 @@ import com.exasol.dbbuilder.dialects.GlobalPrivilege;
  * @see <a href="https://dev.mysql.com/doc/refman/8.0/en/grant.html">MySQL documentation</a>
  */
 public enum MySqlGlobalPrivilege implements GlobalPrivilege {
-    ALL, ALTER, ALTER_ROUTINE, CREATE, CREATE_ROLE, CREATE_ROUTINE, CREATE_TABLESPACE, CREATE_TEMPORARY_TABLES,
-    CREATE_USER, CREATE_VIEW, DELETE, DROP, DROP_ROLE, EVENT, EXECUTE, FILE, GRANT_OPTION, INDEX, INSERT, LOCK_TABLES,
-    PROCESS, PROXY, REFERENCES, RELOAD, REPLICATION_CLIENT, REPLICATION_SLAVE, SELECT, SHOW_DATABASES, SHOW_VIEW,
-    SHUTDOWN, SUPER, TRIGGER, UPDATE, USAGE
+    /**
+     * All MY_SQL global privilege.
+     */
+    ALL,
+    /**
+     * Alter MY_SQL global privilege.
+     */
+    ALTER,
+    /**
+     * Alter routine MY_SQL global privilege.
+     */
+    ALTER_ROUTINE,
+    /**
+     * Create MY_SQL global privilege.
+     */
+    CREATE,
+    /**
+     * Create role MY_SQL global privilege.
+     */
+    CREATE_ROLE,
+    /**
+     * Create routine MY_SQL global privilege.
+     */
+    CREATE_ROUTINE,
+    /**
+     * Create tablespace MY_SQL global privilege.
+     */
+    CREATE_TABLESPACE,
+    /**
+     * Create temporary tables MY_SQL global privilege.
+     */
+    CREATE_TEMPORARY_TABLES,
+    /**
+     * Create user MY_SQL global privilege.
+     */
+    CREATE_USER,
+    /**
+     * Create view MY_SQL global privilege.
+     */
+    CREATE_VIEW,
+    /**
+     * Delete MY_SQL global privilege.
+     */
+    DELETE,
+    /**
+     * Drop MY_SQL global privilege.
+     */
+    DROP,
+    /**
+     * Drop role MY_SQL global privilege.
+     */
+    DROP_ROLE,
+    /**
+     * Event MY_SQL global privilege.
+     */
+    EVENT,
+    /**
+     * Execute MY_SQL global privilege.
+     */
+    EXECUTE,
+    /**
+     * File MY_SQL global privilege.
+     */
+    FILE,
+    /**
+     * Grant option MY_SQL global privilege.
+     */
+    GRANT_OPTION,
+    /**
+     * Index MY_SQL global privilege.
+     */
+    INDEX,
+    /**
+     * Insert MY_SQL global privilege.
+     */
+    INSERT,
+    /**
+     * Lock tables MY_SQL global privilege.
+     */
+    LOCK_TABLES,
+    /**
+     * Process MY_SQL global privilege.
+     */
+    PROCESS,
+    /**
+     * Proxy MY_SQL global privilege.
+     */
+    PROXY,
+    /**
+     * References MY_SQL global privilege.
+     */
+    REFERENCES,
+    /**
+     * Reload MY_SQL global privilege.
+     */
+    RELOAD,
+    /**
+     * Replication client MY_SQL global privilege.
+     */
+    REPLICATION_CLIENT,
+    /**
+     * Replication slave MY_SQL global privilege.
+     */
+    REPLICATION_SLAVE,
+    /**
+     * Select MY_SQL global privilege.
+     */
+    SELECT,
+    /**
+     * Show databases MY_SQL global privilege.
+     */
+    SHOW_DATABASES,
+    /**
+     * Show view MY_SQL global privilege.
+     */
+    SHOW_VIEW,
+    /**
+     * Shutdown MY_SQL global privilege.
+     */
+    SHUTDOWN,
+    /**
+     * Super MY_SQL global privilege.
+     */
+    SUPER,
+    /**
+     * Trigger MY_SQL global privilege.
+     */
+    TRIGGER,
+    /**
+     * Update MY_SQL global privilege.
+     */
+    UPDATE,
+    /**
+     * Usage MY_SQL global privilege.
+     */
+    USAGE
 }
