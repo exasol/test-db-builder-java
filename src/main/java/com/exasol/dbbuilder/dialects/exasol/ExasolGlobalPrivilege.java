@@ -4,205 +4,205 @@ import com.exasol.dbbuilder.dialects.GlobalPrivilege;
 
 /**
  * Exasol global privilege as used in a {@code GRANT}.
- * 
+ *
  * @see <a href="https://docs.exasol.com/database_concepts/privileges/details_rights_management.htm#List">Exasol
  *      documentation</a>*
  */
 public enum ExasolGlobalPrivilege implements GlobalPrivilege {
     /**
-     * Grant any object privilege exasol global privilege.
+     * Grant any object privilege Exasol global privilege.
      */
     GRANT_ANY_OBJECT_PRIVILEGE,
     /**
-     * Grant any privilege exasol global privilege.
+     * Grant any privilege Exasol global privilege.
      */
     GRANT_ANY_PRIVILEGE,
     /**
-     * Grant any priority group exasol global privilege.
+     * Grant any priority group Exasol global privilege.
      */
     GRANT_ANY_PRIORITY_GROUP,
     /**
-     * Manage priority groups exasol global privilege.
+     * Manage priority groups Exasol global privilege.
      */
     MANAGE_PRIORITY_GROUPS,
     /**
-     * Create session exasol global privilege.
+     * Create session Exasol global privilege.
      */
     CREATE_SESSION,
     /**
-     * Kill any session exasol global privilege.
+     * Kill any session Exasol global privilege.
      */
     KILL_ANY_SESSION,
     /**
-     * Alter system exasol global privilege.
+     * Alter system Exasol global privilege.
      */
     ALTER_SYSTEM,
     /**
-     * Import exasol global privilege.
+     * Import Exasol global privilege.
      */
     IMPORT,
     /**
-     * Export exasol global privilege.
+     * Export Exasol global privilege.
      */
     EXPORT,
     /**
-     * Create user exasol global privilege.
+     * Create user Exasol global privilege.
      */
     CREATE_USER,
     /**
-     * Alter user exasol global privilege.
+     * Alter user Exasol global privilege.
      */
     ALTER_USER,
     /**
-     * Drop user exasol global privilege.
+     * Drop user Exasol global privilege.
      */
     DROP_USER,
     /**
-     * Impersonate any user exasol global privilege.
+     * Impersonate any user Exasol global privilege.
      */
     IMPERSONATE_ANY_USER,
     /**
-     * Create role exasol global privilege.
+     * Create role Exasol global privilege.
      */
     CREATE_ROLE,
     /**
-     * Drop any role exasol global privilege.
+     * Drop any role Exasol global privilege.
      */
     DROP_ANY_ROLE,
     /**
-     * Grant any role exasol global privilege.
+     * Grant any role Exasol global privilege.
      */
     GRANT_ANY_ROLE,
     /**
-     * Create connection exasol global privilege.
+     * Create connection Exasol global privilege.
      */
     CREATE_CONNECTION,
     /**
-     * Alter any connection exasol global privilege.
+     * Alter any connection Exasol global privilege.
      */
     ALTER_ANY_CONNECTION,
     /**
-     * Drop any connection exasol global privilege.
+     * Drop any connection Exasol global privilege.
      */
     DROP_ANY_CONNECTION,
     /**
-     * Grant any connection exasol global privilege.
+     * Grant any connection Exasol global privilege.
      */
     GRANT_ANY_CONNECTION,
     /**
-     * Use any connection exasol global privilege.
+     * Use any connection Exasol global privilege.
      */
     USE_ANY_CONNECTION,
     /**
-     * Access any connection exasol global privilege.
+     * Access any connection Exasol global privilege.
      */
     ACCESS_ANY_CONNECTION,
     /**
-     * Create schema exasol global privilege.
+     * Create schema Exasol global privilege.
      */
     CREATE_SCHEMA,
     /**
-     * Alter any schema exasol global privilege.
+     * Alter any schema Exasol global privilege.
      */
     ALTER_ANY_SCHEMA,
     /**
-     * Drop any schema exasol global privilege.
+     * Drop any schema Exasol global privilege.
      */
     DROP_ANY_SCHEMA,
     /**
-     * Create virtual schema exasol global privilege.
+     * Create virtual schema Exasol global privilege.
      */
     CREATE_VIRTUAL_SCHEMA,
     /**
-     * Alter any virtual schema exasol global privilege.
+     * Alter any virtual schema Exasol global privilege.
      */
     ALTER_ANY_VIRTUAL_SCHEMA,
     /**
-     * Alter any virtual schema refresh exasol global privilege.
+     * Alter any virtual schema refresh Exasol global privilege.
      */
     ALTER_ANY_VIRTUAL_SCHEMA_REFRESH,
     /**
-     * Drop any virtual schema exasol global privilege.
+     * Drop any virtual schema Exasol global privilege.
      */
     DROP_ANY_VIRTUAL_SCHEMA,
     /**
-     * Create table exasol global privilege.
+     * Create table Exasol global privilege.
      */
     CREATE_TABLE,
     /**
-     * Create any table exasol global privilege.
+     * Create any table Exasol global privilege.
      */
     CREATE_ANY_TABLE,
     /**
-     * Alter any table exasol global privilege.
+     * Alter any table Exasol global privilege.
      */
     ALTER_ANY_TABLE,
     /**
-     * Delete any table exasol global privilege.
+     * Delete any table Exasol global privilege.
      */
     DELETE_ANY_TABLE,
     /**
-     * Drop any table exasol global privilege.
+     * Drop any table Exasol global privilege.
      */
     DROP_ANY_TABLE,
     /**
-     * Insert any table exasol global privilege.
+     * Insert any table Exasol global privilege.
      */
     INSERT_ANY_TABLE,
     /**
-     * Select any table exasol global privilege.
+     * Select any table Exasol global privilege.
      */
     SELECT_ANY_TABLE,
     /**
-     * Select any dictionary exasol global privilege.
+     * Select any dictionary Exasol global privilege.
      */
     SELECT_ANY_DICTIONARY,
     /**
-     * Update any table exasol global privilege.
+     * Update any table Exasol global privilege.
      */
     UPDATE_ANY_TABLE,
     /**
-     * Create view exasol global privilege.
+     * Create view Exasol global privilege.
      */
     CREATE_VIEW,
     /**
-     * Create any view exasol global privilege.
+     * Create any view Exasol global privilege.
      */
     CREATE_ANY_VIEW,
     /**
-     * Drop any view exasol global privilege.
+     * Drop any view Exasol global privilege.
      */
     DROP_ANY_VIEW,
     /**
-     * Create function exasol global privilege.
+     * Create function Exasol global privilege.
      */
     CREATE_FUNCTION,
     /**
-     * Create any function exasol global privilege.
+     * Create any function Exasol global privilege.
      */
     CREATE_ANY_FUNCTION,
     /**
-     * Drop any function exasol global privilege.
+     * Drop any function Exasol global privilege.
      */
     DROP_ANY_FUNCTION,
     /**
-     * Execute any function exasol global privilege.
+     * Execute any function Exasol global privilege.
      */
     EXECUTE_ANY_FUNCTION,
     /**
-     * Create script exasol global privilege.
+     * Create script Exasol global privilege.
      */
     CREATE_SCRIPT,
     /**
-     * Create any script exasol global privilege.
+     * Create any script Exasol global privilege.
      */
     CREATE_ANY_SCRIPT,
     /**
-     * Drop any script exasol global privilege.
+     * Drop any script Exasol global privilege.
      */
     DROP_ANY_SCRIPT,
     /**
-     * Execute any script exasol global privilege.
+     * Execute any script Exasol global privilege.
      */
     EXECUTE_ANY_SCRIPT
 }
