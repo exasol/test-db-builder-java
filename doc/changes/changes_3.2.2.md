@@ -34,3 +34,4 @@ Code name: Fixed connections with no username
 
 * Updated `com.exasol:error-code-crawler-maven-plugin:0.5.1` to `0.7.1`
 * Updated `com.exasol:project-keeper-maven-plugin:0.10.0` to `1.3.4`
+* Updated `org.apache.maven.plugins:maven-javadoc-plugin:3.2.0` to `3.3.1`
