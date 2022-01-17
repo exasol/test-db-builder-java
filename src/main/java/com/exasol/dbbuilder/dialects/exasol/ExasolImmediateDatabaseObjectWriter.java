@@ -70,19 +70,14 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * @param definition connection definition to be created
      */
     public void write(final ConnectionDefinition definition) {
-        if (definition.hasUserName()) {
-            writeToObject(definition,
-                    "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTarget()
-                            + "' USER '" + definition.getUserName() + ("' IDENTIFIED BY '") + definition.getPassword()
-                            + "'");
+        if (definition.hasUserName() || definition.hasPassword()) {
+            final String user = definition.hasUserName() ? definition.getUserName() : "";
+            final String pass = definition.hasPassword() ? definition.getPassword() : "";
+            writeToObject(definition, "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '"
+                    + definition.getTarget() + "' USER '" + user + ("' IDENTIFIED BY '") + pass + "'");
         } else {
-            if (definition.hasPassword()) {
-                throw new DatabaseObjectException(definition,
-                    ExaError.messageBuilder("E-TDBJ-5").message("User name missing when trying to write connection definition {{definition name}}. Please always provide user name and password together or not at all.", definition.getFullyQualifiedName()).toString());
-            } else {
-                writeToObject(definition, "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '"
-                        + definition.getTarget() + "'");
-            }
+            writeToObject(definition,
+                    "CREATE CONNECTION " + definition.getFullyQualifiedName() + " TO '" + definition.getTarget() + "'");
         }
     }
 
@@ -269,8 +264,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
             return statement.getUpdateCount();
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(script, ExaError.messageBuilder("E-TDBJ-4")
-                    .message("Failed to execute script query {{query}}.", query).toString(),
-                    exception);
+                    .message("Failed to execute script query {{query}}.", query).toString(), exception);
         }
     }
 
@@ -328,8 +322,9 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
             }
             return table;
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(script,
-                ExaError.messageBuilder("E-TDBJ-6").message("Failed to execute script returning table {{script name}}", script.getFullyQualifiedName()).toString(), exception);
+            throw new DatabaseObjectException(script, ExaError.messageBuilder("E-TDBJ-6")
+                    .message("Failed to execute script returning table {{script name}}", script.getFullyQualifiedName())
+                    .toString(), exception);
         }
     }
 }

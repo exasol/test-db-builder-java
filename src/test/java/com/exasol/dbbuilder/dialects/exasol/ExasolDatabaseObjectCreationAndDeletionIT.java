@@ -101,6 +101,13 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
+    // [itest->dsn~creating-connections~1]
+    void testCreateConnectionWithPasswordOnly() {
+        final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
+        assertThat(exasolFactory.createConnectionDefinition("CONNECTION_C", "", "", "myPass"), existsInDatabase());
+    }
+
+    @Test
     // [itest->dsn~dropping-connections~1]
     void testDropConnection() {
         final ExasolObjectFactory exasolFactory = new ExasolObjectFactory(this.adminConnection);
