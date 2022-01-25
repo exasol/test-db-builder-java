@@ -41,13 +41,13 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     @Test
     // [itest->dsn~creating-schemas~1]
-    void testCreateSchema() {
+    protected void testCreateSchema() {
         assertThat(this.factory.createSchema("THE_SCHEMA"), existsInDatabase());
     }
 
     @Test
     // [itest->dsn~dropping-schemas~2]
-    void testDropSchema() {
+    protected void testDropSchema() {
         final Schema schema = this.factory.createSchema("SCHEMA_TO_DROP");
         schema.drop();
         assertThat(schema, not(existsInDatabase()));
@@ -74,7 +74,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     @Test
     // [itest->dsn~creating-tables~1]
-    void testCreateTable() {
+    protected void testCreateTable() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
         assertThat(schema.createTable("THE_TABLE", "COL1", "DATE", "COL2", "INT"), existsInDatabase());
     }

@@ -21,7 +21,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
      *
      * @param connection JDBC connection
      */
-    public AbstractImmediateDatabaseObjectWriter(final Connection connection) {
+    protected AbstractImmediateDatabaseObjectWriter(final Connection connection) {
         this.connection = connection;
     }
 

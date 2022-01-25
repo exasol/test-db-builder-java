@@ -37,6 +37,7 @@ class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObje
             super(connection);
         }
 
+        //TODO: "rolname", is this a bug/typo?
         protected String getCheckCommand(final DatabaseObject object) {
             if (object instanceof User) {
                 return "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = ?";
