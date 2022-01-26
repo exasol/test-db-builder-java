@@ -75,7 +75,7 @@ public interface Schema extends DatabaseObject {
      * @param name table name
      * @return builder for the table
      */
-    public Table.Builder createTableBuilder(final String name);
+    public Table.TableBuilder createTableBuilder(final String name);
 
     @Override
     default String getType() {

@@ -4,8 +4,10 @@ import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.AbstractSchema;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.oracle.OracleIdentifier;
-import com.exasol.dbbuilder.dialects.oracle.OracleImmediateDatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.Table;
+import com.exasol.errorreporting.ExaError;
+
+import java.util.List;
 
 /**
  * Oracle {@link Schema}.
@@ -24,6 +26,7 @@ public class OracleSchema extends AbstractSchema {
         this.writer = writer;
         this.writer.write(this);
     }
+//    protected String switchSchema(String schema){ return "ALTER SESSION SET CURRENT_SCHEMA = " + schema;}
 
     @Override
     protected DatabaseObjectWriter getWriter() {
@@ -33,5 +36,29 @@ public class OracleSchema extends AbstractSchema {
     @Override
     protected Identifier getIdentifier(final String name) {
         return OracleIdentifier.of(name);
+    }
+
+    @Override
+    public OracleTable.OracleTableBuilder createTableBuilder(final String name) {
+        return OracleTable.oracleTableBuilder(getWriter(), this, getIdentifier(name));
+    }
+
+    @Override
+    public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
+        if (columnNames.size() == columnTypes.size()) {
+            //Create a local table builder + enter info
+            final OracleTable.OracleTableBuilder builder = OracleTable.oracleTableBuilder(getWriter(), this, getIdentifier(name));
+            passColumnsToTableBuilder(columnNames, columnTypes, builder);
+            //Build a table with the builder
+            final OracleTable table = builder.build();
+            //add the table to the schema's tables list
+            this.tables.add(table);
+            //return the new table object (reference)
+            return table;
+        } else {
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-18").message(
+                    "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.",
+                    columnNames.size(), columnTypes.size()).toString());
+        }
     }
 }

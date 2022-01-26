@@ -52,4 +52,5 @@ public class OracleObjectFactory extends AbstractObjectFactory {
     public Schema createSchema(final String name) {
         return new OracleSchema(this.writer, OracleIdentifier.of(name));
     }
+
 }

@@ -18,7 +18,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      *
      * @param name name of the database schema
      */
-    public AbstractSchema(final Identifier name) {
+    protected AbstractSchema(final Identifier name) {
         super(name, false);
     }
 
@@ -53,26 +53,34 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     }
 
     @Override
-    public Table.Builder createTableBuilder(final String name) {
+    public Table.TableBuilder createTableBuilder(final String name) {
         return Table.builder(getWriter(), this, getIdentifier(name));
     }
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
-            final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
-            int index = 0;
-            for (final String columnName : columnNames) {
-                builder.column(columnName, columnTypes.get(index));
-                ++index;
-            }
+            //Create a local table builder + enter info
+            final Table.TableBuilder builder = Table.builder(getWriter(), this, getIdentifier(name));
+            passColumnsToTableBuilder(columnNames, columnTypes, builder);
+            //Build a table with the builder
             final Table table = builder.build();
+            //add the table to the schema's tables list
             this.tables.add(table);
+            //return the new table object (reference)
             return table;
         } else {
             throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-18").message(
                     "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.",
                     columnNames.size(), columnTypes.size()).toString());
+        }
+    }
+
+    protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.TableBuilder builder) {
+        int index = 0;
+        for (final String columnName : columnNames) {
+            builder.column(columnName, columnTypes.get(index));
+            ++index;
         }
     }
 

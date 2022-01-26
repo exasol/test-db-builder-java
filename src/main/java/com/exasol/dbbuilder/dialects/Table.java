@@ -13,8 +13,8 @@ public class Table extends AbstractSchemaChild {
     private final DatabaseObjectWriter writer;
     private final List<Column> columns;
 
-    private Table(final Builder builder) {
-        super(builder.parentSchema, builder.name, false);
+    protected Table(final TableBuilder builder) {
+        super(builder.parentSchema, builder.tableName, false);
         this.columns = builder.columns;
         this.writer = builder.writer;
         this.writer.write(this);
@@ -29,8 +29,8 @@ public class Table extends AbstractSchemaChild {
      * @return new {@link Table} instance
      */
     // [impl->dsn~creating-tables~1]
-    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
-        return new Builder(writer, schema, tableName);
+    public static TableBuilder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
+        return new TableBuilder(writer, schema, tableName);
     }
 
     @Override
@@ -102,9 +102,9 @@ public class Table extends AbstractSchemaChild {
     /**
      * Builder for database tables.
      */
-    public static class Builder {
+    public static class TableBuilder {
         private final DatabaseObjectWriter writer;
-        private final Identifier name;
+        private final Identifier tableName;
         private final List<Column> columns = new ArrayList<>();
         private final Schema parentSchema;
 
@@ -115,10 +115,10 @@ public class Table extends AbstractSchemaChild {
          * @param parentSchema parent schema
          * @param tableName    name of the database table
          */
-        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
+        public TableBuilder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
             this.writer = writer;
             this.parentSchema = parentSchema;
-            this.name = tableName;
+            this.tableName = tableName;
         }
 
         /**
@@ -128,7 +128,7 @@ public class Table extends AbstractSchemaChild {
          * @param columnType column data type
          * @return {@code this} for fluent programming
          */
-        public Builder column(final String columnName, final String columnType) {
+        public TableBuilder column(final String columnName, final String columnType) {
             this.columns.add(new Column(columnName, columnType));
             return this;
         }

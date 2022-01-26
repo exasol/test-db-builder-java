@@ -23,7 +23,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     protected Connection adminConnection;
 
     @BeforeEach
-    void beforeEach() throws SQLException {
+    protected void beforeEach() throws SQLException {
         this.adminConnection = getAdminConnection();
         this.factory = getDatabaseObjectFactory(this.adminConnection);
     }
@@ -89,14 +89,14 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     @Test
-    void testTruncateTable() throws SQLException {
+    protected void testTruncateTable() throws SQLException {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TRUNCATE_TABLE");
         final Table table = schema.createTable("MY_TABLE", "COL1", "INTEGER").insert(1);
         table.truncate();
         assertThat(getTableSize(table), equalTo(0));
     }
 
-    private int getTableSize(final Table table) throws SQLException {
+    protected int getTableSize(final Table table) throws SQLException {
         try (final Statement statement = getAdminConnection().createStatement();
                 final ResultSet resultSet = statement
                         .executeQuery("SELECT COUNT(*) FROM " + table.getFullyQualifiedName())) {
