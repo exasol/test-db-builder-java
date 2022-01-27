@@ -33,14 +33,14 @@ public class OracleImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     @Override
     public void write(final User user) {
-        writeToObject(user, "CREATE USER " + user.getFullyQualifiedName() + " IDENTIFIED BY " + user.getPassword() + "");
+        writeToObject(user, "CREATE USER " + user.getFullyQualifiedName() + " IDENTIFIED BY " + user.getPassword());
         writeToObject(user, "grant unlimited tablespace to "+ user.getFullyQualifiedName());
     }
     //a schema is linked to a user in oracle, the schema has the same name as the user
     @Override
     public void write(final Schema schema) {
         //throw new UnsupportedOperationException(ExaError.messageBuilder("E-TDBJ-33").message("Oracle doesn't allow users to create schemas. The schema name is tied to the user.").toString());
-            writeToObject(schema, "CREATE USER " + schema.getFullyQualifiedName() + " IDENTIFIED BY " + "nopassword");
+            writeToObject(schema, "CREATE USER " + schema.getFullyQualifiedName() + " IDENTIFIED EXTERNALLY");
             writeToObject(schema, "grant unlimited tablespace to "+ schema.getName());
     }
 
