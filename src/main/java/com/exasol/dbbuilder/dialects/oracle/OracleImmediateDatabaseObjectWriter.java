@@ -56,25 +56,4 @@ public class OracleImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         //throw new UnsupportedOperationException(ExaError.messageBuilder("E-TDBJ-30").message("Creating users with privileges is not implemented in this version of the test-db-builder.").toString());
         writeToObject(schema,"DROP USER " + schema.getName() +" CASCADE");
     }
-    //overriding the object
-//    //we override the insert statement
-//    @Override
-//    public void write(final Table table, final Stream<List<Object>> rows) {
-//        final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
-//        final String sql = "INSERT INTO " + table.getName() + "" + " VALUES(" + valuePlaceholders + ")";
-//        try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
-//            final boolean autoCommitOriginalState = this.connection.getAutoCommit();
-//            this.connection.setAutoCommit(false);
-//            rows.forEach(row -> writeRow(table, sql, preparedStatement, row));
-//            if (autoCommitOriginalState) {
-//                this.connection.commit();
-//                this.connection.setAutoCommit(true);
-//            }
-//        } catch (final SQLException exception) {
-//            throw new DatabaseObjectException(table,
-//                    ExaError.messageBuilder("E-TDBJ-2")
-//                            .message("Failed to create prepared statement {{statement}} for insert.", sql).toString(),
-//                    exception);
-//        }
-//    }
 }

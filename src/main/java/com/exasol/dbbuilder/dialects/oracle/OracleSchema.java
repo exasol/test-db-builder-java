@@ -56,7 +56,7 @@ public class OracleSchema extends AbstractSchema {
             //return the new table object (reference)
             return table;
         } else {
-            throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-18").message(
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-34").message(
                     "Got {{column names size}} column names but {{column types}} column types. Please provide the same number of parameters for both when creating a table.",
                     columnNames.size(), columnTypes.size()).toString());
         }
