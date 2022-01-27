@@ -21,9 +21,8 @@ import java.util.Properties;
 
 class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     private static final String ORACLE_DOCKER_IMAGE_REFERENCE = "gvenzl/oracle-xe:21.3.0";
-
-
-
+    private static final String QUOTES = "\"\"";
+    //private static final String QUOTES = "` `` ' '' \" \"\"";
     @Container
     private static final OracleContainerDBA container = new OracleContainerDBA(
             ORACLE_DOCKER_IMAGE_REFERENCE);
@@ -31,17 +30,6 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     @Override
     protected Connection getAdminConnection() throws SQLException {
         return container.createConnectionDBA("");
-    }
-    private final String Username = "SYSTEM";
-    @BeforeEach
-    protected void beforeEach() throws SQLException {
-        super.beforeEach();
-        PrepOracleDatabase();
-    }
-
-    private void PrepOracleDatabase() throws SQLException {
-        //adminConnection.prepareStatement("grant unlimited tablespace to kainaw;").execute();
-        //adminConnection.prepareStatement("ALTER USER "+Username+" quota unlimited on users").execute();
     }
 
     @Override
@@ -62,11 +50,11 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
 
         protected String getCheckCommand(final DatabaseObject object) {
             if (object instanceof User) {
-                return "SELECT 1 FROM SYS.DBA_ROLE_PRIVS WHERE GRANTEE = ?";
+                return "SELECT 1 FROM dba_users WHERE username = ?";
             } else if (object instanceof Table) {
-                return "SELECT 1 FROM SYS.TABLES WHERE table_name = ?";
-            } else if (object instanceof Schema) {
-                return "SELECT 1 FROM SYS.DBA_OBJECTS WHERE owner = ?";
+                return "SELECT 1 FROM dba_tables WHERE table_name = ?";
+            } else if (object instanceof Schema) { //Might seem like a mistake but user & schema are tied together in OracleDB.
+                return "SELECT 1 FROM dba_users WHERE username = ?";
             } else {
                 throw new AssertionError(ExaError.messageBuilder("E-TDBJ-32").message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
             }
@@ -78,7 +66,7 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     // [itest->dsn~creating-schemas~1]
     protected void testCreateSchema() {
         var username =  container.getUsername();
-        assertThat(this.factory.createSchema("ps"), existsInDatabase());
+        assertThat(this.factory.createSchema("PS"), existsInDatabase());
     }
     @Override
     @Test
@@ -94,6 +82,18 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final Table table = schema.createTable("MY_TABLE", "COL1", "INTEGER").insert(1);
         table.truncate();
         assertThat(getTableSize(table), equalTo(0));
+    }
+    @Override
+    @Test
+    protected void testCreateSchemaIsSqlInjectionSafe() {
+        assertThrows(DatabaseObjectException.class,() -> this.factory.createSchema("INJECTION_TEST" + QUOTES));
+
+    }
+    @Override
+    @Test
+    protected void testCreateTableIsSqlInjectionSafe() {
+        assertThrows(DatabaseObjectException.class,() -> this.factory.createSchema("INJECTION_TEST").createTable("INJECTION_TEST_TABLE " + QUOTES,
+                "MY_COL" + QUOTES, "INTEGER"));
     }
 
 }

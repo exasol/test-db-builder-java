@@ -28,7 +28,7 @@ public class OracleIdentifier implements Identifier {
     public String toString() {
         return this.id;
     }
-    //TODO: check this
+
     @Override
     public String quote() {
         return "\"" + this.id.replace("\"", "\"\"") + "\"";

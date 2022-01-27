@@ -18,7 +18,7 @@ public class OracleTable extends Table {
     @Override
     public String getFullyQualifiedName() {
         if (hasParent()) {
-            return getParent().getName() + "." + this.name;
+            return getParent().getName() + "." + this.name.toString();
         } else {
             return this.name.toString();
         }
