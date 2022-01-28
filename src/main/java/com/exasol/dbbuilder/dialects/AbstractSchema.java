@@ -76,6 +76,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
         }
     }
 
+    /**
+     * Method that passes in a list of column names, and a list of their types, into a table builder.
+     *
+     * @param columnNames the column names
+     * @param columnTypes the column types
+     * @param builder the builder that gets the information passed in
+     */
     protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.TableBuilder builder) {
         int index = 0;
         for (final String columnName : columnNames) {

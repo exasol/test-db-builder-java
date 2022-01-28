@@ -101,7 +101,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         }
     }
 
-    protected void writeRow(final Table table, final String sql, final PreparedStatement preparedStatement,
+    private void writeRow(final Table table, final String sql, final PreparedStatement preparedStatement,
                             final List<Object> row) {
         try {
             for (int i = 0; i < row.size(); ++i) {

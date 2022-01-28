@@ -13,6 +13,11 @@ public class Table extends AbstractSchemaChild {
     private final DatabaseObjectWriter writer;
     private final List<Column> columns;
 
+    /**
+     * Table constructor
+     *
+     * @param builder Pass in a table builder with the right column and table name information.
+     */
     protected Table(final TableBuilder builder) {
         super(builder.parentSchema, builder.tableName, false);
         this.columns = builder.columns;
