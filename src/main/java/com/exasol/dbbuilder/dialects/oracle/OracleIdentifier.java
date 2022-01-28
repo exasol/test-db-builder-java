@@ -2,8 +2,6 @@ package com.exasol.dbbuilder.dialects.oracle;
 
 import com.exasol.db.Identifier;
 
-import java.util.Objects;
-
 /**
  * Oracle {@link Identifier}.
  */
@@ -32,22 +30,5 @@ public class OracleIdentifier implements Identifier {
     @Override
     public String quote() {
         return "\"" + this.id.replace("\"", "\"\"") + "\"";
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-        final OracleIdentifier that = (OracleIdentifier) object;
-        return Objects.equals(this.id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
     }
 }

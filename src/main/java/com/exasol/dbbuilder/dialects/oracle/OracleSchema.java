@@ -26,7 +26,6 @@ public class OracleSchema extends AbstractSchema {
         this.writer = writer;
         this.writer.write(this);
     }
-//    protected String switchSchema(String schema){ return "ALTER SESSION SET CURRENT_SCHEMA = " + schema;}
 
     @Override
     protected DatabaseObjectWriter getWriter() {

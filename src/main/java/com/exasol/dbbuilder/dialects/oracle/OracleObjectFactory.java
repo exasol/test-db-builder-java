@@ -1,10 +1,6 @@
 package com.exasol.dbbuilder.dialects.oracle;
 
 import com.exasol.dbbuilder.dialects.*;
-import com.exasol.dbbuilder.dialects.oracle.OracleIdentifier;
-import com.exasol.dbbuilder.dialects.oracle.OracleImmediateDatabaseObjectWriter;
-import com.exasol.dbbuilder.dialects.oracle.OracleSchema;
-import com.exasol.dbbuilder.dialects.oracle.OracleUser;
 
 import java.sql.Connection;
 

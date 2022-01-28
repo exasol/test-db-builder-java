@@ -5,7 +5,6 @@ import com.exasol.dbbuilder.dialects.AbstractUser;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 import com.exasol.dbbuilder.dialects.User;
-import com.exasol.dbbuilder.dialects.oracle.OracleImmediateDatabaseObjectWriter;
 import com.exasol.errorreporting.ExaError;
 
 /**
