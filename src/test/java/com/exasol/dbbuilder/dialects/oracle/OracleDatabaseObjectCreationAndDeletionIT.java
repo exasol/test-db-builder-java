@@ -92,7 +92,8 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     @Override
     @Test
     protected void testCreateTableIsSqlInjectionSafe() {
-        assertThrows(DatabaseObjectException.class,() -> this.factory.createSchema("INJECTION_TEST").createTable("INJECTION_TEST_TABLE " + QUOTES,
+        var schema =this.factory.createSchema("INJECTION_TEST");
+        assertThrows(DatabaseObjectException.class,() ->schema.createTable("INJECTION_TEST_TABLE " + QUOTES,
                 "MY_COL" + QUOTES, "INTEGER"));
     }
 
