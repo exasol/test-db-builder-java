@@ -8,7 +8,6 @@
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java</url>
-    <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
