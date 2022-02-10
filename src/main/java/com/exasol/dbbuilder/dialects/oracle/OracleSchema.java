@@ -38,15 +38,15 @@ public class OracleSchema extends AbstractSchema {
     }
 
     @Override
-    public OracleTable.OracleTableBuilder createTableBuilder(final String name) {
-        return OracleTable.oracleTableBuilder(getWriter(), this, getIdentifier(name));
+    public OracleTable.Builder createTableBuilder(final String name) {
+        return OracleTable.builder(getWriter(), this, getIdentifier(name));
     }
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
             //Create a local table builder + enter info
-            final OracleTable.OracleTableBuilder builder = OracleTable.oracleTableBuilder(getWriter(), this, getIdentifier(name));
+            final OracleTable.Builder builder = OracleTable.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
             //Build a table with the builder
             final OracleTable table = builder.build();

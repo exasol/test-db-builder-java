@@ -18,7 +18,7 @@ public class Table extends AbstractSchemaChild {
      *
      * @param builder Pass in a table builder with the right column and table name information.
      */
-    protected Table(final TableBuilder builder) {
+    protected Table(final Builder builder) {
         super(builder.parentSchema, builder.tableName, false);
         this.columns = builder.columns;
         this.writer = builder.writer;
@@ -34,8 +34,8 @@ public class Table extends AbstractSchemaChild {
      * @return new {@link Table} instance
      */
     // [impl->dsn~creating-tables~1]
-    public static TableBuilder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
-        return new TableBuilder(writer, schema, tableName);
+    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
+        return new Builder(writer, schema, tableName);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Table extends AbstractSchemaChild {
     /**
      * Builder for database tables.
      */
-    public static class TableBuilder {
+    public static class Builder {
         private final DatabaseObjectWriter writer;
         private final Identifier tableName;
         private final List<Column> columns = new ArrayList<>();
@@ -120,7 +120,7 @@ public class Table extends AbstractSchemaChild {
          * @param parentSchema parent schema
          * @param tableName    name of the database table
          */
-        public TableBuilder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
+        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
             this.writer = writer;
             this.parentSchema = parentSchema;
             this.tableName = tableName;
@@ -133,7 +133,7 @@ public class Table extends AbstractSchemaChild {
          * @param columnType column data type
          * @return {@code this} for fluent programming
          */
-        public TableBuilder column(final String columnName, final String columnType) {
+        public Builder column(final String columnName, final String columnType) {
             this.columns.add(new Column(columnName, columnType));
             return this;
         }

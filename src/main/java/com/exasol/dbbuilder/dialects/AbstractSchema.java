@@ -53,7 +53,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     }
 
     @Override
-    public Table.TableBuilder createTableBuilder(final String name) {
+    public Table.Builder createTableBuilder(final String name) {
         return Table.builder(getWriter(), this, getIdentifier(name));
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
             //Create a local table builder + enter info
-            final Table.TableBuilder builder = Table.builder(getWriter(), this, getIdentifier(name));
+            final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
             //Build a table with the builder
             final Table table = builder.build();
@@ -83,7 +83,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      * @param columnTypes the column types
      * @param builder the builder that gets the information passed in
      */
-    protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.TableBuilder builder) {
+    protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.Builder builder) {
         int index = 0;
         for (final String columnName : columnNames) {
             builder.column(columnName, columnTypes.get(index));

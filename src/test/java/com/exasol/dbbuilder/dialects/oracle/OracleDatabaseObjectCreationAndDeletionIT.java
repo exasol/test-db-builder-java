@@ -65,7 +65,6 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     @Test
     // [itest->dsn~creating-schemas~1]
     protected void testCreateSchema() {
-        var username =  container.getUsername();
         assertThat(this.factory.createSchema("PS"), existsInDatabase());
     }
     @Override
