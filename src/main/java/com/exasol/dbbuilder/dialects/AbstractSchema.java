@@ -10,7 +10,9 @@ import com.exasol.errorreporting.ExaError;
  * This class contains common logic for a database schema.
  */
 public abstract class AbstractSchema extends AbstractDatabaseObject implements Schema {
-    /** List of tables */
+    /**
+     * List of tables
+     */
     protected final List<Table> tables = new ArrayList<>();
 
     /**
@@ -41,13 +43,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-            final String column2Name, final String column2Type) {
+                             final String column2Name, final String column2Type) {
         return createTable(name, List.of(column1Name, column2Name), List.of(column1Type, column2Type));
     }
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-            final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
+                             final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
         return createTable(name, List.of(column1Name, column2Name, column3Name),
                 List.of(column1Type, column2Type, column3Type));
     }
@@ -62,11 +64,8 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
         if (columnNames.size() == columnTypes.size()) {
             final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
-            //Build a table with the builder
             final Table table = builder.build();
-            //add the table to the schema's tables list
             this.tables.add(table);
-            //return the new table object (reference)
             return table;
         } else {
             throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-18").message(
@@ -80,7 +79,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      *
      * @param columnNames the column names
      * @param columnTypes the column types
-     * @param builder the builder that gets the information passed in
+     * @param builder     the builder that gets the information passed in
      */
     protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.Builder builder) {
         int index = 0;
@@ -92,7 +91,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     /**
      * Get an instance of {@link Identifier}.
-     * 
+     *
      * @param name identifier id
      * @return instance of {@link Identifier}
      */

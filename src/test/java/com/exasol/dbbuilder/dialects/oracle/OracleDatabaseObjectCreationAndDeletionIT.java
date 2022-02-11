@@ -22,7 +22,6 @@ import java.util.Properties;
 class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     private static final String ORACLE_DOCKER_IMAGE_REFERENCE = "gvenzl/oracle-xe:21.3.0";
     private static final String QUOTES = "\"\"";
-    //private static final String QUOTES = "` `` ' '' \" \"\"";
     @Container
     private static final OracleContainerDBA container = new OracleContainerDBA(
             ORACLE_DOCKER_IMAGE_REFERENCE);
@@ -79,6 +78,7 @@ class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     protected void testTruncateTable() throws SQLException {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA");
         final Table table = schema.createTable("MY_TABLE", "COL1", "INTEGER").insert(1);
+        assertThat(getTableSize(table), equalTo(1));
         table.truncate();
         assertThat(getTableSize(table), equalTo(0));
     }

@@ -31,3 +31,5 @@ target
 *.orig
 *.old
 *.md.html
+.project
+.classpath

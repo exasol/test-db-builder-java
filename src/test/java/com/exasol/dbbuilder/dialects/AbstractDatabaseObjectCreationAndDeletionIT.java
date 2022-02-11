@@ -23,7 +23,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     protected Connection adminConnection;
 
     @BeforeEach
-    protected void beforeEach() throws SQLException {
+    void beforeEach() throws SQLException {
         this.adminConnection = getAdminConnection();
         this.factory = getDatabaseObjectFactory(this.adminConnection);
     }

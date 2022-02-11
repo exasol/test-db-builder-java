@@ -37,14 +37,13 @@ public class OracleContainerDBA extends OracleContainer {
 
             while(System.currentTimeMillis() < start + (long)(1000 * this.connectTimeoutSeconds) && this.isRunning()) {
                 try {
-                    //this.logger().debug("Trying to create JDBC connection using {} to {} with properties: {}", new Object[]{this.driver.getClass().getName(), url, info});
                     return jdbcDriverInstance.connect(url, info);
-                } catch (SQLException var9) {
-                    lastException = var9;
+                } catch (SQLException exception) {
+                    lastException = exception;
                     Thread.sleep(100L);
                 }
             }
-        } catch (InterruptedException var10) {
+        } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
         }
 

@@ -1,6 +1,6 @@
-# Test Database Builder for Java 3.3.0, released 2022-??-??
+# Test Database Builder for Java 3.3.0, released 2022-02-11
 
-Code name:
+Code name: Added Oracle support
 
 ## Features
 
