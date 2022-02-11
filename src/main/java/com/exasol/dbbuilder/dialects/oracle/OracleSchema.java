@@ -45,14 +45,10 @@ public class OracleSchema extends AbstractSchema {
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
-            //Create a local table builder + enter info
             final OracleTable.Builder builder = OracleTable.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
-            //Build a table with the builder
             final OracleTable table = builder.build();
-            //add the table to the schema's tables list
             this.tables.add(table);
-            //return the new table object (reference)
             return table;
         } else {
             throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-34").message(
