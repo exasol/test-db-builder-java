@@ -60,7 +60,6 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
-            //Create a local table builder + enter info
             final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
             //Build a table with the builder

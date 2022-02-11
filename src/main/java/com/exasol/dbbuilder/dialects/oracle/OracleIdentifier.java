@@ -13,7 +13,7 @@ public class OracleIdentifier implements Identifier {
     }
 
     /**
-     * Get a Oracle {@link Identifier} for a given string.
+     * Create an Oracle {@link Identifier} for a given string.
      * 
      * @param id id for the identifier
      * @return built identifier

@@ -14,9 +14,9 @@ public class Table extends AbstractSchemaChild {
     private final List<Column> columns;
 
     /**
-     * Table constructor
+     * Create a new table based on a given builder.
      *
-     * @param builder Pass in a table builder with the right column and table name information.
+     * @param builder the builder from which to copy the values
      */
     protected Table(final Builder builder) {
         super(builder.parentSchema, builder.tableName, false);

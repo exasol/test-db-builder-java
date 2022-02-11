@@ -27,7 +27,6 @@ public class OracleContainerDBA extends OracleContainer {
     public Connection createConnectionDBA(String queryString) throws SQLException, JdbcDatabaseContainer.NoDriverFoundException {
         Properties info = new Properties();
         info.put("user", "SYSTEM");
-        //info.put("user", this.getUsername());
         info.put("password", this.getPassword());
         String url = this.constructUrlForConnection(queryString);
         Driver jdbcDriverInstance = this.getJdbcDriverInstance();
