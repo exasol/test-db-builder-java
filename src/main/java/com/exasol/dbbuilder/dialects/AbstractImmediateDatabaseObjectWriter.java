@@ -21,7 +21,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
      *
      * @param connection JDBC connection
      */
-    public AbstractImmediateDatabaseObjectWriter(final Connection connection) {
+    protected AbstractImmediateDatabaseObjectWriter(final Connection connection) {
         this.connection = connection;
     }
 
@@ -102,7 +102,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     }
 
     private void writeRow(final Table table, final String sql, final PreparedStatement preparedStatement,
-            final List<Object> row) {
+                            final List<Object> row) {
         try {
             for (int i = 0; i < row.size(); ++i) {
                 preparedStatement.setObject(i + 1, row.get(i));

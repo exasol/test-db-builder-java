@@ -13,8 +13,13 @@ public class Table extends AbstractSchemaChild {
     private final DatabaseObjectWriter writer;
     private final List<Column> columns;
 
-    private Table(final Builder builder) {
-        super(builder.parentSchema, builder.name, false);
+    /**
+     * Create a new table based on a given builder.
+     *
+     * @param builder the builder from which to copy the values
+     */
+    protected Table(final Builder builder) {
+        super(builder.parentSchema, builder.tableName, false);
         this.columns = builder.columns;
         this.writer = builder.writer;
         this.writer.write(this);
@@ -104,7 +109,7 @@ public class Table extends AbstractSchemaChild {
      */
     public static class Builder {
         private final DatabaseObjectWriter writer;
-        private final Identifier name;
+        private final Identifier tableName;
         private final List<Column> columns = new ArrayList<>();
         private final Schema parentSchema;
 
@@ -118,7 +123,7 @@ public class Table extends AbstractSchemaChild {
         public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
             this.writer = writer;
             this.parentSchema = parentSchema;
-            this.name = tableName;
+            this.tableName = tableName;
         }
 
         /**

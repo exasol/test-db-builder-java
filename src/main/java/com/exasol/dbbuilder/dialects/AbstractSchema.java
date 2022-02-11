@@ -10,7 +10,9 @@ import com.exasol.errorreporting.ExaError;
  * This class contains common logic for a database schema.
  */
 public abstract class AbstractSchema extends AbstractDatabaseObject implements Schema {
-    /** List of tables */
+    /**
+     * List of tables
+     */
     protected final List<Table> tables = new ArrayList<>();
 
     /**
@@ -18,7 +20,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      *
      * @param name name of the database schema
      */
-    public AbstractSchema(final Identifier name) {
+    protected AbstractSchema(final Identifier name) {
         super(name, false);
     }
 
@@ -41,13 +43,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-            final String column2Name, final String column2Type) {
+                             final String column2Name, final String column2Type) {
         return createTable(name, List.of(column1Name, column2Name), List.of(column1Type, column2Type));
     }
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-            final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
+                             final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
         return createTable(name, List.of(column1Name, column2Name, column3Name),
                 List.of(column1Type, column2Type, column3Type));
     }
@@ -61,11 +63,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         if (columnNames.size() == columnTypes.size()) {
             final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
-            int index = 0;
-            for (final String columnName : columnNames) {
-                builder.column(columnName, columnTypes.get(index));
-                ++index;
-            }
+            passColumnsToTableBuilder(columnNames, columnTypes, builder);
             final Table table = builder.build();
             this.tables.add(table);
             return table;
@@ -77,8 +75,23 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     }
 
     /**
+     * Method that passes in a list of column names, and a list of their types, into a table builder.
+     *
+     * @param columnNames the column names
+     * @param columnTypes the column types
+     * @param builder     the builder that gets the information passed in
+     */
+    protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.Builder builder) {
+        int index = 0;
+        for (final String columnName : columnNames) {
+            builder.column(columnName, columnTypes.get(index));
+            ++index;
+        }
+    }
+
+    /**
      * Get an instance of {@link Identifier}.
-     * 
+     *
      * @param name identifier id
      * @return instance of {@link Identifier}
      */

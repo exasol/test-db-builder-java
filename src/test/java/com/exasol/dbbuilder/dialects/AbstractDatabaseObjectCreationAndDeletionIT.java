@@ -41,13 +41,13 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     @Test
     // [itest->dsn~creating-schemas~1]
-    void testCreateSchema() {
+    protected void testCreateSchema() {
         assertThat(this.factory.createSchema("THE_SCHEMA"), existsInDatabase());
     }
 
     @Test
     // [itest->dsn~dropping-schemas~2]
-    void testDropSchema() {
+    protected void testDropSchema() {
         final Schema schema = this.factory.createSchema("SCHEMA_TO_DROP");
         schema.drop();
         assertThat(schema, not(existsInDatabase()));
@@ -74,7 +74,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
 
     @Test
     // [itest->dsn~creating-tables~1]
-    void testCreateTable() {
+    protected void testCreateTable() {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TABLE");
         assertThat(schema.createTable("THE_TABLE", "COL1", "DATE", "COL2", "INT"), existsInDatabase());
     }
@@ -89,14 +89,14 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
     }
 
     @Test
-    void testTruncateTable() throws SQLException {
+    protected void testTruncateTable() throws SQLException {
         final Schema schema = this.factory.createSchema("PARENT_SCHEMA_FOR_TRUNCATE_TABLE");
         final Table table = schema.createTable("MY_TABLE", "COL1", "INTEGER").insert(1);
         table.truncate();
         assertThat(getTableSize(table), equalTo(0));
     }
 
-    private int getTableSize(final Table table) throws SQLException {
+    protected int getTableSize(final Table table) throws SQLException {
         try (final Statement statement = getAdminConnection().createStatement();
                 final ResultSet resultSet = statement
                         .executeQuery("SELECT COUNT(*) FROM " + table.getFullyQualifiedName())) {
