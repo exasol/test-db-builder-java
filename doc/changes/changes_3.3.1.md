@@ -8,7 +8,7 @@ This release fixes [CVE-2022-21724](https://nvd.nist.gov/vuln/detail/CVE-2022-21
 
 ## Bugfixes
 
-* #92: Fixed Dependabot finding by upgrading to PostgreSQL 42.3.3
+* #94: Fixed Dependabot finding by upgrading to PostgreSQL 42.3.3
 
 ## Dependency Updates
 
