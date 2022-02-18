@@ -64,7 +64,10 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             resultSet.next();
             assertThat(resultSet.getString(1), equalTo("Y"));
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-23").message("Unable to determine existence of object: {{columnName}}", columnName).toString(), exception);
+            throw new AssertionError(
+                    ExaError.messageBuilder("E-TDBJ-23")
+                            .message("Unable to determine existence of object: {{columnName}}", columnName).toString(),
+                    exception);
         }
     }
 
@@ -101,8 +104,10 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             assertAll(() -> assertThat(result.next(), equalTo(true)),
                     () -> assertThat(result.getString(1), containsString(expectedPrivilege)));
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-24").message("Unable to determine if user {{username}} has global privilege {{privilege}}.", username, expectedPrivilege).toString(),
-                    exception);
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-24")
+                    .message("Unable to determine if user {{username}} has global privilege {{privilege}}.", username,
+                            expectedPrivilege)
+                    .toString(), exception);
         }
     }
 
@@ -116,7 +121,9 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
                     .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
             assertThat(result, table().row(1, "FOO").row(2, "BAR").matches());
         } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-25").message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName()).toString(), exception);
+            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-25")
+                    .message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName())
+                    .toString(), exception);
         }
     }
 
@@ -126,6 +133,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             super(connection);
         }
 
+        @Override
         protected String getCheckCommand(final DatabaseObject object) {
             if (object instanceof User) {
                 return "SELECT 1 FROM mysql.user WHERE user = ?";
@@ -134,7 +142,8 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
             } else if (object instanceof Schema) {
                 return "SELECT 1 FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?";
             } else {
-                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-26").message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
+                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-26")
+                        .message("Assertion for {{object}} is not yet implemented.", object.getType()).toString());
             }
         }
     }

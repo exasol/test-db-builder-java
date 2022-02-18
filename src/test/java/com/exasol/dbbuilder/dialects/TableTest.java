@@ -79,6 +79,7 @@ class TableTest {
                 .build() //
                 .insert("Claudia", "2001-01-01") //
                 .insert("Steven", "2002-02-02");
+        @SuppressWarnings("unchecked")
         final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
         verify(this.writerMock, times(2)).write(eq(table), streamCapture.capture());
         assertThat(streamCapture.getAllValues().stream().flatMap(each -> each).collect(Collectors.toList()),
@@ -93,6 +94,7 @@ class TableTest {
                 .column("BIRTHDAY", "DATE") //
                 .build() //
                 .bulkInsert(rows);
+        @SuppressWarnings("unchecked")
         final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
         verify(this.writerMock, times(1)).write(eq(table), streamCapture.capture());
         assertThat(streamCapture.getAllValues().stream().flatMap(each -> each).collect(Collectors.toList()),
@@ -105,6 +107,7 @@ class TableTest {
                 .column("FOO", "DATE") //
                 .build();
         table.insert("1", "2");
+        @SuppressWarnings("unchecked")
         final ArgumentCaptor<Stream<List<Object>>> streamCapture = ArgumentCaptor.forClass(Stream.class);
         verify(this.writerMock).write(eq(table), streamCapture.capture());
         final Stream<List<Object>> stream = streamCapture.getValue();
