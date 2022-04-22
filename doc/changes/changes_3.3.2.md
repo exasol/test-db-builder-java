@@ -1,4 +1,4 @@
-# Test Database Builder for Java 3.3.2, released 2022-??-??
+# Test Database Builder for Java 3.3.2, released 2022-04-22
 
 Code name: Upgrade dependencies
 
