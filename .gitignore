@@ -33,3 +33,4 @@ target
 *.md.html
 .project
 .classpath
+*.flattened-pom.xml
