@@ -2,3 +2,4 @@ error-tags:
   TDBJ:
     packages:
       - com.exasol.dbbuilder
+    highest-index: 34

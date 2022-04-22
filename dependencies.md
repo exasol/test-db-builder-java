@@ -44,7 +44,7 @@
 | [Versions Maven Plugin][51]                             | [Apache License, Version 2.0][32]              |
 | [Apache Maven Enforcer Plugin][53]                      | [Apache License, Version 2.0][32]              |
 | [Project keeper maven plugin][55]                       | [MIT][1]                                       |
-| [Maven Deploy Plugin][57]                               | [The Apache Software License, Version 2.0][50] |
+| [Apache Maven Deploy Plugin][57]                        | [Apache License, Version 2.0][32]              |
 | [Nexus Staging Maven Plugin][59]                        | [Eclipse Public License][60]                   |
 | [error-code-crawler-maven-plugin][61]                   | [MIT][1]                                       |
 | [Reproducible Build Maven Plugin][63]                   | [Apache 2.0][50]                               |
@@ -75,6 +75,7 @@
 [14]: http://opensource.org/licenses/MIT
 [47]: https://github.com/itsallcode/openfasttrace-maven-plugin
 [36]: https://www.eclipse.org/legal/epl-2.0/
+[57]: https://maven.apache.org/plugins/maven-deploy-plugin/
 [60]: http://www.eclipse.org/legal/epl-v10.html
 [11]: https://github.com/exasol/exasol-testcontainers
 [35]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
@@ -96,7 +97,6 @@
 [13]: https://testcontainers.org
 [41]: https://maven.apache.org/plugins/maven-source-plugin/
 [23]: http://hamcrest.org/JavaHamcrest/
-[57]: http://maven.apache.org/plugins/maven-deploy-plugin/
 [73]: http://maven.apache.org/plugins/maven-site-plugin/
 [67]: http://maven.apache.org/plugins/maven-resources-plugin/
 [43]: https://maven.apache.org/plugins/maven-javadoc-plugin/
