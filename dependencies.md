@@ -65,7 +65,6 @@
 [10]: https://www.oracle.com/downloads/licenses/oracle-free-license.html
 [1]: https://opensource.org/licenses/MIT
 [29]: https://github.com/mockito/mockito
-[39]: https://www.mojohaus.org/flatten-maven-plugin/
 [47]: http://www.mojohaus.org/versions-maven-plugin/
 [67]: https://github.com/exasol/project-keeper/
 [24]: http://opensource.org/licenses/BSD-3-Clause
@@ -100,6 +99,7 @@
 [37]: https://maven.apache.org/enforcer/maven-enforcer-plugin/
 [4]: http://www.exasol.com
 [26]: https://www.eclipse.org/legal/epl-v20.html
+[39]: https://www.mojohaus.org/flatten-maven-plugin
 [75]: http://maven.apache.org/plugins/maven-install-plugin/
 [41]: https://sonatype.github.io/ossindex-maven/maven-plugin/
 [51]: https://maven.apache.org/plugins/maven-gpg-plugin/
