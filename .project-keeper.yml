@@ -6,5 +6,6 @@ sources:
       - integration_tests
 linkReplacements:
   - LICENSE-exasol-jdbc.txt|https://www.exasol.com/support/secure/attachment/155343/EXASOL_SDK-7.0.11.tar.gz
+  - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
 excludes:
   - "E-PK-CORE-18: Outdated content: '.github/workflows/release_droid_release_on_maven_central.yml'"

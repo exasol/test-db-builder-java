@@ -80,7 +80,6 @@
 [33]: http://sonarsource.github.io/sonar-scanner-maven/
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [25]: https://junit.org/junit5/
-[39]: https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin
 [53]: https://maven.apache.org/plugins/maven-source-plugin/
 [23]: http://hamcrest.org/JavaHamcrest/
 [71]: http://maven.apache.org/plugins/maven-resources-plugin/
@@ -100,6 +99,7 @@
 [37]: https://maven.apache.org/enforcer/maven-enforcer-plugin/
 [4]: http://www.exasol.com
 [26]: https://www.eclipse.org/legal/epl-v20.html
+[39]: https://www.mojohaus.org/flatten-maven-plugin
 [75]: http://maven.apache.org/plugins/maven-install-plugin/
 [41]: https://sonatype.github.io/ossindex-maven/maven-plugin/
 [51]: https://maven.apache.org/plugins/maven-gpg-plugin/
