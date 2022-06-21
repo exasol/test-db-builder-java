@@ -65,6 +65,7 @@
 [10]: https://www.oracle.com/downloads/licenses/oracle-free-license.html
 [1]: https://opensource.org/licenses/MIT
 [29]: https://github.com/mockito/mockito
+[39]: https://www.mojohaus.org/flatten-maven-plugin/
 [47]: http://www.mojohaus.org/versions-maven-plugin/
 [67]: https://github.com/exasol/project-keeper/
 [24]: http://opensource.org/licenses/BSD-3-Clause
@@ -80,7 +81,6 @@
 [33]: http://sonarsource.github.io/sonar-scanner-maven/
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [25]: https://junit.org/junit5/
-[39]: https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin
 [53]: https://maven.apache.org/plugins/maven-source-plugin/
 [23]: http://hamcrest.org/JavaHamcrest/
 [71]: http://maven.apache.org/plugins/maven-resources-plugin/
