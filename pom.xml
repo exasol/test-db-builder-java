@@ -169,6 +169,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.ossindex.maven</groupId>
+                <artifactId>ossindex-maven-plugin</artifactId>
+                <configuration>
+                    <excludeVulnerabilityIds>
+                        <!-- Vulnerable dependency org.postgresql:postgresql:jar:42.4.1 is only used in test code.
+                             https://ossindex.sonatype.org/vulnerability/sonatype-2022-4402 -->
+                        <exclude>sonatype-2022-4402</exclude>
+                    </excludeVulnerabilityIds>
+                </configuration>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
