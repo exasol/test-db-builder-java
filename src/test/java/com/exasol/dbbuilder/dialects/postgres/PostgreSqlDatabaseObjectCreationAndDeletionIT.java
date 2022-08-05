@@ -11,7 +11,7 @@ import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
 class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:13.1";
+    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:14.4-bullseye";
     @Container
     private static final PostgreSQLContainer<? extends PostgreSQLContainer<?>> container = new PostgreSQLContainer<>(
             POSTGRES_DOCKER_IMAGE_REFERENCE);
