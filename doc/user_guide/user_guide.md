@@ -277,7 +277,7 @@ final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
         .withJvmOptions("-agentlib:jdwp=transport=dt_socket,server=n,address=<host>:<port>,suspend=y")
         .build()
 );
-``` 
+```
 
 ### Creating Virtual Schemas
 
@@ -292,6 +292,23 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
         "LOG_LEVEL","ALL"))
         .build();
 ```
+
+#### Debug Output
+
+For virtual schemas Test DB Builder supports two special system properties to enable debug output to a remote machine:
+
+| System property | Sample value | Default value |
+|-----------------|--------------|---------------|
+| `com.exasol.virtualschema.debug.address` | `"192.168.1.2:3000"` | (none) |
+| `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"` |
+
+Sample usage
+```
+-Dcom.exasol.virtualschema.debug.address="1.2.3.4:3000"
+-Dcom.exasol.virtualschema.debug.level="INFO"
+```
+
+This enables to activate debug output in your local development environment without actually modifying any code and thereby preventing to commit debug settings by accident to your source code repository.
 
 ## Running Executable Database Content
 
