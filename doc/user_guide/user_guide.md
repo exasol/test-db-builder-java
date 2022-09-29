@@ -288,8 +288,7 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
         .dialectName("Exasol")
         .adapterScript(adapterScript)
         .connectionDefinition(connectionDefinition)
-        .properties(Map.of("IS_LOCAL","true"
-        "LOG_LEVEL","ALL"))
+        .properties(Map.of("IS_LOCAL", "true", "LOG_LEVEL", "ALL"))
         .build();
 ```
 

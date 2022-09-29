@@ -14,4 +14,6 @@ This release adds support to use properties to set `DEBUG_ADDRESS` and `LOG_LEVE
 
 ### Plugin Dependency Updates
 
+* Updated `com.exasol:error-code-crawler-maven-plugin:1.1.1` to `1.1.2`
 * Updated `com.exasol:project-keeper-maven-plugin:2.5.0` to `2.8.0`
+* Updated `org.apache.maven.plugins:maven-enforcer-plugin:3.0.0` to `3.1.0`
