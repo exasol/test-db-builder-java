@@ -8,13 +8,13 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import com.exasol.db.ExasolIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.Schema;
 
@@ -84,6 +84,15 @@ class VirtualSchemaTest {
     void testGetConnectionDefinition(@Mock final ConnectionDefinition connectionDefinitionMock) {
         assertThat(this.builder.connectionDefinition(connectionDefinitionMock).build().getConnectionDefinition(),
                 sameInstance(connectionDefinitionMock));
+    }
+
+    @Test
+    void testDebugProperties() {
+        System.setProperty(VirtualSchema.DEBUG_ADDRESS, "1.2.3.4:3000");
+        System.setProperty(VirtualSchema.DEBUG_LOG_LEVEL, "WARN");
+        final Map<String, String> properties = this.builder.build().getProperties();
+        assertThat(properties.get("DEBUG_ADDRESS"), equalTo("1.2.3.4:3000"));
+        assertThat(properties.get("LOG_LEVEL"), equalTo("WARN"));
     }
 
     @Test

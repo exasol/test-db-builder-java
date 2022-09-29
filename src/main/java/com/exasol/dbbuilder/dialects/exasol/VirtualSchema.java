@@ -15,8 +15,8 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private static final String CONNECTION_NAME_KEY = "CONNECTION_NAME";
     private static final String SQL_DIALECT_KEY = "SQL_DIALECT";
     private static final String DEBUG_PROPERTY = "com.exasol.virtualschema.debug.";
-    private static final String DEBUG_ADDRESS = DEBUG_PROPERTY + "address";
-    private static final String DEBUG_LOG_LEVEL = DEBUG_PROPERTY + "level";
+    static final String DEBUG_ADDRESS = DEBUG_PROPERTY + "address";
+    static final String DEBUG_LOG_LEVEL = DEBUG_PROPERTY + "level";
 
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final AdapterScript adapterScript;
