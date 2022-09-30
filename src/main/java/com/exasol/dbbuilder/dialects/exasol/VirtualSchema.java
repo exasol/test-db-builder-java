@@ -81,8 +81,8 @@ public class VirtualSchema extends AbstractDatabaseObject {
     @Override
     public DatabaseObject getParent() {
         throw new DatabaseObjectException(this,
-                ExaError.messageBuilder("E-TDBJ-10").message(
-                        "Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.")
+                ExaError.messageBuilder("E-TDBJ-10") //
+                        .message("Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.") //
                         .toString());
     }
 
