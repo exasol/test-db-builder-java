@@ -4,7 +4,7 @@ Code name: Support system properties to set DEBUG_ADDRESS and LOG_LEVEL.
 
 ## Summary
 
-This release adds support to use properties to set `DEBUG_ADDRESS` and `LOG_LEVEL` for virtual schemas, please see the [User Guide](../user_guide/user_guide.md#debug-output) for details.
+This release adds support to use properties to set `DEBUG_ADDRESS` and `LOG_LEVEL` for virtual schemas, please see the [User Guide](https://github.com/exasol/test-db-builder-java/blob/main/doc/user_guide/user_guide.md#debug-output) for details.
 
 ## Features
 
