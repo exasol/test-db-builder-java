@@ -11,6 +11,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junitpioneer.jupiter.ClearSystemProperty;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -86,13 +89,28 @@ class VirtualSchemaTest {
                 sameInstance(connectionDefinitionMock));
     }
 
-    @Test
-    void testDebugProperties() {
-        System.setProperty(VirtualSchema.DEBUG_ADDRESS, "1.2.3.4:3000");
-        System.setProperty(VirtualSchema.DEBUG_LOG_LEVEL, "WARN");
+    @ParameterizedTest
+    @CsvSource(value = { ",", "1.2.3.4:3000,", ",INFO", "2.3.4.5:4000, WARN" })
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_ADDRESS)
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_LOG_LEVEL)
+    void testDebugProperties(final String debugAddress, final String logLevel) {
+        setSystemProperty(VirtualSchema.DEBUG_ADDRESS, debugAddress);
+        setSystemProperty(VirtualSchema.DEBUG_LOG_LEVEL, logLevel);
         final Map<String, String> properties = this.builder.build().getProperties();
-        assertThat(properties.get("DEBUG_ADDRESS"), equalTo("1.2.3.4:3000"));
-        assertThat(properties.get("LOG_LEVEL"), equalTo("WARN"));
+        assertThat(properties.get("DEBUG_ADDRESS"), equalTo(debugAddress));
+        String expectedLogLevel = logLevel;
+        if ((logLevel == null) && (debugAddress != null)) {
+            expectedLogLevel = "ALL";
+        }
+        assertThat(properties.get("LOG_LEVEL"), equalTo(expectedLogLevel));
+    }
+
+    private void setSystemProperty(final String key, final String value) {
+        if (value == null) {
+            System.getProperties().remove(key);
+        } else {
+            System.setProperty(key, value);
+        }
     }
 
     @Test

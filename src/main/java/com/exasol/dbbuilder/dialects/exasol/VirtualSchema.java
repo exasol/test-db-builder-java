@@ -59,13 +59,16 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
     private void addDebugProperties() {
         final String debugAddress = System.getProperty(DEBUG_ADDRESS);
-        if (debugAddress == null) {
-            return;
+        String logLevel = System.getProperty(DEBUG_LOG_LEVEL);
+        if ((logLevel == null) && (debugAddress != null)) {
+            logLevel = "ALL";
         }
-        final String logLevel = System.getProperty(DEBUG_LOG_LEVEL);
-        this.properties.putAll(Map.of( //
-                "DEBUG_ADDRESS", debugAddress, //
-                "LOG_LEVEL", (logLevel != null ? logLevel : "ALL")));
+        if (debugAddress != null) {
+            this.properties.put("DEBUG_ADDRESS", debugAddress);
+        }
+        if (logLevel != null) {
+            this.properties.put("LOG_LEVEL", logLevel);
+        }
     }
 
     @Override

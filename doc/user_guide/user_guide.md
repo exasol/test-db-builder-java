@@ -299,7 +299,7 @@ For virtual schemas Test DB Builder supports two special system properties to en
 | System property | Sample value | Default value |
 |-----------------|--------------|---------------|
 | `com.exasol.virtualschema.debug.address` | `"192.168.1.2:3000"` | (none) |
-| `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"` |
+| `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"`, see explanation below |
 
 Sample usage
 ```
@@ -308,6 +308,8 @@ Sample usage
 ```
 
 This enables to activate debug output in your local development environment without actually modifying any code and thereby preventing to commit debug settings by accident to your source code repository.
+
+You can set either only one or both of these properties, see topics [Logging](https://docs.exasol.com/db/latest/database_concepts/virtual_schema/logging.htm) and [Debug UDF Script Output](https://docs.exasol.com/db/latest/database_concepts/udf_scripts/debug_udf_script_output.htm?Highlight=script_output) in the Exasol documentation. If only `-Dcom.exasol.virtualschema.debug.address` is specified then Test DB Builder Java sets `com.exasol.virtualschema.debug.level` to `ALL`.
 
 ## Running Executable Database Content
 
