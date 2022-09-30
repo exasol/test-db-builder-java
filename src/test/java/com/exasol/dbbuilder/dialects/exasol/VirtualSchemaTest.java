@@ -90,18 +90,25 @@ class VirtualSchemaTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = { ",", "1.2.3.4:3000,", ",INFO", "2.3.4.5:4000, WARN" })
-    @ClearSystemProperty(key = VirtualSchema.DEBUG_ADDRESS)
+    @CsvSource(value = { //
+            "       ,     ,     ,            ,         ", //
+            "1.2.3.4,     ,     ,     1.2.3.4     , ALL", //
+            "1.2.3.4, 3000,     ,     1.2.3.4:3000, ALL", //
+            "       , 3000,     ,            :3000, ALL", //
+            "1.2.3.4,     , INFO,     1.2.3.4     , INFO", //
+            "       , 3000, INFO,            :3000, INFO", //
+            "       ,     , INFO,                 , INFO", //
+            "1.2.3.4, 3000, INFO,     1.2.3.4:3000, INFO" })
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_HOST)
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_PORT)
     @ClearSystemProperty(key = VirtualSchema.DEBUG_LOG_LEVEL)
-    void testDebugProperties(final String debugAddress, final String logLevel) {
-        setSystemProperty(VirtualSchema.DEBUG_ADDRESS, debugAddress);
+    void testDebugProperties(final String host, final String port, final String logLevel, final String expectedAddress,
+            final String expectedLogLevel) {
+        setSystemProperty(VirtualSchema.DEBUG_HOST, host);
+        setSystemProperty(VirtualSchema.DEBUG_PORT, port);
         setSystemProperty(VirtualSchema.DEBUG_LOG_LEVEL, logLevel);
         final Map<String, String> properties = this.builder.build().getProperties();
-        assertThat(properties.get("DEBUG_ADDRESS"), equalTo(debugAddress));
-        String expectedLogLevel = logLevel;
-        if ((logLevel == null) && (debugAddress != null)) {
-            expectedLogLevel = "ALL";
-        }
+        assertThat(properties.get("DEBUG_ADDRESS"), equalTo(expectedAddress));
         assertThat(properties.get("LOG_LEVEL"), equalTo(expectedLogLevel));
     }
 

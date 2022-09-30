@@ -15,7 +15,8 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private static final String CONNECTION_NAME_KEY = "CONNECTION_NAME";
     private static final String SQL_DIALECT_KEY = "SQL_DIALECT";
     private static final String DEBUG_PROPERTY = "com.exasol.virtualschema.debug.";
-    static final String DEBUG_ADDRESS = DEBUG_PROPERTY + "address";
+    static final String DEBUG_HOST = DEBUG_PROPERTY + "host";
+    static final String DEBUG_PORT = DEBUG_PROPERTY + "port";
     static final String DEBUG_LOG_LEVEL = DEBUG_PROPERTY + "level";
 
     private final ExasolImmediateDatabaseObjectWriter writer;
@@ -58,13 +59,22 @@ public class VirtualSchema extends AbstractDatabaseObject {
     }
 
     private void addDebugProperties() {
-        final String debugAddress = System.getProperty(DEBUG_ADDRESS);
-        String logLevel = System.getProperty(DEBUG_LOG_LEVEL);
-        if ((logLevel == null) && (debugAddress != null)) {
-            logLevel = "ALL";
+        final String host = System.getProperty(DEBUG_HOST);
+        final String port = System.getProperty(DEBUG_PORT);
+
+        String address = "";
+        if (host != null) {
+            address = host;
         }
-        if (debugAddress != null) {
-            this.properties.put("DEBUG_ADDRESS", debugAddress);
+        if (port != null) {
+            address += ":" + port;
+        }
+        if (!address.isEmpty()) {
+            this.properties.put("DEBUG_ADDRESS", address);
+        }
+        String logLevel = System.getProperty(DEBUG_LOG_LEVEL);
+        if ((logLevel == null) && !address.isEmpty()) {
+            logLevel = "ALL";
         }
         if (logLevel != null) {
             this.properties.put("LOG_LEVEL", logLevel);
@@ -83,10 +93,9 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
     @Override
     public DatabaseObject getParent() {
-        throw new DatabaseObjectException(this,
-                ExaError.messageBuilder("E-TDBJ-10") //
-                        .message("Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.") //
-                        .toString());
+        throw new DatabaseObjectException(this, ExaError.messageBuilder("E-TDBJ-10") //
+                .message("Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.") //
+                .toString());
     }
 
     @Override
