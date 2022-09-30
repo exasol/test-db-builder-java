@@ -8,13 +8,16 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import com.exasol.db.ExasolIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junitpioneer.jupiter.ClearSystemProperty;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 import com.exasol.dbbuilder.dialects.Schema;
 
@@ -84,6 +87,37 @@ class VirtualSchemaTest {
     void testGetConnectionDefinition(@Mock final ConnectionDefinition connectionDefinitionMock) {
         assertThat(this.builder.connectionDefinition(connectionDefinitionMock).build().getConnectionDefinition(),
                 sameInstance(connectionDefinitionMock));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { //
+            "       ,     ,     ,            ,         ", //
+            "1.2.3.4,     ,     ,     1.2.3.4     , ALL", //
+            "1.2.3.4, 3000,     ,     1.2.3.4:3000, ALL", //
+            "       , 3000,     ,            :3000, ALL", //
+            "1.2.3.4,     , INFO,     1.2.3.4     , INFO", //
+            "       , 3000, INFO,            :3000, INFO", //
+            "       ,     , INFO,                 , INFO", //
+            "1.2.3.4, 3000, INFO,     1.2.3.4:3000, INFO" })
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_HOST)
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_PORT)
+    @ClearSystemProperty(key = VirtualSchema.DEBUG_LOG_LEVEL)
+    void testDebugProperties(final String host, final String port, final String logLevel, final String expectedAddress,
+            final String expectedLogLevel) {
+        setSystemProperty(VirtualSchema.DEBUG_HOST, host);
+        setSystemProperty(VirtualSchema.DEBUG_PORT, port);
+        setSystemProperty(VirtualSchema.DEBUG_LOG_LEVEL, logLevel);
+        final Map<String, String> properties = this.builder.build().getProperties();
+        assertThat(properties.get("DEBUG_ADDRESS"), equalTo(expectedAddress));
+        assertThat(properties.get("LOG_LEVEL"), equalTo(expectedLogLevel));
+    }
+
+    private void setSystemProperty(final String key, final String value) {
+        if (value == null) {
+            System.getProperties().remove(key);
+        } else {
+            System.setProperty(key, value);
+        }
     }
 
     @Test

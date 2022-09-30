@@ -277,7 +277,7 @@ final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
         .withJvmOptions("-agentlib:jdwp=transport=dt_socket,server=n,address=<host>:<port>,suspend=y")
         .build()
 );
-``` 
+```
 
 ### Creating Virtual Schemas
 
@@ -288,9 +288,34 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
         .dialectName("Exasol")
         .adapterScript(adapterScript)
         .connectionDefinition(connectionDefinition)
-        .properties(Map.of("IS_LOCAL","true"
-        "LOG_LEVEL","ALL"))
+        .properties(Map.of("IS_LOCAL", "true", "LOG_LEVEL", "ALL"))
         .build();
+```
+
+#### Debug Output
+
+For virtual schemas Test DB Builder supports three special system properties to enable debug output to a remote machine:
+
+| System property | Sample value | Default value |
+|-----------------|--------------|---------------|
+| `com.exasol.virtualschema.debug.host` | `"192.168.1.2"` | (none) |
+| `com.exasol.virtualschema.debug.port` | `"3000"` | (none) |
+| `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"`, see explanation below |
+
+You can set some or all of these properties, see topics [Logging](https://docs.exasol.com/db/latest/database_concepts/virtual_schema/logging.htm) and [Debug UDF Script Output](https://docs.exasol.com/db/latest/database_concepts/udf_scripts/debug_udf_script_output.htm?Highlight=script_output) in the Exasol documentation. If `com.exasol.virtualschema.debug.level` is not specified and either `-Dcom.exasol.virtualschema.debug.host` or `-Dcom.exasol.virtualschema.debug.port` is specified then Test DB Builder Java sets `com.exasol.virtualschema.debug.level` to `ALL`.
+
+When running tests you can for example pass the following additional VM-arguments:
+```
+-Dcom.exasol.virtualschema.debug.host="127.0.0.1"
+-Dcom.exasol.virtualschema.debug.port="3000"
+-Dcom.exasol.virtualschema.debug.level="INFO"
+```
+
+This activates debug output in your local development environment without modifying any code and thereby preventing to commit debug settings by accident to your source code repository.
+
+You can use the following shell command to display the debug log, see  [Logging](https://docs.exasol.com/db/latest/database_concepts/virtual_schema/logging.htm):
+```shell
+nc -lkp 3000
 ```
 
 ## Running Executable Database Content

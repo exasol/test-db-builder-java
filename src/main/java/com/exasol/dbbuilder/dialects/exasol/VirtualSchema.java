@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
-import com.exasol.dbbuilder.dialects.DatabaseObject;
-import com.exasol.dbbuilder.dialects.DatabaseObjectException;
-import com.exasol.dbbuilder.dialects.Schema;
+import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
 /**
@@ -17,6 +14,11 @@ public class VirtualSchema extends AbstractDatabaseObject {
     private static final String SCHEMA_NAME_KEY = "SCHEMA_NAME";
     private static final String CONNECTION_NAME_KEY = "CONNECTION_NAME";
     private static final String SQL_DIALECT_KEY = "SQL_DIALECT";
+    private static final String DEBUG_PROPERTY = "com.exasol.virtualschema.debug.";
+    static final String DEBUG_HOST = DEBUG_PROPERTY + "host";
+    static final String DEBUG_PORT = DEBUG_PROPERTY + "port";
+    static final String DEBUG_LOG_LEVEL = DEBUG_PROPERTY + "level";
+
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final AdapterScript adapterScript;
     private final ConnectionDefinition connectionDefinition;
@@ -28,6 +30,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
         this.adapterScript = builder.adapterScript;
         this.connectionDefinition = builder.connectionDefinition;
         addReservedProperties(builder);
+        addDebugProperties();
         this.properties.putAll(builder.properties);
         this.writer.write(this);
     }
@@ -55,6 +58,29 @@ public class VirtualSchema extends AbstractDatabaseObject {
         }
     }
 
+    private void addDebugProperties() {
+        final String host = System.getProperty(DEBUG_HOST);
+        final String port = System.getProperty(DEBUG_PORT);
+
+        String address = "";
+        if (host != null) {
+            address = host;
+        }
+        if (port != null) {
+            address += ":" + port;
+        }
+        if (!address.isEmpty()) {
+            this.properties.put("DEBUG_ADDRESS", address);
+        }
+        String logLevel = System.getProperty(DEBUG_LOG_LEVEL);
+        if ((logLevel == null) && !address.isEmpty()) {
+            logLevel = "ALL";
+        }
+        if (logLevel != null) {
+            this.properties.put("LOG_LEVEL", logLevel);
+        }
+    }
+
     @Override
     public String getType() {
         return "virtual schema";
@@ -67,8 +93,9 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
     @Override
     public DatabaseObject getParent() {
-        throw new DatabaseObjectException(this,
-            ExaError.messageBuilder("E-TDBJ-10").message("Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.").toString());
+        throw new DatabaseObjectException(this, ExaError.messageBuilder("E-TDBJ-10") //
+                .message("Illegal attempt to access parent object of a VIRTUAL SCHEMA which is a top-level object.") //
+                .toString());
     }
 
     @Override
