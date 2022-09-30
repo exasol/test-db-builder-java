@@ -5,7 +5,6 @@ sources:
       - maven_central
       - integration_tests
 linkReplacements:
-  - LICENSE-exasol-jdbc.txt|https://www.exasol.com/support/secure/attachment/155343/EXASOL_SDK-7.0.11.tar.gz
   - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
   - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
 excludes:
