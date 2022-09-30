@@ -301,7 +301,7 @@ For virtual schemas Test DB Builder supports two special system properties to en
 | `com.exasol.virtualschema.debug.address` | `"192.168.1.2:3000"` | (none) |
 | `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"` |
 
-Sample usage
+Sample usage pass the following arguments when running tests:
 ```
 -Dcom.exasol.virtualschema.debug.address="1.2.3.4:3000"
 -Dcom.exasol.virtualschema.debug.level="INFO"
