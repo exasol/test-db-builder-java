@@ -12,6 +12,10 @@ This release adds support to use properties to set `DEBUG_ADDRESS` and `LOG_LEVE
 
 ## Dependency Updates
 
+### Test Dependency Updates
+
+* Added `org.junit-pioneer:junit-pioneer:1.7.1`
+
 ### Plugin Dependency Updates
 
 * Updated `com.exasol:error-code-crawler-maven-plugin:1.1.1` to `1.1.2`
