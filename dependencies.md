@@ -64,7 +64,7 @@
 [3]: https://github.com/exasol/error-reporting-java/blob/main/LICENSE
 [4]: http://www.exasol.com
 [5]: https://docs.exasol.com/connect_exasol/drivers/jdbc.htm
-[6]: https://developers.google.com/protocol-buffers/protobuf-java/
+[6]: https://developers.google.com/protocol-buffers
 [7]: https://opensource.org/licenses/BSD-3-Clause
 [8]: https://jdbc.postgresql.org
 [9]: https://jdbc.postgresql.org/license/

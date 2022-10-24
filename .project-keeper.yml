@@ -7,5 +7,6 @@ sources:
 linkReplacements:
   - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
   - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
+  - https://developers.google.com/protocol-buffers/protobuf-java/|https://developers.google.com/protocol-buffers
 excludes:
   - "E-PK-CORE-18: Outdated content: '.github/workflows/release_droid_release_on_maven_central.yml'"
