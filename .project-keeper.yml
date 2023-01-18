@@ -8,5 +8,7 @@ linkReplacements:
   - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
   - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
   - https://developers.google.com/protocol-buffers/protobuf-java/|https://developers.google.com/protocol-buffers
+  - LICENSE-exasol-jdbc.txt|https://docs.exasol.com/db/latest/connect_exasol/drivers/jdbc.htm
 excludes:
-  - "E-PK-CORE-18: Outdated content: '.github/workflows/release_droid_release_on_maven_central.yml'"
+  - "xE-PK-CORE-18: Outdated content: '.github/workflows/release_droid_release_on_maven_central.yml'"
+  - "[WARNING] W-PK-CORE-155: Could not detect latest available version of project-keeper. Server returned HTTP response code: 504 for URL: https://search.maven.org/solrsearch/select?q=g:com.exasol+AND+a:project-keeper-maven-plugin&wt=json. Please check network connection and response from 'https://search.maven.org/solrsearch/select?q=g:com.exasol+AND+a:project-keeper-maven-plugin&wt=json'"
