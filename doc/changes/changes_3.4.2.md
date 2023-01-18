@@ -4,7 +4,7 @@ Code name: Fix vulnerabilities in dependencies on top of 3.4.1
 
 ## Summary
 
-Updated dependencies on top of version 3.4.1 to fix vulnerabilities.
+Updated dependencies on top of version 3.4.1 to fix vulnerability CVE-2022-41946 in test dependency to `org.postgresql:postgresql:jar:42.5.0`.
 
 ## Bugfixes
 
