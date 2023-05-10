@@ -15,6 +15,7 @@ This release updates dependencies on top of 3.4.2 and fixes broken links.
 ### Compile Dependency Updates
 
 * Updated `com.exasol:error-reporting-java:1.0.0` to `1.0.1`
+* Added `org.slf4j:slf4j-jdk14:2.0.7`
 
 ### Test Dependency Updates
 
