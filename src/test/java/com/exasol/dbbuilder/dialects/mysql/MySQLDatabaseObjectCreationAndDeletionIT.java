@@ -26,7 +26,7 @@ import com.exasol.errorreporting.ExaError;
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
 class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.0.30";
+    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.0.33-debian";
     @Container
     private static final MySQLContainer<?> container = new MySQLContainer<>(MYSQL_DOCKER_IMAGE_REFERENCE)
             .withUsername("root").withPassword("");
