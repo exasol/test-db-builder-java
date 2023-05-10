@@ -7,7 +7,7 @@ Code name: Dependency updates
 This release upgrades dependencies to fix the following vulnerabilities:
 
 * org.postgresql:postgresql:jar:42.3.6:test
-  * [sonatype-2022-4402](https://ossindex.sonatype.org/vulnerability/sonatype-2022-4402)
+  * sonatype-2022-4402
 
 ## Bugfixes
 
