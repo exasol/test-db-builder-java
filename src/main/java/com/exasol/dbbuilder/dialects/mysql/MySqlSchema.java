@@ -24,6 +24,7 @@ public class MySqlSchema extends AbstractSchema {
 
     @Override
     public DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 

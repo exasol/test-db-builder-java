@@ -78,4 +78,43 @@ public abstract class AbstractSchemaTest {
         schema.drop();
         assertThrows(DatabaseObjectDeletedException.class, schema::drop);
     }
+
+    @Test
+    void testCreateTableWithThreeColumnsFailsForDroppedSchema() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class,
+                () -> schema.createTable("tab", "col1", "type1", "col2", "type2", "col3", "type3"));
+    }
+
+    @Test
+    void testCreateTableWithTwoColumnsFailsForDroppedSchema() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class,
+                () -> schema.createTable("tab", "col1", "type1", "col2", "type2"));
+    }
+
+    @Test
+    void testCreateTableWithOneColumnFailsForDroppedSchema() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createTable("tab", "col1", "type1"));
+    }
+
+    @Test
+    void testCreateTableWithColumnListFailsForDroppedSchema() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        final List<String> columnNames = List.of("col1");
+        final List<String> columnTypes = List.of("type1");
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createTable("tab", columnNames, columnTypes));
+    }
+
+    @Test
+    void testCreateTableWithBuilderFailsForDroppedSchema() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createTableBuilder("tab"));
+    }
 }

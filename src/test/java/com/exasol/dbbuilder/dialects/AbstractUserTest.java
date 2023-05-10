@@ -1,12 +1,19 @@
 package com.exasol.dbbuilder.dialects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
+
+import com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege;
+import com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege;
 
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractUserTest {
@@ -50,6 +57,22 @@ public abstract class AbstractUserTest {
     }
 
     @Test
+    void testGetObjectPrivilegesReturnsUnmodifiableMap() {
+        final User user = createUser("user");
+        final Map<DatabaseObject, ObjectPrivilege[]> privileges = user.getObjectPrivileges();
+        final ObjectPrivilege[] priv = new ObjectPrivilege[0];
+        assertThrows(UnsupportedOperationException.class, () -> privileges.put(user, priv));
+    }
+
+    @Test
+    void testGetGlobalPrivilegesReturnsUnmodifiableMap() {
+        final User user = createUser("user");
+        final Set<GlobalPrivilege> privileges = user.getGlobalPrivileges();
+        assertThrows(UnsupportedOperationException.class,
+                () -> privileges.add(ExasolGlobalPrivilege.ACCESS_ANY_CONNECTION));
+    }
+
+    @Test
     void testDrop() {
         final User user = createUser("user");
         user.drop();
@@ -61,5 +84,45 @@ public abstract class AbstractUserTest {
         final User user = createUser("user");
         user.drop();
         assertThrows(DatabaseObjectDeletedException.class, user::drop);
+    }
+
+    @Test
+    void testGrantSystemPrivilegeFailsForDeletedUser() {
+        final User user = createUser("user");
+        user.drop();
+        assertThrows(DatabaseObjectDeletedException.class,
+                () -> user.grant(ExasolGlobalPrivilege.ACCESS_ANY_CONNECTION));
+        assertThat(user.getGlobalPrivileges(), empty());
+    }
+
+    @Test
+    void testGrantObjectPrivilegeFailsForDeletedUser() {
+        final User user = createUser("user");
+        user.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> user.grant(user, ExasolObjectPrivilege.ALTER));
+        assertThat(user.getObjectPrivileges(), anEmptyMap());
+    }
+
+    @Test
+    void testGrantAllAccessFailsForDeletedUser() {
+        assumeGrantAllAccessSupported();
+        final User user = createUser("user");
+        user.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> user.grantAllAccess(user));
+        assertThat(user.getObjectPrivileges(), anEmptyMap());
+    }
+
+    private void assumeGrantAllAccessSupported() {
+        assumeTrue(supportsGrantAllAccess());
+    }
+
+    private boolean supportsGrantAllAccess() {
+        final User user = createUser("user");
+        try {
+            user.grantAllAccess(user);
+            return true;
+        } catch (final UnsupportedOperationException exception) {
+            return false;
+        }
     }
 }

@@ -130,6 +130,28 @@ class TableTest {
         assertThrows(DatabaseObjectDeletedException.class, table::drop);
     }
 
+    @Test
+    void testTruncateDeletedTableFails() {
+        final Table table = tableBuilder("tab").build();
+        table.drop();
+        assertThrows(DatabaseObjectDeletedException.class, table::truncate);
+    }
+
+    @Test
+    void testInsertIntoDeletedTableFails() {
+        final Table table = tableBuilder("tab").build();
+        table.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> table.insert("val1"));
+    }
+
+    @Test
+    void testBulkInsertIntoDeletedTableFails() {
+        final Table table = tableBuilder("tab").build();
+        table.drop();
+        final Stream<List<Object>> rows = Stream.empty();
+        assertThrows(DatabaseObjectDeletedException.class, () -> table.bulkInsert(rows));
+    }
+
     private Builder tableBuilder(final String tableName) {
         return Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of(tableName));
     }

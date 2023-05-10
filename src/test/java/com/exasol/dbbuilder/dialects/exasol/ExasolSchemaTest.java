@@ -2,6 +2,7 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language;
 
 @ExtendWith(MockitoExtension.class)
 class ExasolSchemaTest extends AbstractSchemaTest {
@@ -45,6 +47,35 @@ class ExasolSchemaTest extends AbstractSchemaTest {
         final AdapterScript adapterScript = exasolSchema.createAdapterScriptBuilder("TEST_SCRIPT")
                 .language(AdapterScript.Language.JAVA).content("test").build();
         assertThat(adapterScript.getParent(), equalTo(exasolSchema));
+    }
+
+    @Test
+    void testCreateAdapterScriptFailsForDroppedSchema() {
+        final ExasolSchema schema = testee();
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class,
+                () -> schema.createAdapterScript("script", Language.JAVA, "content"));
+    }
+
+    @Test
+    void testCreateAdapterScriptBuilderFailsForDroppedSchema() {
+        final ExasolSchema schema = testee();
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createAdapterScriptBuilder("script"));
+    }
+
+    @Test
+    void testCreateScriptBuilderFailsForDroppedSchema() {
+        final ExasolSchema schema = testee();
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createScriptBuilder("script"));
+    }
+
+    @Test
+    void testCreateUdfBuilderFailsForDroppedSchema() {
+        final ExasolSchema schema = testee();
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> schema.createUdfBuilder("script"));
     }
 
     private ExasolSchema testee() {

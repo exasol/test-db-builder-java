@@ -97,4 +97,18 @@ class ExasolScriptTest {
         script.drop();
         assertThrows(DatabaseObjectDeletedException.class, script::drop);
     }
+
+    @Test
+    void testExecuteDroppedScriptFails() {
+        final Script script = this.builder.build();
+        script.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> script.execute("val1"));
+    }
+
+    @Test
+    void testExecuteQueryDroppedScriptFails() {
+        final Script script = this.builder.build();
+        script.drop();
+        assertThrows(DatabaseObjectDeletedException.class, () -> script.executeQuery("val1"));
+    }
 }

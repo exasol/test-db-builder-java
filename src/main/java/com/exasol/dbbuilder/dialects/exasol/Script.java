@@ -64,6 +64,7 @@ public class Script extends AbstractScript {
      */
     // [impl->dsn~running-scripts-that-have-no-return~1]
     public int execute(final Object... parameterValues) {
+        verifyNotDeleted();
         return this.writer.execute(this, parameterValues);
     }
 

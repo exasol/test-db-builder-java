@@ -129,6 +129,7 @@ public class ExasolSchema extends AbstractSchema {
 
     @Override
     public DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 
