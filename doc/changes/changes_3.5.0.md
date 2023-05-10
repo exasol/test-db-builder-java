@@ -1,10 +1,14 @@
-# Test Database Builder for Java 3.4.3, released 2023-05-10
+# Test Database Builder for Java 3.5.0, released 2023-??-??
 
 Code name: Fix broken links
 
 ## Summary
 
-This release updates dependencies on top of 3.4.2 and fixes broken links.
+This release marks deleted objects and rejects operations on deleted objects. It also updates dependencies on top of 3.4.2 and fixes broken links.
+
+## Features
+
+* #34: Marked deleted objects
 
 ## Documentation
 
