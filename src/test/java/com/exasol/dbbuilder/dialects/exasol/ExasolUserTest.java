@@ -5,16 +5,13 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 
-import com.exasol.db.ExasolIdentifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.AbstractUserTest;
-import com.exasol.dbbuilder.dialects.DatabaseObject;
-import com.exasol.dbbuilder.dialects.ObjectPrivilege;
-import com.exasol.dbbuilder.dialects.User;
+import com.exasol.db.ExasolIdentifier;
+import com.exasol.dbbuilder.dialects.*;
 
 // [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)
@@ -32,9 +29,15 @@ class ExasolUserTest extends AbstractUserTest {
         return new ExasolUser(this.writerMock, ExasolIdentifier.of(name), password);
     }
 
+    @Override
+    protected DatabaseObjectWriter getWriterMock() {
+        return writerMock;
+    }
+
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new ExasolUser(this.writerMock, ExasolIdentifier.of("JOHNDOE")).getFullyQualifiedName(), equalTo("\"JOHNDOE\""));
+        assertThat(new ExasolUser(this.writerMock, ExasolIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
+                equalTo("\"JOHNDOE\""));
     }
 
     @Test
@@ -56,7 +59,8 @@ class ExasolUserTest extends AbstractUserTest {
 
     @Test
     void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
-        final User user = new ExasolUser(this.writerMock, ExasolIdentifier.of("OBJSUPERUSER")).grantAllAccess(objectMock);
+        final User user = new ExasolUser(this.writerMock, ExasolIdentifier.of("OBJSUPERUSER"))
+                .grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ExasolObjectPrivilege.values()));
     }
 }

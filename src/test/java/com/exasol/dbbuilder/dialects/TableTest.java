@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -18,6 +19,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.Identifier;
+import com.exasol.dbbuilder.dialects.Table.Builder;
 
 // [utest->dsn~creating-tables~1]
 @ExtendWith(MockitoExtension.class)
@@ -29,38 +31,35 @@ class TableTest {
 
     @Test
     void testGetType() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("A")).build().getType(),
-                equalTo("table"));
+        assertThat(tableBuilder("A").build().getType(), equalTo("table"));
     }
 
     @Test
     void testGetName() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("FOO")).build();
+        final Table table = tableBuilder("FOO").build();
         assertThat(table.getName(), equalTo("FOO"));
     }
 
     @Test
     void testGetFullyQualifiedName() {
         Mockito.when(this.schemaMock.getFullyQualifiedName()).thenReturn("\"THE_SCHEMA\"");
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("THE_TABLE")).build();
+        final Table table = tableBuilder("THE_TABLE").build();
         assertThat(table.getFullyQualifiedName(), equalTo("\"THE_SCHEMA\".\"THE_TABLE\""));
     }
 
     @Test
     void testHasParent() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("A")).build().hasParent(),
-                equalTo(true));
+        assertThat(tableBuilder("A").build().hasParent(), equalTo(true));
     }
 
     @Test
     void testGetParent() {
-        assertThat(Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("A")).build().getParent(),
-                sameInstance(this.schemaMock));
+        assertThat(tableBuilder("A").build().getParent(), sameInstance(this.schemaMock));
     }
 
     @Test
     void testGetColumns() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("BAR")) //
+        final Table table = tableBuilder("BAR") //
                 .column("COL1", "VARCHAR(40)") //
                 .column("COL2", "DATE") //
                 .build();
@@ -73,7 +72,7 @@ class TableTest {
 
     @Test
     void testInsert() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("TABLEWITHCONTENT")) //
+        final Table table = tableBuilder("TABLEWITHCONTENT") //
                 .column("NAME", "VARCHAR(40)") //
                 .column("BIRTHDAY", "DATE") //
                 .build() //
@@ -89,7 +88,7 @@ class TableTest {
     @Test
     void testBulkInsert() {
         final Stream<List<Object>> rows = Stream.of(List.of("Claudia", "2001-01-01"), List.of("Steven", "2002-02-02"));
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("TABLEWITHCONTENT2")) //
+        final Table table = tableBuilder("TABLEWITHCONTENT2") //
                 .column("NAME", "VARCHAR(40)") //
                 .column("BIRTHDAY", "DATE") //
                 .build() //
@@ -103,7 +102,7 @@ class TableTest {
 
     @Test
     void testInsertThrowsExceptionOnValueCountMismatch() {
-        final Table table = Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of("ONECOLUMNTABLE")) //
+        final Table table = tableBuilder("ONECOLUMNTABLE") //
                 .column("FOO", "DATE") //
                 .build();
         table.insert("1", "2");
@@ -115,6 +114,24 @@ class TableTest {
                 () -> stream.forEach(each -> { // just consume the items
                 }));
         assertThat(exception.getMessage(), startsWith("E-TDBJ-3: Column count mismatch."));
+    }
+
+    @Test
+    void testDrop() {
+        final Table table = tableBuilder("tab").build();
+        table.drop();
+        verify(writerMock).drop(same(table));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final Table table = tableBuilder("tab").build();
+        table.drop();
+        assertThrows(DatabaseObjectDeletedException.class, table::drop);
+    }
+
+    private Builder tableBuilder(final String tableName) {
+        return Table.builder(this.writerMock, this.schemaMock, DummyIdentifier.of(tableName));
     }
 
     static class DummyIdentifier implements Identifier {

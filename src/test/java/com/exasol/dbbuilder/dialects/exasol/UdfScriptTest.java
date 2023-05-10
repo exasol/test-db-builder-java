@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,17 +14,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.Column;
-import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeDynamicEmits;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypePredefinedEmits;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfReturnTypeReturns;
-import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
+import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.exasol.udf.*;
 
 @ExtendWith(MockitoExtension.class)
 class UdfScriptTest {
     @Mock
-    ExasolImmediateDatabaseObjectWriter writer;
+    ExasolImmediateDatabaseObjectWriter writerMock;
 
     @Mock
     Schema schema;
@@ -75,7 +73,7 @@ class UdfScriptTest {
 
     @Test
     void testMissingReturnType() {
-        final UdfScript.Builder builder = UdfScript.builder(this.writer, this.schema, ExasolIdentifier.of("test"))
+        final UdfScript.Builder builder = UdfScript.builder(this.writerMock, this.schema, ExasolIdentifier.of("test"))
                 .inputType(UdfScript.InputType.SET).language(UdfScript.Language.JAVA);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
         assertThat(exception.getMessage(), equalTo(
@@ -86,13 +84,28 @@ class UdfScriptTest {
     void testMissingLanguage() {
         final UdfScript.Builder builder = getDefaultBuilder().language(null);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
-        assertThat(exception.getMessage(), equalTo("E-TDBJ-15: \'language\' is a required field. Please provide a value by calling language() before build()."));
+        assertThat(exception.getMessage(), equalTo(
+                "E-TDBJ-15: \'language\' is a required field. Please provide a value by calling language() before build()."));
     }
 
     private UdfScript.Builder getDefaultBuilder() {
-        final UdfScript.Builder builder = UdfScript.builder(this.writer, this.schema, ExasolIdentifier.of("test"))
+        final UdfScript.Builder builder = UdfScript.builder(this.writerMock, this.schema, ExasolIdentifier.of("test"))
                 .inputType(UdfScript.InputType.SET).language(UdfScript.Language.JAVA)
                 .emits(new Column("test", "VARCHAR"));
         return builder;
+    }
+
+    @Test
+    void testDrop() {
+        final UdfScript script = getDefaultBuilder().build();
+        script.drop();
+        verify(writerMock).drop(same(script));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final UdfScript script = getDefaultBuilder().build();
+        script.drop();
+        assertThrows(DatabaseObjectDeletedException.class, script::drop);
     }
 }

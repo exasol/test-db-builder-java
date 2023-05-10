@@ -4,14 +4,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
-import com.exasol.db.ExasolIdentifier;
-import com.exasol.db.Identifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.exasol.db.ExasolIdentifier;
+import com.exasol.db.Identifier;
+import com.exasol.dbbuilder.dialects.DatabaseObjectDeletedException;
 import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 
 @ExtendWith(MockitoExtension.class)
@@ -104,5 +107,21 @@ class ConnectionDefinitionTest {
         final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
                 CONNECTION_TARGET);
         assertThrows(DatabaseObjectException.class, connectionDefinition::getParent);
+    }
+
+    @Test
+    void testDrop() {
+        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
+                CONNECTION_TARGET);
+        connectionDefinition.drop();
+        verify(writerMock).drop(same(connectionDefinition));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
+                CONNECTION_TARGET);
+        connectionDefinition.drop();
+        assertThrows(DatabaseObjectDeletedException.class, connectionDefinition::drop);
     }
 }

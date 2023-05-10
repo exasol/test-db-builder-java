@@ -2,6 +2,9 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.shaded.com.google.common.io.Files;
 
+import com.exasol.dbbuilder.dialects.DatabaseObjectDeletedException;
 import com.exasol.dbbuilder.dialects.exasol.Script.Builder;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,5 +82,19 @@ class ExasolScriptTest {
         final Path tempFile = tempDir.resolve("script.lua");
         Files.write(expected_content.getBytes(), tempFile.toFile());
         assertThat(this.builder.content(tempFile).build().getContent(), equalTo(expected_content));
+    }
+
+    @Test
+    void testDrop() {
+        final Script script = this.builder.build();
+        script.drop();
+        verify(writerMock).drop(same(script));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final Script script = this.builder.build();
+        script.drop();
+        assertThrows(DatabaseObjectDeletedException.class, script::drop);
     }
 }

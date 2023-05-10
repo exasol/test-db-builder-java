@@ -8,9 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.AbstractSchemaTest;
-import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.Table;
+import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 class MySqlSchemaTest extends AbstractSchemaTest {
@@ -20,6 +18,11 @@ class MySqlSchemaTest extends AbstractSchemaTest {
     @Override
     protected Schema createSchema(final String name) {
         return new MySqlSchema(this.writerMock, MySQLIdentifier.of(name));
+    }
+
+    @Override
+    protected DatabaseObjectWriter getWriterMock() {
+        return writerMock;
     }
 
     @Test

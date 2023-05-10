@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Map;
@@ -18,8 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.DatabaseObjectException;
-import com.exasol.dbbuilder.dialects.Schema;
+import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 // [utest->dsn~creating-virtual-schemas~1]
@@ -133,5 +134,19 @@ class VirtualSchemaTest {
                 () -> assertThat("connection property", properties, hasEntry("CONNECTION_NAME", "THE_CONNECTION")),
                 () -> assertThat(properties, hasEntry("BAZ", "ZOO")),
                 () -> assertThat(properties, hasEntry("FOO", "BAR")));
+    }
+
+    @Test
+    void testDrop() {
+        final VirtualSchema schema = builder.build();
+        schema.drop();
+        verify(writerMock).drop(same(schema));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final VirtualSchema schema = builder.build();
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, schema::drop);
     }
 }

@@ -10,10 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.exasol.dbbuilder.dialects.AbstractUserTest;
-import com.exasol.dbbuilder.dialects.DatabaseObject;
-import com.exasol.dbbuilder.dialects.ObjectPrivilege;
-import com.exasol.dbbuilder.dialects.User;
+import com.exasol.dbbuilder.dialects.*;
 
 @ExtendWith(MockitoExtension.class)
 class MySqlUserTest extends AbstractUserTest {
@@ -30,9 +27,15 @@ class MySqlUserTest extends AbstractUserTest {
         return new MySqlUser(this.writerMock, MySQLIdentifier.of(name), password);
     }
 
+    @Override
+    protected DatabaseObjectWriter getWriterMock() {
+        return writerMock;
+    }
+
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new MySqlUser(this.writerMock, MySQLIdentifier.of("JOHNDOE")).getFullyQualifiedName(), equalTo("`JOHNDOE`"));
+        assertThat(new MySqlUser(this.writerMock, MySQLIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
+                equalTo("`JOHNDOE`"));
     }
 
     @Test

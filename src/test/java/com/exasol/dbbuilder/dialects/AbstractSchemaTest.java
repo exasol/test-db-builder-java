@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Test;
 // [utest->dsn~creating-schemas~1]
 public abstract class AbstractSchemaTest {
     protected abstract Schema createSchema(String name);
+
+    protected abstract DatabaseObjectWriter getWriterMock();
 
     @Test
     void testGetType() {
@@ -51,5 +55,27 @@ public abstract class AbstractSchemaTest {
         final Schema Schema = createSchema("COLUMN_PARAMETER_MISMATCH_SCHEMA");
         assertThrows(IllegalArgumentException.class,
                 () -> Schema.createTable("MISMATCH_TABLE", List.of("A"), List.of("DATE", "NUMBER")));
+    }
+
+    @Test
+    void testDrop() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        verify(getWriterMock()).drop(same(schema));
+    }
+
+    @Test
+    void testDropMarksTablesAsDeleted() {
+        final Schema schema = createSchema("schema");
+        final Table table = schema.createTable("tab", "col1", "type1");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, table::drop);
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final Schema schema = createSchema("schema");
+        schema.drop();
+        assertThrows(DatabaseObjectDeletedException.class, schema::drop);
     }
 }
