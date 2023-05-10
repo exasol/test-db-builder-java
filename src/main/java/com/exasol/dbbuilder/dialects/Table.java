@@ -45,7 +45,7 @@ public class Table extends AbstractSchemaChild {
 
     @Override
     // [impl->dsn~dropping-tables~1]
-    public void drop() {
+    protected void dropInternally() {
         this.writer.drop(this);
     }
 
@@ -82,6 +82,7 @@ public class Table extends AbstractSchemaChild {
      * Remove all rows from this table.
      */
     public void truncate() {
+        verifyNotDeleted();
         this.writer.truncate(this);
     }
 
@@ -94,11 +95,12 @@ public class Table extends AbstractSchemaChild {
      */
     @SuppressWarnings("java:S3864") // usage pf peek is safe here
     public Table bulkInsert(final Stream<List<Object>> rows) {
+        verifyNotDeleted();
         this.writer.write(this, rows.peek(row -> {
             if (row.size() != getColumnCount()) {
                 throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-3").message(
-                    "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.", row.size(), getFullyQualifiedName(), getColumnCount())
-                    .toString());
+                        "Column count mismatch. Tried to insert row with {{actual}} values into table {{table name}} which has {{expected}} columns. If this is a bulk insert, multiple other rows might have already been written. Consider a rollback on the connection, to discard the changes.",
+                        row.size(), getFullyQualifiedName(), getColumnCount()).toString());
             }
         }));
         return this;

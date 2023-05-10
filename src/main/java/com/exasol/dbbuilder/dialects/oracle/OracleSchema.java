@@ -1,13 +1,10 @@
 package com.exasol.dbbuilder.dialects.oracle;
 
-import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractSchema;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
-import com.exasol.dbbuilder.dialects.Schema;
-import com.exasol.dbbuilder.dialects.Table;
-import com.exasol.errorreporting.ExaError;
-
 import java.util.List;
+
+import com.exasol.db.Identifier;
+import com.exasol.dbbuilder.dialects.*;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Oracle {@link Schema}.
@@ -29,6 +26,7 @@ public class OracleSchema extends AbstractSchema {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 
@@ -39,11 +37,13 @@ public class OracleSchema extends AbstractSchema {
 
     @Override
     public OracleTable.Builder createTableBuilder(final String name) {
+        verifyNotDeleted();
         return OracleTable.builder(getWriter(), this, getIdentifier(name));
     }
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
+        verifyNotDeleted();
         if (columnNames.size() == columnTypes.size()) {
             final OracleTable.Builder builder = OracleTable.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);

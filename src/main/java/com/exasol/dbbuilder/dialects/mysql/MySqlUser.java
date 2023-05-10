@@ -36,6 +36,7 @@ public class MySqlUser extends AbstractUser {
 
     @Override
     public User grantAllAccess(final DatabaseObject object) {
+        verifyNotDeleted();
         super.objectPrivileges.put(object, MySqlObjectPrivilege.values());
         this.writer.write(this, object, MySqlObjectPrivilege.values());
         return this;
@@ -43,6 +44,7 @@ public class MySqlUser extends AbstractUser {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 }

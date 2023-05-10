@@ -37,11 +37,14 @@ public class PostgreSqlUser extends AbstractUser {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 
     @Override
     public User grantAllAccess(final DatabaseObject object) {
-        throw new UnsupportedOperationException(ExaError.messageBuilder("E-TDBJ-12").message("Creating users with privileges is not implemented in this version of the test-db-builder.").toString());
+        throw new UnsupportedOperationException(ExaError.messageBuilder("E-TDBJ-12")
+                .message("Creating users with privileges is not implemented in this version of the test-db-builder.")
+                .toString());
     }
 }

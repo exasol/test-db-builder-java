@@ -100,7 +100,8 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
     @Override
     // [impl->dsn~dropping-virtual-schemas~2]
-    public void drop() {
+    protected void dropInternally() {
+        verifyNotDeleted();
         this.writer.drop(this);
     }
 

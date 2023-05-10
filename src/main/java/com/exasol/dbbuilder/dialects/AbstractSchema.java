@@ -43,13 +43,13 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-                             final String column2Name, final String column2Type) {
+            final String column2Name, final String column2Type) {
         return createTable(name, List.of(column1Name, column2Name), List.of(column1Type, column2Type));
     }
 
     @Override
     public Table createTable(final String name, final String column1Name, final String column1Type,
-                             final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
+            final String column2Name, final String column2Type, final String column3Name, final String column3Type) {
         return createTable(name, List.of(column1Name, column2Name, column3Name),
                 List.of(column1Type, column2Type, column3Type));
     }
@@ -61,6 +61,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     @Override
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
+        verifyNotDeleted();
         if (columnNames.size() == columnTypes.size()) {
             final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
@@ -81,7 +82,8 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
      * @param columnTypes the column types
      * @param builder     the builder that gets the information passed in
      */
-    protected void passColumnsToTableBuilder(List<String> columnNames, List<String> columnTypes, Table.Builder builder) {
+    protected void passColumnsToTableBuilder(final List<String> columnNames, final List<String> columnTypes,
+            final Table.Builder builder) {
         int index = 0;
         for (final String columnName : columnNames) {
             builder.column(columnName, columnTypes.get(index));
@@ -99,8 +101,9 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
 
     @Override
     // [impl->dsn~dropping-schemas~2]
-    public void drop() {
+    protected void dropInternally() {
         getWriter().drop(this);
+        tables.forEach(Table::markDeleted);
         this.tables.clear();
     }
 }

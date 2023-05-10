@@ -80,7 +80,7 @@ public class UdfScript extends AbstractScript {
     }
 
     @Override
-    public void drop() {
+    protected void dropInternally() {
         this.writer.drop(this);
     }
 

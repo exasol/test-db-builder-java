@@ -44,7 +44,7 @@ public class AdapterScript extends AbstractScript {
 
     @Override
     // [impl->dsn~dropping-adapter-scripts~1]
-    public void drop() {
+    protected void dropInternally() {
         this.writer.drop(this);
     }
 

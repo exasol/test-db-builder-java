@@ -5,9 +5,7 @@ import java.nio.file.Path;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractSchema;
-import com.exasol.dbbuilder.dialects.DatabaseObjectException;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.*;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
 import com.exasol.errorreporting.ExaError;
 
@@ -39,6 +37,7 @@ public class ExasolSchema extends AbstractSchema {
      */
     public AdapterScript createAdapterScript(final String name, final AdapterScript.Language language,
             final String content) {
+        verifyNotDeleted();
         return AdapterScript.builder(this.writer, this, ExasolIdentifier.of(name)).language(language).content(content)
                 .build();
     }
@@ -50,6 +49,7 @@ public class ExasolSchema extends AbstractSchema {
      * @return builder (parent schema and writer are already set)
      */
     public AdapterScript.Builder createAdapterScriptBuilder(final Identifier name) {
+        verifyNotDeleted();
         return AdapterScript.builder(this.writer, this, name);
     }
 
@@ -89,8 +89,9 @@ public class ExasolSchema extends AbstractSchema {
         try {
             return createScriptBuilder(name).parameter(parameterNames).content(path).build();
         } catch (final IOException exception) {
-            throw new DatabaseObjectException(this,
-                ExaError.messageBuilder("E-TDBJ-9").message("Unable to create script {{script name}} from file {{path}}.", name, path).toString(), exception);
+            throw new DatabaseObjectException(this, ExaError.messageBuilder("E-TDBJ-9")
+                    .message("Unable to create script {{script name}} from file {{path}}.", name, path).toString(),
+                    exception);
         }
     }
 
@@ -101,6 +102,7 @@ public class ExasolSchema extends AbstractSchema {
      * @return builder
      */
     public Script.Builder createScriptBuilder(final String name) {
+        verifyNotDeleted();
         return Script.builder(this.writer, this, name);
     }
 
@@ -121,6 +123,7 @@ public class ExasolSchema extends AbstractSchema {
      * @return builder
      */
     public UdfScript.Builder createUdfBuilder(final String name) {
+        verifyNotDeleted();
         return UdfScript.builder(this.writer, this, ExasolIdentifier.of(name));
     }
 

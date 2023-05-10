@@ -36,6 +36,7 @@ public class ExasolUser extends AbstractUser {
 
     @Override
     public User grantAllAccess(final DatabaseObject object) {
+        verifyNotDeleted();
         super.objectPrivileges.put(object, ExasolObjectPrivilege.values());
         this.writer.write(this, object, ExasolObjectPrivilege.values());
         return this;
@@ -43,6 +44,7 @@ public class ExasolUser extends AbstractUser {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 }

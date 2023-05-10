@@ -23,6 +23,7 @@ public class PostgreSqlSchema extends AbstractSchema {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 
