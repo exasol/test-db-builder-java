@@ -14,6 +14,10 @@ This release marks deleted objects and rejects operations on deleted objects. It
 
 * #112: Fixed broken links
 
+## Refactoring
+
+* #53: Moved "write()" calls from constructors to factory
+
 ## Dependency Updates
 
 ### Compile Dependency Updates

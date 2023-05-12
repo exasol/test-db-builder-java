@@ -22,7 +22,6 @@ public class Table extends AbstractSchemaChild {
         super(builder.parentSchema, builder.tableName, false);
         this.columns = builder.columns;
         this.writer = builder.writer;
-        this.writer.write(this);
     }
 
     /**
@@ -110,7 +109,8 @@ public class Table extends AbstractSchemaChild {
      * Builder for database tables.
      */
     public static class Builder {
-        private final DatabaseObjectWriter writer;
+        /** The writer */
+        protected final DatabaseObjectWriter writer;
         private final Identifier tableName;
         private final List<Column> columns = new ArrayList<>();
         private final Schema parentSchema;
@@ -146,7 +146,9 @@ public class Table extends AbstractSchemaChild {
          * @return new {@link Table} instance
          */
         public Table build() {
-            return new Table(this);
+            final Table table = new Table(this);
+            this.writer.write(table);
+            return table;
         }
     }
 }

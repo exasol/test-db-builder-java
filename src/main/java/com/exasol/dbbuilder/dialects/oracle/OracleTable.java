@@ -55,7 +55,9 @@ public class OracleTable extends Table {
          */
         @Override
         public OracleTable build() {
-            return new OracleTable(this);
+            final OracleTable table = new OracleTable(this);
+            this.writer.write(table);
+            return table;
         }
     }
 }
