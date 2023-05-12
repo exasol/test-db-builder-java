@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.exasol.dbbuilder.dialects.*;
-import com.exasol.dbbuilder.dialects.mysql.MySQLIdentifier;
 import com.exasol.dbbuilder.dialects.mysql.MySqlObjectPrivilege;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,12 +19,12 @@ class OracleUserTest extends AbstractUserTest {
 
     @Override
     protected User createUser(final String name) {
-        return new OracleUser(this.writerMock, MySQLIdentifier.of(name));
+        return new OracleUser(this.writerMock, OracleIdentifier.of(name));
     }
 
     @Override
     protected User createUser(final String name, final String password) {
-        return new OracleUser(this.writerMock, MySQLIdentifier.of(name), password);
+        return new OracleUser(this.writerMock, OracleIdentifier.of(name), password);
     }
 
     @Override
@@ -35,7 +34,7 @@ class OracleUserTest extends AbstractUserTest {
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new OracleUser(this.writerMock, MySQLIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
+        assertThat(new OracleUser(this.writerMock, OracleIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
                 equalTo("`JOHNDOE`"));
     }
 
