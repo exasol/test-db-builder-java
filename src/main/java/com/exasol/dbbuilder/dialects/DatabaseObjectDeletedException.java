@@ -1,7 +1,7 @@
 package com.exasol.dbbuilder.dialects;
 
 /**
- * This exception is thrown when executing an operation on a {@link DatabaseObject} that was deleted.
+ * This exception is thrown when executing an operation on a {@link DatabaseObject} that already had been deleted.
  */
 public class DatabaseObjectDeletedException extends DatabaseObjectException {
     private static final long serialVersionUID = 6211027393836593969L;

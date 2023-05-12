@@ -42,7 +42,7 @@ class OracleUserTest extends AbstractUserTest {
     @Test
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { MySqlObjectPrivilege.INSERT, MySqlObjectPrivilege.DELETE };
-        final User user = new OracleUser(this.writerMock, MySQLIdentifier.of("OBJUSER")) //
+        final User user = new OracleUser(this.writerMock, OracleIdentifier.of("OBJUSER")) //
                 .grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
     }

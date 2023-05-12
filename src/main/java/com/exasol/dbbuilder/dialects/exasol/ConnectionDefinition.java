@@ -100,7 +100,6 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
     @Override
     // [impl->dsn~dropping-connections~1]
     protected void dropInternally() {
-        verifyNotDeleted();
         this.writer.drop(this);
     }
 
