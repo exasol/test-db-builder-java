@@ -16,7 +16,7 @@ This release marks deleted objects and rejects operations on deleted objects. It
 
 ## Refactoring
 
-* #53: Moved "write()" calls from constructors to factory
+* #53: Partially moved "write()" calls from constructors to factory
 
 ## Dependency Updates
 
