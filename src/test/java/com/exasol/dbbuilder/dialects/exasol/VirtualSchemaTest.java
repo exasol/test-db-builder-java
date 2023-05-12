@@ -149,4 +149,10 @@ class VirtualSchemaTest {
         schema.drop();
         assertThrows(DatabaseObjectDeletedException.class, schema::drop);
     }
+
+    @Test
+    void testBuilderCallsWrite() {
+        final VirtualSchema schema = builder.build();
+        verify(writerMock).write(same(schema));
+    }
 }
