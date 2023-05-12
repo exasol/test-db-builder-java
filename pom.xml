@@ -7,7 +7,7 @@
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
     <properties>
-        <test.containers.version>1.18.0</test.containers.version>
+        <test.containers.version>1.18.1</test.containers.version>
     </properties>
     <distributionManagement>
         <snapshotRepository>

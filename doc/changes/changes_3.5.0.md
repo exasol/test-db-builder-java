@@ -36,10 +36,10 @@ This release marks deleted objects and rejects operations on deleted objects. It
 * Updated `org.junit.jupiter:junit-jupiter:5.9.2` to `5.9.3`
 * Updated `org.mockito:mockito-junit-jupiter:5.0.0` to `5.3.1`
 * Updated `org.postgresql:postgresql:42.5.1` to `42.6.0`
-* Updated `org.testcontainers:junit-jupiter:1.17.6` to `1.18.0`
-* Updated `org.testcontainers:mysql:1.17.6` to `1.18.0`
-* Updated `org.testcontainers:oracle-xe:1.17.6` to `1.18.0`
-* Updated `org.testcontainers:postgresql:1.17.6` to `1.18.0`
+* Updated `org.testcontainers:junit-jupiter:1.17.6` to `1.18.1`
+* Updated `org.testcontainers:mysql:1.17.6` to `1.18.1`
+* Updated `org.testcontainers:oracle-xe:1.17.6` to `1.18.1`
+* Updated `org.testcontainers:postgresql:1.17.6` to `1.18.1`
 
 ### Plugin Dependency Updates
 
