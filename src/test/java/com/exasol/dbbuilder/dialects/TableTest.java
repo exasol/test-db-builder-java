@@ -117,6 +117,12 @@ class TableTest {
     }
 
     @Test
+    void testBuilderCallsWrite() {
+        final Table table = tableBuilder("tab").build();
+        verify(writerMock).write(same(table));
+    }
+
+    @Test
     void testDrop() {
         final Table table = tableBuilder("tab").build();
         table.drop();
