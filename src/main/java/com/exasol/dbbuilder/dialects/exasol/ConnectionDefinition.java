@@ -1,9 +1,7 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
 import com.exasol.db.Identifier;
-import com.exasol.dbbuilder.dialects.AbstractDatabaseObject;
-import com.exasol.dbbuilder.dialects.DatabaseObject;
-import com.exasol.dbbuilder.dialects.DatabaseObjectException;
+import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
 /**
@@ -93,12 +91,15 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
 
     @Override
     public DatabaseObject getParent() {
-        throw new DatabaseObjectException(this, ExaError.messageBuilder("E-TDBJ-8").message("Illegal attempt to access parent object of a CONNECTION which is a top-level object.").toString());
+        throw new DatabaseObjectException(this,
+                ExaError.messageBuilder("E-TDBJ-8")
+                        .message("Illegal attempt to access parent object of a CONNECTION which is a top-level object.")
+                        .toString());
     }
 
     @Override
     // [impl->dsn~dropping-connections~1]
-    public void drop() {
+    protected void dropInternally() {
         this.writer.drop(this);
     }
 

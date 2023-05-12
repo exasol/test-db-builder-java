@@ -47,7 +47,8 @@ public interface DatabaseObject {
     boolean isOwned();
 
     /**
-     * Drop the database object and all contained objects.
+     * Remove this database object from database incl. all contained objects and mark it as deleted. 
+     * Later operations on this object will throw a {@link DatabaseObjectDeletedException} Exception.
      */
     void drop();
 }

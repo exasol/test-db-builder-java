@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>test-db-builder-java</artifactId>
-    <version>3.4.3</version>
+    <version>3.5.0</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
     <properties>
-        <test.containers.version>1.18.0</test.containers.version>
+        <test.containers.version>1.18.1</test.containers.version>
     </properties>
     <distributionManagement>
         <snapshotRepository>
@@ -162,7 +162,7 @@
     <parent>
         <artifactId>test-db-builder-java-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>3.4.3</version>
+        <version>3.5.0</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>

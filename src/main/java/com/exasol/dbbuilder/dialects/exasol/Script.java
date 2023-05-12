@@ -64,6 +64,7 @@ public class Script extends AbstractScript {
      */
     // [impl->dsn~running-scripts-that-have-no-return~1]
     public int execute(final Object... parameterValues) {
+        verifyNotDeleted();
         return this.writer.execute(this, parameterValues);
     }
 
@@ -75,12 +76,13 @@ public class Script extends AbstractScript {
      * @return script result as table
      */
     public List<List<Object>> executeQuery(final Object... parameterValues) {
+        verifyNotDeleted();
         return this.writer.executeQuery(this, parameterValues);
     }
 
     @Override
     // [impl->dsn~dropping-scripts~1]
-    public void drop() {
+    protected void dropInternally() {
         this.writer.drop(this);
     }
 

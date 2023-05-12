@@ -18,6 +18,8 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
     protected final boolean owned;
     /** Identifier */
     protected Identifier name;
+    /** Was this object deleted? This is set to {@code true} after {@link #drop()} was called. */
+    private boolean deleted = false;
 
     /**
      * Create a database object.
@@ -26,7 +28,7 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
      * @param owned {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a database
      *              object that already existed
      */
-    public AbstractDatabaseObject(final Identifier name, final boolean owned) {
+    protected AbstractDatabaseObject(final Identifier name, final boolean owned) {
         this.name = name;
         this.owned = owned;
     }
@@ -42,6 +44,35 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
             return getParent().getFullyQualifiedName() + "." + this.name.quote();
         } else {
             return this.name.quote();
+        }
+    }
+
+    @Override
+    public void drop() {
+        verifyNotDeleted();
+        this.dropInternally();
+        this.markDeleted();
+    }
+
+    /**
+     * Mark this object as deleted.
+     */
+    protected void markDeleted() {
+        this.deleted = true;
+    }
+
+    /**
+     * This is called by {@link #drop()} to actually execute the DROP statement.
+     */
+    protected abstract void dropInternally();
+
+    /**
+     * Checks if this object was {@link #drop() deleted} and throws an exception in case it was deleted. This method
+     * must be called before each operation that assumes the object still exists in the database.
+     */
+    protected void verifyNotDeleted() {
+        if (deleted) {
+            throw new DatabaseObjectDeletedException(this);
         }
     }
 

@@ -15,7 +15,7 @@ public class PostgreSqlSchema extends AbstractSchema {
      * @param writer object writer
      * @param name   name of the schema
      */
-    public PostgreSqlSchema(final PostgreSqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+    public PostgreSqlSchema(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name) {
         super(name);
         this.writer = writer;
         this.writer.write(this);
@@ -23,6 +23,7 @@ public class PostgreSqlSchema extends AbstractSchema {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 

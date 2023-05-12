@@ -18,7 +18,7 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
      * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
      *                     database object that already existed
      */
-    public AbstractSchemaChild(final Schema parentSchema, final Identifier name, final boolean owned) {
+    protected AbstractSchemaChild(final Schema parentSchema, final Identifier name, final boolean owned) {
         super(name, owned);
         this.parentSchema = parentSchema;
     }
@@ -47,7 +47,6 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
      * Builder for {@link AbstractSchemaChild}.
      */
     public abstract static class Builder {
-
         private final Schema parentSchema;
         private final Identifier name;
         /** Is this schema child owned? */

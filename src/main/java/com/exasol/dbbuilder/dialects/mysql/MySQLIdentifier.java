@@ -21,7 +21,7 @@ public class MySQLIdentifier implements Identifier {
      * @param id the identifier as {@link String}
      * @return new {@link MySQLIdentifier} instance
      */
-    public static Identifier of(final String id) {
+    public static MySQLIdentifier of(final String id) {
         if (validate(id)) {
             return new MySQLIdentifier(id);
         } else {

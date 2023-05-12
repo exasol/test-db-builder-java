@@ -1,6 +1,5 @@
 package com.exasol.dbbuilder.dialects.mysql;
 
-import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 
 /**
@@ -15,7 +14,7 @@ public class MySqlUser extends AbstractUser {
      * @param writer database object writer
      * @param name   username
      */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name) {
         super(name);
         this.writer = writer;
         this.writer.write(this);
@@ -28,7 +27,8 @@ public class MySqlUser extends AbstractUser {
      * @param name     user name
      * @param password login password
      */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final Identifier name, final String password) {
+    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name,
+            final String password) {
         super(name, password);
         this.writer = writer;
         this.writer.write(this);
@@ -36,6 +36,7 @@ public class MySqlUser extends AbstractUser {
 
     @Override
     public User grantAllAccess(final DatabaseObject object) {
+        verifyNotDeleted();
         super.objectPrivileges.put(object, MySqlObjectPrivilege.values());
         this.writer.write(this, object, MySqlObjectPrivilege.values());
         return this;
@@ -43,6 +44,7 @@ public class MySqlUser extends AbstractUser {
 
     @Override
     protected DatabaseObjectWriter getWriter() {
+        verifyNotDeleted();
         return this.writer;
     }
 }

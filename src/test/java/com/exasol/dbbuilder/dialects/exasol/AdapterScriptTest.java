@@ -5,6 +5,9 @@ import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.LUA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.shaded.com.google.common.io.Files;
 
 import com.exasol.db.ExasolIdentifier;
+import com.exasol.dbbuilder.dialects.DatabaseObjectDeletedException;
 import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,7 +66,7 @@ class AdapterScriptTest {
     }
 
     @Test
-    void testGetLaguage() {
+    void testGetLanguage() {
         assertThat(defaultAdapterScriptBuilder().language(LUA).build().getLanguage(), equalTo(LUA));
     }
 
@@ -93,9 +97,22 @@ class AdapterScriptTest {
     @Test
     void testBucketFsContentWithMultipleJars() {
         assertThat(
-                defaultAdapterScriptBuilder()
-                        .bucketFsContent("com.exasol.adapter.RequestDispatcher", "/buckets/bfs/jars/test1.jar", "/buckets/bfs/jars/test2.jar")
-                        .build().getContent(),
+                defaultAdapterScriptBuilder().bucketFsContent("com.exasol.adapter.RequestDispatcher",
+                        "/buckets/bfs/jars/test1.jar", "/buckets/bfs/jars/test2.jar").build().getContent(),
                 equalTo("%scriptclass com.exasol.adapter.RequestDispatcher;\n%jar /buckets/bfs/jars/test1.jar;\n%jar /buckets/bfs/jars/test2.jar;\n"));
+    }
+
+    @Test
+    void testDrop() {
+        final AdapterScript script = defaultAdapterScriptBuilder().build();
+        script.drop();
+        verify(writerMock).drop(same(script));
+    }
+
+    @Test
+    void testDropTwiceFails() {
+        final AdapterScript script = defaultAdapterScriptBuilder().build();
+        script.drop();
+        assertThrows(DatabaseObjectDeletedException.class, script::drop);
     }
 }

@@ -24,7 +24,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
      *
      * @param name user name
      */
-    public AbstractUser(final Identifier name) {
+    protected AbstractUser(final Identifier name) {
         super(name, false);
         this.password = name + "PWD";
     }
@@ -35,7 +35,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
      * @param name     user name
      * @param password login password
      */
-    public AbstractUser(final Identifier name, final String password) {
+    protected AbstractUser(final Identifier name, final String password) {
         super(name, false);
         this.password = password;
     }
@@ -47,12 +47,12 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
 
     @Override
     public Map<DatabaseObject, ObjectPrivilege[]> getObjectPrivileges() {
-        return this.objectPrivileges;
+        return Collections.unmodifiableMap(this.objectPrivileges);
     }
 
     @Override
     public Set<GlobalPrivilege> getGlobalPrivileges() {
-        return this.globalPrivileges;
+        return Collections.unmodifiableSet(this.globalPrivileges);
     }
 
     /**
@@ -64,6 +64,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
 
     @Override
     public User grant(final DatabaseObject object, final ObjectPrivilege... privileges) {
+        verifyNotDeleted();
         this.objectPrivileges.put(object, privileges);
         getWriter().write(this, object, privileges);
         return this;
@@ -71,6 +72,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
 
     @Override
     public User grant(final GlobalPrivilege... privileges) {
+        verifyNotDeleted();
         this.globalPrivileges.addAll(Set.of(privileges));
         getWriter().write(this, privileges);
         return this;
@@ -78,7 +80,7 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
 
     @Override
     // [impl->dsn~dropping-users~1]
-    public void drop() {
+    protected void dropInternally() {
         getWriter().drop(this);
     }
 }
