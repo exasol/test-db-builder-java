@@ -1,6 +1,5 @@
 package com.exasol.dbbuilder.dialects.postgres;
 
-import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
@@ -16,20 +15,20 @@ public class PostgreSqlUser extends AbstractUser {
      * @param writer object writer
      * @param name   username
      */
-    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final Identifier name) {
+    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name) {
         super(name);
         this.writer = writer;
         writer.write(this);
     }
 
     /**
-     * Creat a PostgreSQL user with password.
+     * Create a PostgreSQL user with password.
      * 
      * @param writer   object writer
      * @param name     username
      * @param password password
      */
-    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final Identifier name,
+    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name,
             final String password) {
         super(name, password);
         this.writer = writer;

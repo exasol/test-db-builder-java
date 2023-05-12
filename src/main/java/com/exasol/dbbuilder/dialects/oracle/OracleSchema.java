@@ -2,7 +2,6 @@ package com.exasol.dbbuilder.dialects.oracle;
 
 import java.util.List;
 
-import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
@@ -18,7 +17,7 @@ public class OracleSchema extends AbstractSchema {
      * @param writer object writer
      * @param name   name of the schema
      */
-    public OracleSchema(final OracleImmediateDatabaseObjectWriter writer, final Identifier name) {
+    public OracleSchema(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
         super(name);
         this.writer = writer;
         this.writer.write(this);
@@ -31,7 +30,7 @@ public class OracleSchema extends AbstractSchema {
     }
 
     @Override
-    protected Identifier getIdentifier(final String name) {
+    protected OracleIdentifier getIdentifier(final String name) {
         return OracleIdentifier.of(name);
     }
 

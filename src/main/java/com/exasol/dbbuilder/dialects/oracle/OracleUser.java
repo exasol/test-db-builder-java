@@ -1,6 +1,5 @@
 package com.exasol.dbbuilder.dialects.oracle;
 
-import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
@@ -16,7 +15,7 @@ public class OracleUser extends AbstractUser {
      * @param writer object writer
      * @param name   username
      */
-    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final Identifier name) {
+    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
         super(name);
         this.writer = writer;
         writer.write(this);
@@ -29,7 +28,8 @@ public class OracleUser extends AbstractUser {
      * @param name     username
      * @param password password
      */
-    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final Identifier name, final String password) {
+    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name,
+            final String password) {
         super(name, password);
         this.writer = writer;
     }

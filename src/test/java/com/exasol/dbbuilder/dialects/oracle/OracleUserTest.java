@@ -35,7 +35,7 @@ class OracleUserTest extends AbstractUserTest {
     @Test
     void testGetFullyQualifiedName() {
         assertThat(new OracleUser(this.writerMock, OracleIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
-                equalTo("`JOHNDOE`"));
+                equalTo("\"JOHNDOE\""));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.exasol.dbbuilder.dialects.oracle;
 
-import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 
 /**
@@ -20,7 +19,8 @@ public class OracleTable extends Table {
      * @param tableName The table name
      * @return A builder for building an oracle table
      */
-    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
+    public static Builder builder(final DatabaseObjectWriter writer, final Schema schema,
+            final OracleIdentifier tableName) {
         return new OracleTable.Builder(writer, schema, tableName);
     }
 
@@ -44,7 +44,7 @@ public class OracleTable extends Table {
          * @param parentSchema The parent schema of the table
          * @param tableName    The name of the table to be built
          */
-        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
+        public Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final OracleIdentifier tableName) {
             super(writer, parentSchema, tableName);
         }
 
