@@ -32,7 +32,6 @@ public class VirtualSchema extends AbstractDatabaseObject {
         addReservedProperties(builder);
         addDebugProperties();
         this.properties.putAll(builder.properties);
-        this.writer.write(this);
     }
 
     /**
@@ -169,7 +168,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
          * @param writer database object writer
          * @param name   name of the Virtual Schema
          */
-        public Builder(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
+        private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
             this.writer = writer;
             this.name = name;
         }
@@ -235,7 +234,9 @@ public class VirtualSchema extends AbstractDatabaseObject {
          * @return new {@link VirtualSchema} instance
          */
         public VirtualSchema build() {
-            return new VirtualSchema(this);
+            final VirtualSchema virtualSchema = new VirtualSchema(this);
+            this.writer.write(virtualSchema);
+            return virtualSchema;
         }
 
         /**
