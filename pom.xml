@@ -92,7 +92,7 @@
             <artifactId>junit-jupiter</artifactId>
             <!-- Upgrading this to 5.10.0 will cause error
                 JUnitException: TestEngine with ID 'junit-jupiter' failed to discover tests
-                caused by ClassNotFoundException: org.junit.jupiter.api.io.TempDirFactory-->
+                caused by ClassNotFoundException: org.junit.jupiter.api.io.TempDirFactory -->
             <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
