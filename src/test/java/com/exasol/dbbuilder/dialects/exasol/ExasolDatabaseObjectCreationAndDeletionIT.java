@@ -39,7 +39,7 @@ import com.exasol.errorreporting.ExaError;
 // [itest->dsn~exasol-object-factory~1]
 class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>("7.1.22")
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
             .withReuse(true);
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):\n" + //
             "\tif 'createVirtualSchema' in request:\n"
