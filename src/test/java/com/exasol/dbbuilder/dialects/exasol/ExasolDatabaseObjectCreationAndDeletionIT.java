@@ -1,6 +1,6 @@
 package com.exasol.dbbuilder.dialects.exasol;
 
-import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.PYTHON;
+import static com.exasol.dbbuilder.dialects.exasol.AdapterScript.Language.PYTHON3;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege.CREATE_SESSION;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolGlobalPrivilege.KILL_ANY_SESSION;
 import static com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege.DELETE;
@@ -55,7 +55,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     // [itest->dsn~creating-adapter-scripts~1]
     void testCreateAdapterScript() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT");
-        assertThat(exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON, ADAPTER_SCRIPT_CONTENT),
+        assertThat(exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT", PYTHON3, ADAPTER_SCRIPT_CONTENT),
                 existsInDatabase());
     }
 
@@ -64,7 +64,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     void testDropAdapterScript() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_ADAPTER_SCRIPT_TO_DROP");
-        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_TO_DROP", PYTHON,
+        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_TO_DROP", PYTHON3,
                 ADAPTER_SCRIPT_CONTENT);
         adapterScript.drop();
         assertThat(adapterScript, not(existsInDatabase()));
@@ -294,10 +294,10 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     // [itest->dsn~creating-udfs~1]
     void testCreateUdf() throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_UDF");
-        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.PYTHON)
-                .emits().content("print('HI')").build();
+        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET)
+                .language(UdfScript.Language.PYTHON3).emits().content("print('HI')").build();
         assertThat(getScriptDescription(exasolSchema),
-                table().row("CREATE PYTHON SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\nprint('HI')\n").matches());
+                table().row("CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\nprint('HI')\n").matches());
     }
 
     @Test
@@ -305,7 +305,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     void testDropUdf() {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_UDF_DROP");
         final UdfScript udf = exasolSchema.createUdfBuilder("UDF_TO_DROP").inputType(UdfScript.InputType.SET)
-                .language(UdfScript.Language.PYTHON).emits().content("print('HI')").build();
+                .language(UdfScript.Language.PYTHON3).emits().content("print('HI')").build();
         udf.drop();
         assertThat(udf, not(existsInDatabase()));
     }
@@ -314,23 +314,24 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     void testCreateUdfWithParameter() throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_UDF_WITH_PARAMETER");
-        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.PYTHON)
-                .parameter("test", "VARCHAR(254)").emits().content("print('HI')").build();
-        assertThat(getScriptDescription(exasolSchema), table().row(
-                "CREATE PYTHON SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n" + "print('HI')\n")
-                .matches());
+        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET)
+                .language(UdfScript.Language.PYTHON3).parameter("test", "VARCHAR(254)").emits().content("print('HI')")
+                .build();
+        assertThat(getScriptDescription(exasolSchema),
+                table().row("CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n"
+                        + "print('HI')\n").matches());
     }
 
     @Test
     void testCreateUdfWithPredefinedEmits() throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_UDF_WITH_PREDEFINED_EMITS");
-        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.PYTHON)
-                .parameter("test", "VARCHAR(254)")
+        exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET)
+                .language(UdfScript.Language.PYTHON3).parameter("test", "VARCHAR(254)")
                 .emits(new Column("C1", "VARCHAR(254)"), new Column("C2", "VARCHAR(254)")).content("print('HI')")
                 .build();
         assertThat(getScriptDescription(exasolSchema), table().row(
-                "CREATE PYTHON SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (\"C1\" VARCHAR(254) UTF8, \"C2\" VARCHAR(254) UTF8) AS\nprint('HI')\n")
+                "CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (\"C1\" VARCHAR(254) UTF8, \"C2\" VARCHAR(254) UTF8) AS\nprint('HI')\n")
                 .matches());
     }
 
@@ -349,9 +350,9 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory
                 .createSchema("PARENT_SCHEMA_FOR_UDF_WITH_RETURNS");
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SCALAR)
-                .language(UdfScript.Language.PYTHON).returns("VARCHAR(254)").content("print('HI')").build();
+                .language(UdfScript.Language.PYTHON3).returns("VARCHAR(254)").content("print('HI')").build();
         assertThat(getScriptDescription(exasolSchema), table()
-                .row("CREATE PYTHON SCALAR SCRIPT \"UDF_TEST\" (...) RETURNS VARCHAR(254) UTF8 AS\n" + "print('HI')\n")
+                .row("CREATE PYTHON3 SCALAR SCRIPT \"UDF_TEST\" (...) RETURNS VARCHAR(254) UTF8 AS\n" + "print('HI')\n")
                 .matches());
     }
 
@@ -387,7 +388,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final ConnectionDefinition connectionDefinition = exasolFactory.createConnectionDefinition("THE_CONNECTION",
                 "destination");
         final ExasolSchema exasolSchema = exasolFactory.createSchema("PARENT_SCHEMA_FOR_VIRTUAL_SCHEMA");
-        final AdapterScript adapterScript = exasolSchema.createAdapterScript("ADAPTER_SCRIPT_FOR_VS", PYTHON,
+        final AdapterScript adapterScript = exasolSchema.createAdapterScript("ADAPTER_SCRIPT_FOR_VS", PYTHON3,
                 ADAPTER_SCRIPT_CONTENT);
         assertThat(
                 exasolFactory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA").dialectName("Exasol")
@@ -402,7 +403,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         final ConnectionDefinition connectionDefinition = exasolFactory.createConnectionDefinition("THE_CONNECTION_2",
                 "destination");
         final ExasolSchema exasolSchema = exasolFactory.createSchema("PARENT_SCHEMA_FOR_VIRTUAL_SCHEMA_2");
-        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_2", PYTHON,
+        final AdapterScript adapterScript = exasolSchema.createAdapterScript("THE_ADAPTER_SCRIPT_2", PYTHON3,
                 ADAPTER_SCRIPT_CONTENT);
         final VirtualSchema virtualSchema = exasolFactory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA_2")
                 .dialectName("Exasol").adapterScript(adapterScript).connectionDefinition(connectionDefinition).build();

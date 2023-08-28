@@ -48,13 +48,19 @@ public class AdapterScript extends AbstractScript {
         this.writer.drop(this);
     }
 
-    /** Enum with script languages */
+    /** Languages supported for scripts. */
     public enum Language {
-        /** Java */
+        /** Java language. */
         JAVA,
-        /** Python */
+        /**
+         * Python 2 language.
+         * 
+         * @deprecated Newer versions of Exasol 7.1 don't support Python 2 any more. Migrate to {@link #PYTHON3}.
+         */
         PYTHON,
-        /** Lua */
+        /** Python 3 language. */
+        PYTHON3,
+        /** Lua language. */
         LUA
     }
 

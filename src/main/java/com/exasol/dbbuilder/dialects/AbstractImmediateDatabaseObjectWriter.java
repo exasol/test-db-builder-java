@@ -39,9 +39,9 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
             }
             preparedStatement.execute();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(object,
-                    ExaError.messageBuilder("E-TDBJ-13").message("Failed to write to object: {{sql}}", sql).toString(),
-                    exception);
+            throw new DatabaseObjectException(object, ExaError.messageBuilder("E-TDBJ-13")
+                    .message("Failed to write to object: {{sql}}. Cause: {{cause}}", sql, exception.getMessage())
+                    .toString(), exception);
         }
     }
 
