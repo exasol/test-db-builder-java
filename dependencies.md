@@ -27,7 +27,7 @@
 | [Hamcrest][21]                                  | [BSD License 3][22]                                                    |
 | [JUnit Jupiter (Aggregator)][23]                | [Eclipse Public License v2.0][14]                                      |
 | [mockito-junit-jupiter][24]                     | [The MIT License][25]                                                  |
-| [EqualsVerifier | release normal jar][26]       | [Apache License, Version 2.0][27]                                      |
+| [EqualsVerifier \| release normal jar][26]      | [Apache License, Version 2.0][27]                                      |
 
 ## Plugin Dependencies
 
@@ -42,7 +42,7 @@
 | [Versions Maven Plugin][36]                             | [Apache License, Version 2.0][27]              |
 | [duplicate-finder-maven-plugin Maven Mojo][37]          | [Apache License 2.0][38]                       |
 | [Apache Maven Deploy Plugin][39]                        | [Apache-2.0][27]                               |
-| [Apache Maven GPG Plugin][40]                           | [Apache License, Version 2.0][27]              |
+| [Apache Maven GPG Plugin][40]                           | [Apache-2.0][27]                               |
 | [Apache Maven Source Plugin][41]                        | [Apache License, Version 2.0][27]              |
 | [Apache Maven Javadoc Plugin][42]                       | [Apache-2.0][27]                               |
 | [Nexus Staging Maven Plugin][43]                        | [Eclipse Public License][44]                   |
@@ -75,7 +75,7 @@
 [14]: https://www.eclipse.org/legal/epl-v20.html
 [15]: https://github.com/exasol/exasol-testcontainers/
 [16]: https://github.com/exasol/exasol-testcontainers/blob/main/LICENSE
-[17]: https://testcontainers.org
+[17]: https://java.testcontainers.org
 [18]: http://opensource.org/licenses/MIT
 [19]: https://github.com/exasol/hamcrest-resultset-matcher/
 [20]: https://github.com/exasol/hamcrest-resultset-matcher/blob/main/LICENSE
@@ -95,7 +95,7 @@
 [34]: http://www.apache.org/licenses/LICENSE-2.0.txt
 [35]: https://maven.apache.org/surefire/maven-surefire-plugin/
 [36]: https://www.mojohaus.org/versions/versions-maven-plugin/
-[37]: https://github.com/basepom/duplicate-finder-maven-plugin
+[37]: https://basepom.github.io/duplicate-finder-maven-plugin
 [38]: http://www.apache.org/licenses/LICENSE-2.0.html
 [39]: https://maven.apache.org/plugins/maven-deploy-plugin/
 [40]: https://maven.apache.org/plugins/maven-gpg-plugin/
