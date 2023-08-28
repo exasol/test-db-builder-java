@@ -85,7 +85,7 @@ public class UdfScript extends AbstractScript {
     }
 
     /**
-     * Languages supported by UDFs
+     * Languages supported by UDFs.
      */
     public enum Language {
         /**
@@ -93,9 +93,15 @@ public class UdfScript extends AbstractScript {
          */
         JAVA,
         /**
-         * Python language.
+         * Python 2 language.
+         * 
+         * @deprecated Newer versions of Exasol 7.1 don't support Python 2 any more. Migrate to {@link #PYTHON3}.
          */
         PYTHON,
+        /**
+         * Python 3 language.
+         */
+        PYTHON3,
         /**
          * Lua language.
          */

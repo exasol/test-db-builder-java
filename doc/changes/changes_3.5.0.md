@@ -1,10 +1,12 @@
-# Test Database Builder for Java 3.5.0, released 2023-??-??
+# Test Database Builder for Java 3.5.0, released 2023-08-28
 
-Code name: Mark Objects as Deleted
+Code name: Mark Objects as Deleted & Support Python 3
 
 ## Summary
 
-This release marks deleted objects and rejects operations on deleted objects. It also updates dependencies on top of 3.4.2 and fixes broken links.
+This release marks deleted objects and rejects operations on deleted objects. The release also deprecates script language Python 2 (enum values `UdfScript.Language.PYTHON` and `AdapterScript.Language.PYTHON`) in favor of Python 3 (`UdfScript.Language.PYTHON3` and `AdapterScript.Language.PYTHON3`) as newer versions of Exasol 7.1 dropped support for Python 2.
+
+The release also updates dependencies on top of 3.4.2 and fixes broken links.
 
 ## Features
 
