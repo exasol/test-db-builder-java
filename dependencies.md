@@ -25,7 +25,7 @@
 | [Testcontainers :: JDBC :: Oracle XE][17]       | [MIT][18]                                                              |
 | [Matcher for SQL Result Sets][19]               | [MIT License][20]                                                      |
 | [Hamcrest][21]                                  | [BSD License 3][22]                                                    |
-| [JUnit Jupiter (Aggregator)][23]                | [Eclipse Public License v2.0][14]                                      |
+| [JUnit Jupiter API][23]                         | [Eclipse Public License v2.0][14]                                      |
 | [mockito-junit-jupiter][24]                     | [The MIT License][25]                                                  |
 | [EqualsVerifier \| release normal jar][26]      | [Apache License, Version 2.0][27]                                      |
 
