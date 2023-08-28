@@ -40,8 +40,8 @@ This release marks deleted objects and rejects operations on deleted objects. It
 * Removed `mysql:mysql-connector-java:8.0.31`
 * Updated `nl.jqno.equalsverifier:equalsverifier:3.12.3` to `3.15.1`
 * Updated `org.junit-pioneer:junit-pioneer:1.9.1` to `2.0.1`
-* Updated `org.junit.jupiter:junit-jupiter-api:5.9.2` to `5.10.0`
-* Removed `org.junit.jupiter:junit-jupiter:5.9.2`
+* Removed `org.junit.jupiter:junit-jupiter-api:5.9.2`
+* Updated `org.junit.jupiter:junit-jupiter:5.9.2` to `5.9.3`
 * Updated `org.mockito:mockito-junit-jupiter:5.0.0` to `5.5.0`
 * Updated `org.postgresql:postgresql:42.5.1` to `42.6.0`
 * Updated `org.testcontainers:junit-jupiter:1.17.6` to `1.19.0`
