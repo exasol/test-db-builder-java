@@ -24,16 +24,25 @@ The main design goals are to make the code of the integration test compact and r
 ## In a Nutshell
 
 ```java
-class MyDbTest {
-    // Precondition: Get a JDBC connection and store it in variable "connection"
-    final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
-    final Schema schema = factory.createSchema("ONLINESHOP");
-    final Table table = schema.createTable("ITEMS", "PRODUCT_ID", "DECIMAL(18,0)", "NAME", "VARCHAR(40)")
-            .insert("1", "Cat food")
-            .insert("2", "Toy mouse");
-    final User user = factory.createUser("KIMIKO")
-            .grant(CREATE_SESSION)
-            .grant(table, SELECT, UDPATE);
+class OnlineShopIT {
+    @BeforeAll
+    static void beforeAll() {
+        // ... get a JDBC connection and store it in variable "connection"
+        final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
+    }
+    
+    @Test
+    void testShopItemList() {
+        // Test preparation in the database:
+        final Schema schema = factory.createSchema("ONLINESHOP");
+        final Table table = schema.createTable("ITEMS", "PRODUCT_ID", "DECIMAL(18,0)", "NAME", "VARCHAR(40)")
+                .insert("1", "Cat food")
+                .insert("2", "Toy mouse");
+        final User user = factory.createUser("KIMIKO")
+                .grant(CREATE_SESSION)
+                .grant(table, SELECT, UDPATE);
+        // ... the actual test
+    }
 }
 ```
 
