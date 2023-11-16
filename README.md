@@ -24,13 +24,18 @@ The main design goals are to make the code of the integration test compact and r
 ## In a Nutshell
 
 ```java
+import com.exasol.dbbuilder.dialects.DatabaseObjectFactory;
+
 class OnlineShopIT {
+    final static DatabaseObjectFactory factory;
+
     @BeforeAll
+
     static void beforeAll() {
         // ... get a JDBC connection and store it in variable "connection"
-        final DatabaseObjectFactory factory = new ExasolObjectFactory(connection);
+        factory = new ExasolObjectFactory(connection);
     }
-    
+
     @Test
     void testShopItemList() {
         // Test preparation in the database:
