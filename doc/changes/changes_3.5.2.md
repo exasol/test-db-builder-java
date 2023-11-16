@@ -8,7 +8,7 @@ Improved the "in a nutshell" section to make it clearer that we are talking abou
 
 ## Features
 
-* #122: Improved the "in a nutshell" section.
+* #123: Improved the "in a nutshell" section.
 
 ## Dependency Updates
 
