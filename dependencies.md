@@ -7,7 +7,7 @@
 | ------------------------------------------ | ---------------- |
 | [Exasol Database fundamentals for Java][0] | [MIT License][1] |
 | [error-reporting-java][2]                  | [MIT License][3] |
-| [SLF4J JDK14 Provider][4]                  | [MIT License][5] |
+| [SLF4J JDK14 Binding][4]                   | [MIT License][5] |
 
 ## Test Dependencies
 

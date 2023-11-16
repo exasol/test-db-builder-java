@@ -5,5 +5,6 @@ sources:
       - maven_central
       - integration_tests
 linkReplacements:
+  - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
   - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
 excludes:
