@@ -6,10 +6,6 @@ Code name: Improved "In a nutshell" section
 
 Improved the "in a nutshell" section to make it clearer that we are talking about tests here and what goes typically into `beforeAll()`. Updated dependencies and fixed build.
 
-## Features
-
-* #123: Improved the "in a nutshell" section.
-
 ## Dependency Updates
 
 ### Test Dependency Updates
