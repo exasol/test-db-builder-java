@@ -3,6 +3,9 @@ package com.exasol.dbbuilder.dialects.exasol;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +50,29 @@ class ExasolSchemaTest extends AbstractSchemaTest {
         final AdapterScript adapterScript = exasolSchema.createAdapterScriptBuilder("TEST_SCRIPT")
                 .language(AdapterScript.Language.JAVA).content("test").build();
         assertThat(adapterScript.getParent(), equalTo(exasolSchema));
+    }
+
+    @Test
+    void testDropDropsSchema() {
+        final ExasolSchema schema = testee();
+        schema.drop();
+        verify(writerMock).drop(same(schema));
+    }
+
+    @Test
+    void testCloseDropsSchema() {
+        final ExasolSchema schema = testee();
+        schema.close();
+        verify(writerMock).drop(same(schema));
+    }
+
+    @Test
+    // [utest -> dsn~dropping-objects-via-AutoClosable~1]
+    void testTryWithResourcesDropsSchema() {
+        try (final ExasolSchema schema = testee()) {
+            // nothing to do
+        }
+        verify(writerMock).drop(any(ExasolSchema.class));
     }
 
     @Test

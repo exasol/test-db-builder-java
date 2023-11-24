@@ -7,4 +7,6 @@ sources:
 linkReplacements:
   - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
   - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
-excludes:
+build:
+  exasolDbVersions:
+    - "8.23.1" # Only test v8 to avoid running tests for other DBs twice

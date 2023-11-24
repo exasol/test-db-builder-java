@@ -234,7 +234,18 @@ Covers:
 
 Needs: impl, itest
 
-## Dropping database objects
+## Dropping Database Objects
+
+### Dropping Database Objects via `AutoClosable`
+
+`dsn~dropping-objects-via-AutoClosable~1`
+
+All database objects implement the `AutoClosable` interface.
+
+Rationale:
+This allows users to automatically delete objects using Java's try-with-resources.
+
+Needs: impl, utest
 
 ### Dropping Users
 

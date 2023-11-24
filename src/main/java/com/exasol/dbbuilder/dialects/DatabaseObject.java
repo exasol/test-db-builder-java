@@ -3,7 +3,7 @@ package com.exasol.dbbuilder.dialects;
 /**
  * Common interface for database objects.
  */
-public interface DatabaseObject {
+public interface DatabaseObject extends AutoCloseable {
     /**
      * Get the name of the database object.
      *
@@ -47,8 +47,14 @@ public interface DatabaseObject {
     boolean isOwned();
 
     /**
-     * Remove this database object from database incl. all contained objects and mark it as deleted. 
-     * Later operations on this object will throw a {@link DatabaseObjectDeletedException} Exception.
+     * Remove this database object from database incl. all contained objects and mark it as deleted. Later operations on
+     * this object will throw a {@link DatabaseObjectDeletedException} Exception.
      */
     void drop();
+
+    // [impl -> dsn~dropping-objects-via-AutoClosable~1]
+    @Override
+    default void close() {
+        this.drop();
+    }
 }
