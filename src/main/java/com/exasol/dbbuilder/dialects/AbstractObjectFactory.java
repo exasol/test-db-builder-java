@@ -9,6 +9,11 @@ public abstract class AbstractObjectFactory implements DatabaseObjectFactory {
 
     private final DatabaseObjectWriter writer;
 
+    /**
+     * Create a new instance
+     * 
+     * @param writer a database object writer
+     */
     protected AbstractObjectFactory(final DatabaseObjectWriter writer) {
         this.writer = writer;
     }

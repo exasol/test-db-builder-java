@@ -83,11 +83,13 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
+    @SuppressWarnings("java:S2095") // Not using try-with-resources, the caller is responsible for closing
     public User createLoginUser(final String name) {
         return createUser(name).grant(ExasolGlobalPrivilege.CREATE_SESSION);
     }
 
     @Override
+    @SuppressWarnings("java:S2095") // Not using try-with-resources, the caller is responsible for closing
     public User createLoginUser(final String name, final String password) {
         return createUser(name, password).grant(ExasolGlobalPrivilege.CREATE_SESSION);
     }

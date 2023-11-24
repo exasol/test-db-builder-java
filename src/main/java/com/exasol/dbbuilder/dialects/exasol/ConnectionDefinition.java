@@ -26,8 +26,8 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
      * @param userName user as which to connect
      * @param password password or password-like credential
      */
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name,
-            final String target, final String userName, final String password) {
+    ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name, final String target,
+            final String userName, final String password) {
         super(name, false);
         this.target = target;
         this.writer = writer;
