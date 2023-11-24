@@ -7,7 +7,7 @@ This document's section structure is derived from the "[arc42](https://arc42.org
 ## Terms and Abbreviations
 
 <dl>
-    <dt>TDDB</dt><dd>Test Database Builder</dd>
+    <dt>TDBJ</dt><dd>Test Database Builder for Java</dd>
     <dt>Top-level database object</dt><dd>Database object that has no parent scope in the database.</dd>
 </dl>
 
@@ -85,7 +85,7 @@ Needs: impl, utest, itest
 
 `dsn~creating-exasol-java-object-with-jvm-options~1`
 
-Users can create virtual schema adapters and UDFs with JVM options. They can set these options globally and TDDB will add them to all JAVA adapters and scripts.
+Users can create virtual schema adapters and UDFs with JVM options. They can set these options globally and TDBJ will add them to all JAVA adapters and scripts.
 
 Rationale: By that users can for example add a debugger or profiler to all JAVA scripts.
 
@@ -234,13 +234,24 @@ Covers:
 
 Needs: impl, itest
 
-## Dropping database objects
+## Dropping Database Objects
+
+### Dropping Database Objects via `AutoClosable`
+
+`dsn~dropping-objects-via-AutoClosable~1`
+
+All database objects implement the `AutoClosable` interface.
+
+Rationale:
+This allows users to automatically delete objects using Java's try-with-resources.
+
+Needs: impl, utest
 
 ### Dropping Users
 
 `dsn~dropping-users~1`
 
-Users can drop database users using TDDB.
+Users can drop database users using TDBJ.
 
 Covers:
 
@@ -252,7 +263,7 @@ Needs: impl, itest
 
 `dsn~dropping-tables~1`
 
-Users can drop tables using TDDB.
+Users can drop tables using TDBJ.
 
 Covers:
 
@@ -264,9 +275,9 @@ Needs: impl, itest
 
 `dsn~dropping-schemas~2`
 
-Users can drop schemas using TDDB.
+Users can drop schemas using TDBJ.
 
-TDDB uses the `CASCADE` option to drop contained tables.
+TDBJ uses the `CASCADE` option to drop contained tables.
 
 Covers:
 
@@ -278,7 +289,7 @@ Needs: impl, itest
 
 `dsn~dropping-adapter-scripts~1`
 
-Users can drop adapter scripts using TDDB.
+Users can drop adapter scripts using TDBJ.
 
 Covers:
 
@@ -290,7 +301,7 @@ Needs: impl, itest
 
 `dsn~dropping-connections~1`
 
-Users can drop connections using TDDB.
+Users can drop connections using TDBJ.
 
 Covers:
 
@@ -302,7 +313,7 @@ Needs: impl, itest
 
 `dsn~dropping-scripts~1`
 
-Users can drop scripts using TDDB.
+Users can drop scripts using TDBJ.
 
 Covers:
 
@@ -314,7 +325,7 @@ Needs: impl, itest
 
 `dsn~dropping-udfs~1`
 
-Users can drop UDFs using TDDB.
+Users can drop UDFs using TDBJ.
 
 Covers:
 
@@ -326,9 +337,9 @@ Needs: impl, itest
 
 `dsn~dropping-virtual-schemas~2`
 
-Users can drop virtual schemas using TDDB.
+Users can drop virtual schemas using TDBJ.
 
-TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
+TDBJ uses the `CASCADE` to also drop virtual schemas that contain tables.
 
 Covers:
 
@@ -344,17 +355,17 @@ Needs: impl, itest
 
 As explained in [the system requirements section "Controlling Existing Database Objects"](system_requirements.md#Controlling-existing-database-objects), sometimes users need to control existing database objects in integration tests.
 
-The decision on how to do this is architecture relevant because it impacts usability, code maintainability (both of the TDDB and integration tests written with it) and safety of the created code.
+The decision on how to do this is architecture relevant because it impacts usability, code maintainability (both of the TDBJ and integration tests written with it) and safety of the created code.
 
 ### Alternatives Considered
 
 #### Creating a Complete Control Object but not Writing it
 
-While this gives TDDB the best possible information about the contents of the object and also works without administrative privileges for all object types, it requires users to provide the same information twice, which is inconvenient and error prone.
+While this gives TDBJ the best possible information about the contents of the object and also works without administrative privileges for all object types, it requires users to provide the same information twice, which is inconvenient and error prone.
 
 #### Reading the Object Metadata from the Database
 
-Depending on the type of the object this can require administrative privileges. It is also a complex operation that generates a lot of development effort in the TDDB. We still will keep this in mind as a backup plan for selected object types when the current simple solution turns out to be insufficient.
+Depending on the type of the object this can require administrative privileges. It is also a complex operation that generates a lot of development effort in the TDBJ. We still will keep this in mind as a backup plan for selected object types when the current simple solution turns out to be insufficient.
 
 ### Decisions
 
@@ -366,7 +377,7 @@ When users attach to an existing database object, all they need is a fully-quali
 
 Comment:
 
-The downside of this approach is that TDDB cannot do any validation on an object that it only knows the name of. For this metadata would be required. This means for example that TDDB cannot check whether the number of arguments passed to a script is in line with the script definition.
+The downside of this approach is that TDBJ cannot do any validation on an object that it only knows the name of. For this metadata would be required. This means for example that TDBJ cannot check whether the number of arguments passed to a script is in line with the script definition.
 
 This is not necessary though since the database itself implements those checks and the error messages are good enough to present them to the users.
 

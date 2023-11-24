@@ -2,9 +2,9 @@
 
 ## Introduction
 
-Exasol's Test Database Builder for Java (short "TDDB") is a library that helps authors of integration test against databases writing compact and readable test code.
+Exasol's Test Database Builder for Java (short "TDBJ") is a library that helps authors of integration test against databases writing compact and readable test code.
 
-**&#9888; Important:** The TDDB is meant to be used in tests only. It is neither designed nor particularly suited to be used in production scenarios!
+**&#9888; Important:** The TDBJ is meant to be used in tests only. It is neither designed nor particularly suited to be used in production scenarios!
 
 ## About This Document
 
@@ -14,11 +14,11 @@ The target audience are end-users, requirement engineers, software designers and
 
 ### Goal
 
-TDDB is targeted at functional testing mainly with the central design goal to make writing and reading the test code as convenient as possible for developers.
+TDBJ is targeted at functional testing mainly with the central design goal to make writing and reading the test code as convenient as possible for developers.
 
 ### Quality Goals
 
-TDDB's main quality goals are in descending order of importance:
+TDBJ's main quality goals are in descending order of importance:
 
 1. Compact test code
 1. Readable test code
@@ -31,18 +31,18 @@ Integrators integrate their solution with databases (like Exasol). To test this,
 
 ### Terms and Abbreviations
 
-The following list gives you an overview of terms and abbreviations commonly used in TDDB documents.
+The following list gives you an overview of terms and abbreviations commonly used in TDBJ documents.
 
 * ...
 
 ## Features
 
-Features are the highest level requirements in this document that describe the main functionality of TDDB.
+Features are the highest level requirements in this document that describe the main functionality of TDBJ.
 
 ### Supporting Different Database
 `feat~supporting-different-database~1`
 
-TDDB supports the following databases:
+TDBJ supports the following databases:
 
 - Exasol
 - MySQL
@@ -52,16 +52,16 @@ Needs: req
 ### Creating Database Objects
 `feat~creating-database-objects~1`
 
-TDDB allows developers to programmatically create database objects.
+TDBJ allows developers to programmatically create database objects.
 
 Needs: req
 
 ### Dropping Database Objects
 `feat~dropping-existing-database-objects~2`
 
-TDDB allows developers to drop database content.
+TDBJ allows developers to drop database content.
 
-TDDB drops the objects including all contained objects.
+TDBJ drops the objects including all contained objects.
 
 These include:
 * Generic Database object
@@ -72,21 +72,21 @@ Needs: req
 ### Populating Database With Test Data
 `feat~populating-database-with-test-data~1`
 
-TDDB allows populating the database with test data.
+TDBJ allows populating the database with test data.
 
 <!-- Needs: req --><!-- See https://github.com/exasol/test-db-builder-java/issues/10 -->
 
 ### Running Executable Database Content
 `feat~running-executable-database-content~1`
 
-TDDB allows developers to programmatically running database content that is executable (like scripts).
+TDBJ allows developers to programmatically running database content that is executable (like scripts).
 
 Needs: req
 
 ### Controlling Existing Database Objects
 `feat~controlling-existing-database-objects~1`
 
-TDDB allows developers to attach to existing database objects to control them programmatically.
+TDBJ allows developers to attach to existing database objects to control them programmatically.
 
 Needs: req
 
@@ -124,7 +124,7 @@ Needs: dsn
 #### Creating Users
 `req~creating-users~1`
 
-Users can create database users through TDDB.
+Users can create database users through TDBJ.
 
 Covers:
 
@@ -187,7 +187,7 @@ Needs: dsn
 #### Creating Adapter Scripts
 `req~creating-adapter-scripts~1`
 
-Users can create Exasol adapter scripts using TDDB.
+Users can create Exasol adapter scripts using TDBJ.
 
  * (optional) debugger connection – Users can define a debugger connection. Users can control if the debugger is added by an switch that is independent of the source code. 
 
@@ -201,7 +201,7 @@ Needs: dsn
 #### Creating Tables
 `req~creating-tables~1`
 
-Users can create tables using TDDB.
+Users can create tables using TDBJ.
 
 Covers:
 
@@ -212,7 +212,7 @@ Needs: dsn
 #### Creating Connections
 `req~creating-connections~1`
 
-Users can create Exasol connection definitions using TDDB.
+Users can create Exasol connection definitions using TDBJ.
 
 Covers:
 
@@ -223,7 +223,7 @@ Needs: dsn
 #### Creating Schemas
 `req~creating-schemas~1`
 
-Users can create Exasol schemas using TDDB.
+Users can create Exasol schemas using TDBJ.
 
 Covers:
 
@@ -234,7 +234,7 @@ Needs: dsn
 #### Creating Virtual Schemas
 `req~creating-virtual-schemas~1`
 
-Users can create Exasol virtual schemas using TDDB.
+Users can create Exasol virtual schemas using TDBJ.
 
 Covers:
 
@@ -249,7 +249,7 @@ Users can execute SQL files to create objects in the database.
 
 Rationale:
 
-Especially when scripts are part of the implementation under test, they often come in form of SQL files. In order to test them, TDDB must be able to execute the SQL files that create them.
+Especially when scripts are part of the implementation under test, they often come in form of SQL files. In order to test them, TDBJ must be able to execute the SQL files that create them.
 
 Covers:
 
@@ -262,7 +262,7 @@ Needs: dsn
 ### Dropping Users
 `req~dropping-users~1`
 
-Users can drop database users using TDDB.
+Users can drop database users using TDBJ.
 
 Covers:
 
@@ -273,7 +273,7 @@ Needs: dsn
 ### Dropping Tables
 `req~dropping-tables~1`
 
-Users can drop tables using TDDB.
+Users can drop tables using TDBJ.
 
 Covers:
 
@@ -284,9 +284,9 @@ Needs: dsn
 ### Dropping Schemas
 `req~dropping-schemas~1`
 
-Users can drop schemas using TDDB.
+Users can drop schemas using TDBJ.
 
-TDDB uses the `CASCADE` option to drop contained tables.
+TDBJ uses the `CASCADE` option to drop contained tables.
 
 Covers:
 
@@ -297,7 +297,7 @@ Needs: dsn
 ### Dropping Adapter Scripts
 `req~dropping-adapter-scripts~1`
 
-Users can drop adapter scripts using TDDB.
+Users can drop adapter scripts using TDBJ.
 
 Covers:
 
@@ -308,7 +308,7 @@ Needs: dsn
 ### Dropping Connections
 `req~dropping-connections~1`
 
-Users can drop connections using TDDB.
+Users can drop connections using TDBJ.
 
 Covers:
 
@@ -319,7 +319,7 @@ Needs: dsn
 ### Dropping Scripts
 `req~dropping-scripts~1`
 
-Users can drop scripts using TDDB.
+Users can drop scripts using TDBJ.
 
 Covers:
 
@@ -330,7 +330,7 @@ Needs: dsn
 ### Dropping UDFs
 `req~dropping-udfs~1`
 
-Users can drop UDFs using TDDB.
+Users can drop UDFs using TDBJ.
 
 Covers:
 
@@ -341,9 +341,9 @@ Needs: dsn
 ### Dropping Virtual Schemas
 `req~dropping-virtual-schemas~1`
 
-Users can drop virtual schemas using TDDB.
+Users can drop virtual schemas using TDBJ.
 
-* TDDB uses the `CASCADE` to also drop virtual schemas that contain tables.
+* TDBJ uses the `CASCADE` to also drop virtual schemas that contain tables.
 
 Covers:
 
@@ -377,12 +377,12 @@ Needs: dsn
 
 In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
 
-TDDB lets users attach to existing objects to control them.
+TDBJ lets users attach to existing objects to control them.
 
 #### Controlling Existing Scripts
 `req~controlling-existing-scripts~1`
 
-Users can control an existing script through TDDB.
+Users can control an existing script through TDBJ.
 
 Rationale:
 

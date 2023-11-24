@@ -15,7 +15,7 @@ public abstract class AbstractSchemaChild extends AbstractDatabaseObject {
      *
      * @param parentSchema parent schema
      * @param name         name of the database object
-     * @param owned        {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a
+     * @param owned        {@code true} if the object is owned by the TDBJ, {@code false} if the TDBJ attached to a
      *                     database object that already existed
      */
     protected AbstractSchemaChild(final Schema parentSchema, final Identifier name, final boolean owned) {
