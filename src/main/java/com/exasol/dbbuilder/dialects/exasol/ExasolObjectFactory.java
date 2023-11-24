@@ -32,6 +32,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     ExasolObjectFactory(final ExasolImmediateDatabaseObjectWriter writer) {
+        super(writer);
         this.writer = writer;
     }
 
@@ -72,18 +73,13 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    public User createUser(final String name) {
-        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name)));
+    protected User createNewUser(final String name) {
+        return new ExasolUser(this.writer, ExasolIdentifier.of(name));
     }
 
     @Override
-    public User createUser(final String name, final String password) {
-        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name), password));
-    }
-
-    private User writeUser(final User user) {
-        this.writer.write(user);
-        return user;
+    protected User createNewUser(final String name, final String password) {
+        return new ExasolUser(this.writer, ExasolIdentifier.of(name), password);
     }
 
     @Override

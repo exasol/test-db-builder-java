@@ -20,6 +20,7 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
     }
 
     PostgreSqlObjectFactory(final PostgreSqlImmediateDatabaseObjectWriter writer) {
+        super(writer);
         this.writer = writer;
     }
 
@@ -29,28 +30,13 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    public User createUser(final String name) {
-        return writeUser(new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name)));
+    protected User createNewUser(final String name) {
+        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name));
     }
 
     @Override
-    public User createUser(final String name, final String password) {
-        return writeUser(new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password));
-    }
-
-    private User writeUser(final User user) {
-        this.writer.write(user);
-        return user;
-    }
-
-    @Override
-    public User createLoginUser(final String name) {
-        return createUser(name);
-    }
-
-    @Override
-    public User createLoginUser(final String name, final String password) {
-        return createUser(name, password);
+    protected User createNewUser(final String name, final String password) {
+        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password);
     }
 
     @Override
