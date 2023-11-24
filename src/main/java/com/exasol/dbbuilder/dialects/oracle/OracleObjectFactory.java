@@ -30,14 +30,15 @@ public class OracleObjectFactory extends AbstractObjectFactory {
 
     @Override
     public User createUser(final String name) {
-        final OracleUser user = new OracleUser(this.writer, OracleIdentifier.of(name));
-        this.writer.write(user);
-        return user;
+        return writeUser(new OracleUser(this.writer, OracleIdentifier.of(name)));
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        final OracleUser user = new OracleUser(this.writer, OracleIdentifier.of(name), password);
+        return writeUser(new OracleUser(this.writer, OracleIdentifier.of(name), password));
+    }
+
+    private User writeUser(final User user) {
         this.writer.write(user);
         return user;
     }
