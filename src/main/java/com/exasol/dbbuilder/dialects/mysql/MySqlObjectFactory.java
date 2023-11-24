@@ -2,9 +2,7 @@ package com.exasol.dbbuilder.dialects.mysql;
 
 import java.sql.Connection;
 
-import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
-import com.exasol.dbbuilder.dialects.User;
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * Factory for MySQL top-level database objects.
@@ -19,17 +17,25 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
      * @param connection JDBC connection
      */
     public MySqlObjectFactory(final Connection connection) {
-        this.writer = new MySqlImmediateDatabaseObjectWriter(connection);
+        this(new MySqlImmediateDatabaseObjectWriter(connection));
+    }
+
+    MySqlObjectFactory(final MySqlImmediateDatabaseObjectWriter writer) {
+        this.writer = writer;
     }
 
     @Override
     public User createUser(final String name) {
-        return new MySqlUser(this.writer, MySQLIdentifier.of(name));
+        final MySqlUser user = new MySqlUser(this.writer, MySQLIdentifier.of(name));
+        this.writer.write(user);
+        return user;
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new MySqlUser(this.writer, MySQLIdentifier.of(name), password);
+        final MySqlUser user = new MySqlUser(this.writer, MySQLIdentifier.of(name), password);
+        this.writer.write(user);
+        return user;
     }
 
     @Override
@@ -44,7 +50,9 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public MySqlSchema createSchema(final String name) {
-        return new MySqlSchema(this.writer, MySQLIdentifier.of(name));
+        final MySqlSchema schema = new MySqlSchema(this.writer, MySQLIdentifier.of(name));
+        this.writer.write(schema);
+        return schema;
     }
 
     @Override

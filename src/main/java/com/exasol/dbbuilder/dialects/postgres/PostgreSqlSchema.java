@@ -18,7 +18,6 @@ public class PostgreSqlSchema extends AbstractSchema {
     public PostgreSqlSchema(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     @Override

@@ -17,7 +17,6 @@ public class MySqlUser extends AbstractUser {
     public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     /**
@@ -31,7 +30,6 @@ public class MySqlUser extends AbstractUser {
             final String password) {
         super(name, password);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     @Override

@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.Map;
@@ -23,6 +25,18 @@ public abstract class AbstractUserTest {
     protected abstract User createUser(String name, String password);
 
     protected abstract DatabaseObjectWriter getWriterMock();
+
+    @Test
+    void constructorDoesNotCallWriter() {
+        createUser("name");
+        verify(getWriterMock(), never()).write(any(User.class));
+    }
+
+    @Test
+    void constructorWithPasswordDoesNotCallWriter() {
+        createUser("name", "password");
+        verify(getWriterMock(), never()).write(any(User.class));
+    }
 
     @Test
     void getType() {

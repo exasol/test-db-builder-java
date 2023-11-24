@@ -19,7 +19,6 @@ public class MySqlSchema extends AbstractSchema {
     public MySqlSchema(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     @Override

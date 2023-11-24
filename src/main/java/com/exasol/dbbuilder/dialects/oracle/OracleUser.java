@@ -18,7 +18,6 @@ public class OracleUser extends AbstractUser {
     public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
         super(name);
         this.writer = writer;
-        writer.write(this);
     }
 
     /**

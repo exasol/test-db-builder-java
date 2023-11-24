@@ -16,7 +16,11 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
      * @param connectionToPostgres connection to the PostgreSQL database.
      */
     public PostgreSqlObjectFactory(final Connection connectionToPostgres) {
-        this.writer = new PostgreSqlImmediateDatabaseObjectWriter(connectionToPostgres);
+        this(new PostgreSqlImmediateDatabaseObjectWriter(connectionToPostgres));
+    }
+
+    PostgreSqlObjectFactory(final PostgreSqlImmediateDatabaseObjectWriter writer) {
+        this.writer = writer;
     }
 
     @Override
@@ -26,12 +30,16 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public User createUser(final String name) {
-        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name));
+        final PostgreSqlUser user = new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name));
+        this.writer.write(user);
+        return user;
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password);
+        final PostgreSqlUser user = new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password);
+        this.writer.write(user);
+        return user;
     }
 
     @Override
@@ -46,6 +54,8 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public Schema createSchema(final String name) {
-        return new PostgreSqlSchema(this.writer, PostgreSqlIdentifier.of(name));
+        final PostgreSqlSchema schema = new PostgreSqlSchema(this.writer, PostgreSqlIdentifier.of(name));
+        this.writer.write(schema);
+        return schema;
     }
 }

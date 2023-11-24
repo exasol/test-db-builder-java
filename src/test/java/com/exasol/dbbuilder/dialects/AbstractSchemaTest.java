@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
@@ -17,6 +19,12 @@ public abstract class AbstractSchemaTest {
     protected abstract Schema createSchema(String name);
 
     protected abstract DatabaseObjectWriter getWriterMock();
+
+    @Test
+    void testConstructorDoesNotCallWriter() {
+        createSchema("BAR");
+        verify(getWriterMock(), never()).write(any(Schema.class));
+    }
 
     @Test
     void testGetType() {

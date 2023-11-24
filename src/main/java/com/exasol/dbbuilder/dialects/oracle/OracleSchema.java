@@ -20,7 +20,6 @@ public class OracleSchema extends AbstractSchema {
     public OracleSchema(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     @Override

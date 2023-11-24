@@ -18,7 +18,6 @@ public class PostgreSqlUser extends AbstractUser {
     public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name) {
         super(name);
         this.writer = writer;
-        writer.write(this);
     }
 
     /**

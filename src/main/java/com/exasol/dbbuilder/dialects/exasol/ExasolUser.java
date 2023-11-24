@@ -18,7 +18,6 @@ public class ExasolUser extends AbstractUser {
     public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     /**
@@ -31,7 +30,6 @@ public class ExasolUser extends AbstractUser {
     public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name, final String password) {
         super(name, password);
         this.writer = writer;
-        writer.write(this);
     }
 
     @Override

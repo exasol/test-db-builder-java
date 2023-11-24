@@ -8,8 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.exasol.dbbuilder.dialects.AbstractImmediateDatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.AbstractObjectFactoryTest;
+
 @ExtendWith(MockitoExtension.class)
-class ExasolObjectFactoryTest {
+class ExasolObjectFactoryTest extends AbstractObjectFactoryTest {
 
     @Mock
     ExasolImmediateDatabaseObjectWriter writerMock;
@@ -26,7 +29,13 @@ class ExasolObjectFactoryTest {
         verify(writerMock).write(same(connection));
     }
 
-    private ExasolObjectFactory testee() {
+    @Override
+    protected ExasolObjectFactory testee() {
         return new ExasolObjectFactory(writerMock);
+    }
+
+    @Override
+    protected AbstractImmediateDatabaseObjectWriter getWriterMock() {
+        return writerMock;
     }
 }
