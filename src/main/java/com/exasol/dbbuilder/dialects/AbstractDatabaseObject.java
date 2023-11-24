@@ -5,11 +5,11 @@ import com.exasol.db.Identifier;
 /**
  * Base class for database objects.
  * <p>
- * Database objects in integration tests are in most cases owned by the TDDB. This means the TDDB created them and is
+ * Database objects in integration tests are in most cases owned by the TDBJ. This means the TDBJ created them and is
  * also responsible for cleaning them up.
  * </p>
  * <p>
- * On the other hand the TDDB can also attach to objects that already exist in the database. In that case the TDDB has a
+ * On the other hand the TDBJ can also attach to objects that already exist in the database. In that case the TDBJ has a
  * control object, but does not own the database object.
  * </p>
  */
@@ -25,7 +25,7 @@ public abstract class AbstractDatabaseObject implements DatabaseObject {
      * Create a database object.
      *
      * @param name  name of the database object
-     * @param owned {@code true} if the object is owned by the TDDB, {@code false} if the TDDB attached to a database
+     * @param owned {@code true} if the object is owned by the TDBJ, {@code false} if the TDBJ attached to a database
      *              object that already existed
      */
     protected AbstractDatabaseObject(final Identifier name, final boolean owned) {

@@ -1,8 +1,8 @@
 # Test DB Builder User Guide
 
-Exasol's Test Database Builder for Java (TDDB) is a framework that helps you write compact and readable integration tests that require setting up a database.
+Exasol's Test Database Builder for Java (TDBJ) is a framework that helps you write compact and readable integration tests that require setting up a database.
 
-Instead of cluttering your test code with hundreds of lines of boilerplate code, TDDB reduces setup and population of your test database to a handful of easy to read statements. To further increase convenience TDDB supports the [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) programming style.
+Instead of cluttering your test code with hundreds of lines of boilerplate code, TDBJ reduces setup and population of your test database to a handful of easy to read statements. To further increase convenience TDBJ supports the [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) programming style.
 
 ## Preparations
 
@@ -12,11 +12,11 @@ Check out the parent project [Test Containers](https://www.testcontainers.org/) 
 
 ## Creating Database Objects
 
-After installing the database you need to set up the structure of your test database and that is the first point where TDDB comes into play.
+After installing the database you need to set up the structure of your test database and that is the first point where TDBJ comes into play.
 
 ### The `DatabaseObjectFactory`
 
-The "mother" of all database objects TDDB creates is the `DatabaseObjectFactory`. You need one in order to create any top-level database objects.
+The "mother" of all database objects TDBJ creates is the `DatabaseObjectFactory`. You need one in order to create any top-level database objects.
 
 Top-level objects are objects in the database which are not scoped by any other objects. A schema for example is a top-level object in Exasol. A table on the other hand lives inside the scope of a schema.
 
@@ -25,7 +25,7 @@ You choose a database and create a concrete `DatabaseObjectFactory` feeding it w
 In the example below you see how to create an `ExasolObjectFactory` with a JDBC connection that you created earlier:
 
 ```java
-final ExasolObjectFactory factory=new ExasolObjectFactory(connection);
+final ExasolObjectFactory factory = new ExasolObjectFactory(connection);
 ```
 
 That is about as much configuration as you need to get started.
@@ -48,7 +48,7 @@ The `ImmediateDatabaseObjectWriter` writes any object to the database immediatel
 In almost all your integration tests, you will need a schema to hold other objects. At least if you are testing against and Exasol database, so let's start with that.
 
 ```java
-final Schema schema=factory.createSchema(`GAME_STATISTICS`);
+final Schema schema = factory.createSchema(`GAME_STATISTICS`);
 ```
 
 ### Creating Tables
@@ -56,7 +56,7 @@ final Schema schema=factory.createSchema(`GAME_STATISTICS`);
 In Exasol, tables are scoped inside of schemas, so we create a table object from a schema object.
 
 ```java
-final Table table=schema.createTable("DAYS","DAY_NAME","VARCHAR(9), "SHORT_NAME", "VARCHAR(3)");
+final Table table = schema.createTable("DAYS","DAY_NAME","VARCHAR(9), "SHORT_NAME", "VARCHAR(3)");
 ```
 
 In case you want to create more complex tables, you can also use a builder.
@@ -75,14 +75,14 @@ final Table table=schema.createTableBuilder("DAYS")
 If you want to create users &mdash; for example when testing privilege effects &mdash; simply type:
 
 ```java
-final User user=factory.createUser("MARIA")
+final User user = factory.createUser("MARIA")
 ```
 
 #### Granting Global Privileges
 
 Sometimes you need to promote one of your users to administrator on a database-wide scale by giving them global privileges. Here is an example with Exasol privileges:
 
-```
+```java
 user.grant(ExasolGlobalPrivilege.CREATE_USER, ExasolGlobalPrivilege.DROP_USER);
 ```
 
@@ -90,9 +90,9 @@ Each dialect has its own list of privileges.
 
 #### Granting Object Privileges
 
-All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure (Exasol database example):
+All database objects in TDBJ implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure (Exasol database example):
 
-```
+```java
 final Schema schema = factory.createSchema("SALES");
 user.grant(schema, ExasolObjectPrivilege.SELECT, ExasolObjectPrivilege.INSERT)
 ```
@@ -104,14 +104,14 @@ Implementation often comes with SQL files that users need to execute as a prepar
 Running an SQL script is easy:
 
 ```java
-final Path pathToSqlFile=Path.of("src/main/sql/init.sql");
-        factory.executeSqlFile(pathToSqlFile);
+final Path pathToSqlFile = Path.of("src/main/sql/init.sql");
+factory.executeSqlFile(pathToSqlFile);
 ```
 
 You can also run multiple SQL files in a row. They are executed in the order they are listed in the `executeSqlFile(...)` call.
 
 ```java
-factory.executeSqlFile(file1,file2,file3);
+factory.executeSqlFile(file1, file2, file3);
 ```
 
 ## Populating Tables
@@ -120,13 +120,13 @@ Populating a table is really simple:
 
 ```java
 table.insert("Monday","Mon")
-        .insert("Tuesday","Tue")
-        .insert("Wednesday","Wed")
-        // ...
-        .insert("Sunday","Sun");
+     .insert("Tuesday","Tue")
+     .insert("Wednesday","Wed")
+     // ...
+     .insert("Sunday","Sun");
 ```
 
-One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
+One thing to keep in mind here is that the TDBJ's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
 
 ## Exasol-Specific Database Objects
 
@@ -137,13 +137,13 @@ In most integration tests you need user accounts able to log in. In Exasol for e
 So the following code
 
 ```java
-final User user=factory.createLoginUser("MIKE");
+final User user = factory.createLoginUser("MIKE");
 ```
 
 in Exasol is equivalent to:
 
 ```java
-final User user=factory.createUser("MIKE").grant(SystemPrivilege.CREATE_SESSION);
+final User user = factory.createUser("MIKE").grant(SystemPrivilege.CREATE_SESSION);
 ```
 
 ### Creating Connection Definitions
@@ -155,8 +155,8 @@ You can create a definition with only a URL or with additional credentials.
 Here are the two variants
 
 ```java
-final ConnectionDefinition connectionA=factory.createConnectionDefinition("PUBLIC_CONNECTION","https://example.org/api/v1");
-final ConnectionDefinition connectionB=factory.createConnectionDefinition("PRIVILEGED_CONNECTION","https://example.org/api/v1","FRED","super secret!");
+final ConnectionDefinition connectionA = factory.createConnectionDefinition("PUBLIC_CONNECTION", "https://example.org/api/v1");
+final ConnectionDefinition connectionB = factory.createConnectionDefinition("PRIVILEGED_CONNECTION", "https://example.org/api/v1", "FRED", "super secret!");
 ```
 
 As always the first parameter is the object name of the connection definition. Then there is the URL (e.g. a JDBC URL) and optionally username and password.
@@ -166,26 +166,26 @@ As always the first parameter is the object name of the connection definition. T
 Scripts are the main extension point for end-users. In Exasol you can for example define a Lua script like this:
 
 ```java
-final Script script=schema.createScript("HELLO_LUA","print(\"Hello World\")");
+final Script script = schema.createScript("HELLO_LUA", "print(\"Hello World\")");
 ```
 
 You can also load the script implementation from a file.
 
 ```java
-final Path path="src/main/lua/hello.lua";
-final Script script=schema.createScript("HELLO_LUA",path);
+final Path path = "src/main/lua/hello.lua";
+final Script script = schema.createScript("HELLO_LUA", path);
 ```
 
 Scripts can have zero or more parameters.
 
 ```java
-final Script script=schema.createScript("REPEAT","...","text","times");
+final Script script = schema.createScript("REPEAT", "...", "text", "times");
 ```
 
 If you need to create a more complex script, use the builder.
 
 ```java
-final Script script=schema.createScriptBuilder("CALENDAR")
+final Script script = schema.createScriptBuilder("CALENDAR")
         .parameters("year","month")
         .content("...")
         .returnsTable()
@@ -196,7 +196,7 @@ By default Exasol Scripts return a row count &mdash; even those scripts where yo
 
 Add `returnsTable()` to the builder if you want the script to return a table.
 
-See section ["Running Scripts"](#executing-scripts) for information about executing scripts.
+See section ["Running Scripts"](#executing-exasol-scripts) for information about executing scripts.
 
 ### Creating UDF Scripts
 
@@ -213,7 +213,7 @@ To create an UDF script you need the following:
 For example, the following code:
 
 ```java
-final UdfScript udfScript=schema.createUdfBuilder("UDF_SCRIPT")
+final UdfScript udfScript = schema.createUdfBuilder("UDF_SCRIPT")
         .language(UdfScript.Language.JAVA)
         .inputType(UdfScript.InputType.SCALAR)
         .emits(new Column("COLUMN_NAME","VARCHAR(2000)"))
@@ -233,7 +233,7 @@ CREATE JAVA SCALAR SCRIPT UDF_SCRIPT(...) EMITS ("COLUMN_NAME" VARCHAR(2000)) AS
 Similarly, the following code snippet:
 
 ```java
-final UdfScript udfScript=schema.createUdfBuilder("UDF_SCRIPT")
+final UdfScript udfScript = schema.createUdfBuilder("UDF_SCRIPT")
         .language(UdfScript.Language.PYTHON)
         .inputType(UdfScript.InputType.SET)
         .parameter("INPUT","VARCHAR(256)")
@@ -269,9 +269,9 @@ final AdapterScript adapterScript=schema.createAdapterScript("HELLO_WORLD","PYTH
 
 #### Debugging (Java only)
 
-Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schema-common-jdbc/blob/main/doc/development/remote_debugging.md)). This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. The TDDB can also add this JVM options. For that, initialize `ExasolObjectFactory` as follows:
+Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schema-common-jdbc/blob/main/doc/development/remote_debugging.md)). This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. The TDBJ can also add this JVM options. For that, initialize `ExasolObjectFactory` as follows:
 
-```
+```java
 final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
     ExasolObjectConfiguration.builder()
         .withJvmOptions("-agentlib:jdwp=transport=dt_socket,server=n,address=<host>:<port>,suspend=y")
@@ -281,7 +281,7 @@ final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
 
 ### Creating Virtual Schemas
 
-Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDDB.
+Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDBJ.
 
 ```java
 final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA")
@@ -294,13 +294,13 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
 
 #### Debug Output
 
-For virtual schemas Test DB Builder supports three special system properties to enable debug output to a remote machine:
+For virtual schemas Test DB Builder supports three special system properties to enable debug output to a remote machine (remote log):
 
-| System property | Sample value | Default value |
-|-----------------|--------------|---------------|
-| `com.exasol.virtualschema.debug.host` | `"192.168.1.2"` | (none) |
-| `com.exasol.virtualschema.debug.port` | `"3000"` | (none) |
-| `com.exasol.virtualschema.debug.level` | `"WARN"` | `"ALL"`, see explanation below |
+| System property                        | Sample value    | Default value                  |
+|----------------------------------------|-----------------|--------------------------------|
+| `com.exasol.virtualschema.debug.host`  | `"192.168.1.2"` | (none)                         |
+| `com.exasol.virtualschema.debug.port`  | `"3000"`        | (none)                         |
+| `com.exasol.virtualschema.debug.level` | `"WARN"`        | `"ALL"`, see explanation below |
 
 You can set some or all of these properties, see topics [Logging](https://docs.exasol.com/db/latest/database_concepts/virtual_schema/logging.htm) and [Debug UDF Script Output](https://docs.exasol.com/db/latest/database_concepts/udf_scripts/debug_udf_script_output.htm?Highlight=script_output) in the Exasol documentation. If `com.exasol.virtualschema.debug.level` is not specified and either `-Dcom.exasol.virtualschema.debug.host` or `-Dcom.exasol.virtualschema.debug.port` is specified then Test DB Builder Java sets `com.exasol.virtualschema.debug.level` to `ALL`.
 
@@ -318,24 +318,41 @@ You can use the following shell command to display the debug log, see  [Logging]
 nc -lkp 3000
 ```
 
+##### Debug Output for VSCode
+
+When using VSCode you can enable debug output for tests by adding the following to `.vscode/settings.json`:
+
+```json
+{
+  "java.test.config": {
+    "vmArgs": [
+      "-Djava.util.logging.config.file=src/test/resources/logging.properties",
+      "-Dcom.exasol.virtualschema.debug.host=127.0.0.1",
+      "-Dcom.exasol.virtualschema.debug.port=3000",
+      "-Dcom.exasol.virtualschema.debug.level=INFO"
+    ]
+  }
+}
+```
+
 ## Running Executable Database Content
 
 ### Executing Exasol Scripts
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
-The TDDB offers two methods for executing scripts, depending on which result you expect.
+The TDBJ offers two methods for executing scripts, depending on which result you expect.
 
 Let's assume you have a script that fills a table with random data and returns the row count. You would call it like this:
 
 ```java
-final int rowCount=insertRandomDataScript.execute();
+final int rowCount = insertRandomDataScript.execute();
 ```
 
 If a script returns a table though, you have to call it with `executeQuery()` instead.
 
 ```java
-final List<List<Object>>=createCalendarScript.execute(2020,5);
+final List<List<Object>> = createCalendarScript.executeQuery(2020, 5);
 ```
 
 In the second example you also see that you can add parameters to the script call. Obviously the number of parameters must match the parameters defined when you created the script.
@@ -345,12 +362,12 @@ Parameters in scripts can be arrays. When you want to execute a script with an a
 In the example below, you see a script that creates entries in a dimension table for months which expects a year as a simple scalar parameter and a list of months as an array parameter.
 
 ```java
-final Script createMonthEntries=schema.createScriptBuilder("month_entries")
+final Script createMonthEntries = schema.createScriptBuilder("month_entries")
         .parameter("year")
         .arrayParameter("months")
         .content("-- script implementation ...")
         .build();
-        script.execute(2020,List.of(1,2,3,4));
+script.execute(2020, List.of(1,2,3,4));
 ```
 
 As you can see, the `execute(...)` method takes a scalar followed by a collection as parameters.
@@ -359,20 +376,20 @@ As you can see, the `execute(...)` method takes a scalar followed by a collectio
 
 In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
 
-TDDB lets users attach to existing objects to control them.
+TDBJ lets users attach to existing objects to control them.
 
 ### Controlling Existing Exasol Scripts
 
 Imagine you loaded a couple of scripts from a SQL file and you want to write an integration test for them. You can attach to an existing script in the database like this:
 
 ```java
-final Script script=schema.getScript("THE_EXISTING_SCRIPT");
+final Script script = schema.getScript("THE_EXISTING_SCRIPT");
 ```
 
-Given that a script of that name exists, you can then [execute the script](#executing-scripts) as if you had [created it using the TDDB](#creating-scripts).
+Given that a script of that name exists, you can then [execute the script](#executing-exasol-scripts) as if you had [created it using the TDBJ](#creating-scripts).
 
 ## MySQL-Specific Database Objects
 
-So far there are no MySQL Specific Database Objects that are not described in [Dialect-Unspecific Database Objects](#dialect-unspecific-database-objects) section.
+So far there are no MySQL Specific Database Objects that are not described in [Dialect-Agnostic Database Objects](#dialect-agnostic-database-objects) section.
 
 Please keep in mind that Schema object represents a database in MySQL as a schema is a [synonym](https://dev.mysql.com/doc/refman/8.0/en/create-database.html) for a database in MySQL syntax.
