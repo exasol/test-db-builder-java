@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
@@ -27,101 +29,105 @@ class ConnectionDefinitionTest {
     private ExasolImmediateDatabaseObjectWriter writerMock;
 
     @Test
+    void testConstructorDoesNotWrite() {
+        testee();
+        verify(writerMock, never()).write(any(ConnectionDefinition.class));
+    }
+
+    @Test
     void testGetName() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).getName(),
-                equalTo(CONNECTION_NAME.toString()));
+        assertThat(testee().getName(), equalTo(CONNECTION_NAME.toString()));
     }
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(
-                new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).getFullyQualifiedName(),
-                equalTo("\"" + CONNECTION_NAME + "\""));
+        assertThat(testee().getFullyQualifiedName(), equalTo("\"" + CONNECTION_NAME + "\""));
     }
 
     @Test
     void testGetType() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).getType(),
-                equalTo("connection"));
+        assertThat(testee().getType(), equalTo("connection"));
     }
 
     @Test
     void testGetTarget() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, "FOOBAR").getTarget(), equalTo("FOOBAR"));
+        assertThat(testee().getTarget(), equalTo("THE_TARGET"));
     }
 
     @Test
     void testGetCredentials() {
-        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
-                CONNECTION_TARGET, "JOHNDOE", "SECRET");
+        final ConnectionDefinition connectionDefinition = testee("JOHNDOE", "SECRET");
         assertAll(() -> assertThat("user name", connectionDefinition.getUserName(), equalTo("JOHNDOE")),
                 () -> assertThat("password", connectionDefinition.getPassword(), equalTo("SECRET")));
     }
 
     @Test
     void testHasUserNameFalse() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).hasUserName(),
-                equalTo(false));
+        assertThat(testee().hasUserName(), equalTo(false));
     }
 
     @Test
     void testHasUserNameFalseWhenEmpty() {
-        assertThat(
-                new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET, "", null).hasUserName(),
-                equalTo(false));
+        assertThat(testee("", null).hasUserName(), equalTo(false));
     }
 
     @Test
     void testHasUserNameTrue() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET, "THE_USER", null)
-                .hasUserName(), equalTo(true));
+        assertThat(testee("THE_USER", null).hasUserName(), equalTo(true));
     }
 
     @Test
     void testHasPasswordFalse() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).hasPassword(),
-                equalTo(false));
+        assertThat(testee().hasPassword(), equalTo(false));
     }
 
     @Test
     void testHasPasswordFalseWhenEmpty() {
-        assertThat(
-                new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET, null, "").hasPassword(),
-                equalTo(false));
+        assertThat(testee("user", "").hasPassword(), equalTo(false));
     }
 
     @Test
     void testHasPasswordTrue() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET, null, "THE_PASSWORD")
-                .hasPassword(), equalTo(true));
+        assertThat(testee("user", "THE_PASSWORD").hasPassword(), equalTo(true));
     }
 
     @Test
     void testHasParent() {
-        assertThat(new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET).hasParent(),
-                equalTo(false));
+        assertThat(testee().hasParent(), equalTo(false));
     }
 
     @Test
     void testGetParentThrowsException() {
-        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
-                CONNECTION_TARGET);
+        final ConnectionDefinition connectionDefinition = testee();
         assertThrows(DatabaseObjectException.class, connectionDefinition::getParent);
     }
 
     @Test
     void testDrop() {
-        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
-                CONNECTION_TARGET);
+        final ConnectionDefinition connectionDefinition = testee();
         connectionDefinition.drop();
         verify(writerMock).drop(same(connectionDefinition));
     }
 
     @Test
+    void testClose() {
+        final ConnectionDefinition connectionDefinition = testee();
+        connectionDefinition.close();
+        verify(writerMock).drop(same(connectionDefinition));
+    }
+
+    @Test
     void testDropTwiceFails() {
-        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writerMock, CONNECTION_NAME,
-                CONNECTION_TARGET);
+        final ConnectionDefinition connectionDefinition = testee();
         connectionDefinition.drop();
         assertThrows(DatabaseObjectDeletedException.class, connectionDefinition::drop);
+    }
+
+    private ConnectionDefinition testee(final String user, final String password) {
+        return new ConnectionDefinition(this.writerMock, CONNECTION_NAME, CONNECTION_TARGET, user, password);
+    }
+
+    private ConnectionDefinition testee() {
+        return testee(null, null);
     }
 }

@@ -3,9 +3,7 @@ package com.exasol.dbbuilder.dialects.exasol;
 import java.sql.Connection;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
-import com.exasol.dbbuilder.dialects.User;
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * Factory for Exasol top-level database objects.
@@ -30,7 +28,11 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * @param configuration configuration for building Exasol objects
      */
     public ExasolObjectFactory(final Connection connection, final ExasolObjectConfiguration configuration) {
-        this.writer = new ExasolImmediateDatabaseObjectWriter(connection, configuration);
+        this(new ExasolImmediateDatabaseObjectWriter(connection, configuration));
+    }
+
+    ExasolObjectFactory(final ExasolImmediateDatabaseObjectWriter writer) {
+        this.writer = writer;
     }
 
     /**
@@ -42,7 +44,7 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     // [impl->dsn~creating-connections~1]
     public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
-        return new ConnectionDefinition(this.writer, ExasolIdentifier.of(name), to);
+        return this.createConnectionDefinition(name, to, null, null);
     }
 
     /**
@@ -56,7 +58,10 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
             final String password) {
-        return new ConnectionDefinition(this.writer, ExasolIdentifier.of(name), to, userName, password);
+        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writer,
+                ExasolIdentifier.of(name), to, userName, password);
+        this.writer.write(connectionDefinition);
+        return connectionDefinition;
     }
 
     @Override

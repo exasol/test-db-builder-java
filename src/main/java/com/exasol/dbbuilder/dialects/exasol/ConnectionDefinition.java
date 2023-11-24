@@ -14,24 +14,8 @@ import com.exasol.errorreporting.ExaError;
 public class ConnectionDefinition extends AbstractDatabaseObject {
     private final ExasolImmediateDatabaseObjectWriter writer;
     private final String target;
-    private String userName;
-    private String password;
-
-    /**
-     * Create a connection without credentials.
-     *
-     * @param writer database object writer
-     * @param name   name of the connection
-     * @param target target the connection points to
-     */
-    // [impl~creating-connections~1]
-    public ConnectionDefinition(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name,
-            final String target) {
-        super(name, false);
-        this.writer = writer;
-        this.target = target;
-        this.writer.write(this);
-    }
+    private final String userName;
+    private final String password;
 
     /**
      * Create a connection with credentials.
@@ -49,7 +33,6 @@ public class ConnectionDefinition extends AbstractDatabaseObject {
         this.writer = writer;
         this.userName = userName;
         this.password = password;
-        this.writer.write(this);
     }
 
     @Override
