@@ -17,7 +17,7 @@
 
 # Overview
 
-Exasol's **Test Database Builder for Java** (TDDB) is a library that makes writing integration tests for database applications easier.
+Exasol's **Test Database Builder for Java** (TDBJ) is a library that makes writing integration tests for database applications easier.
 
 The main design goals are to make the code of the integration test compact and readable at the same time.
 
@@ -59,7 +59,7 @@ This module is designed to be used in test code. It helps you write tests, quick
 
 ## What it isn't
 
-TDDB is not suited for production code. We sacrifice speed and features for compactness and ease-of-use. If you are looking for code that helps writing production code, please refer to
+TDBJ is not suited for production code. We sacrifice speed and features for compactness and ease-of-use. If you are looking for code that helps writing production code, please refer to
 
 * [SQL Statement Builder](https://github.com/exasol/sql-statement-builder)
 

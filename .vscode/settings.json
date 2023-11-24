@@ -16,5 +16,5 @@
     "connectionId": "exasol",
     "projectKey": "com.exasol:test-db-builder-java"
   },
-  "cSpell.words": ["TDDB"]
+  "cSpell.words": ["TDBJ"]
 }

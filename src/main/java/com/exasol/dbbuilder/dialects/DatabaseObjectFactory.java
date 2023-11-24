@@ -14,7 +14,7 @@ public interface DatabaseObjectFactory {
      * /** Create a new database user with a default password.
      * <p>
      * This method creates a user with a password derived from the user name. Note that this is only acceptable in the
-     * scope of testing for which the TDDB is made. Never use something like this in production code!
+     * scope of testing for which the TDBJ is made. Never use something like this in production code!
      * </p>
      *
      * @param name user name
@@ -36,7 +36,7 @@ public interface DatabaseObjectFactory {
      * Create user that can log into the database with a default password.
      * <p>
      * This method creates a user with a password derived from the user name. Note that this is only acceptable in the
-     * scope of testing for which the TDDB is made. Never use something like this in production code!
+     * scope of testing for which the TDBJ is made. Never use something like this in production code!
      * </p>
      *
      * @param name user name

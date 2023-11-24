@@ -1,8 +1,8 @@
 # Test DB Builder User Guide
 
-Exasol's Test Database Builder for Java (TDDB) is a framework that helps you write compact and readable integration tests that require setting up a database.
+Exasol's Test Database Builder for Java (TDBJ) is a framework that helps you write compact and readable integration tests that require setting up a database.
 
-Instead of cluttering your test code with hundreds of lines of boilerplate code, TDDB reduces setup and population of your test database to a handful of easy to read statements. To further increase convenience TDDB supports the [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) programming style.
+Instead of cluttering your test code with hundreds of lines of boilerplate code, TDBJ reduces setup and population of your test database to a handful of easy to read statements. To further increase convenience TDBJ supports the [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) programming style.
 
 ## Preparations
 
@@ -12,11 +12,11 @@ Check out the parent project [Test Containers](https://www.testcontainers.org/) 
 
 ## Creating Database Objects
 
-After installing the database you need to set up the structure of your test database and that is the first point where TDDB comes into play.
+After installing the database you need to set up the structure of your test database and that is the first point where TDBJ comes into play.
 
 ### The `DatabaseObjectFactory`
 
-The "mother" of all database objects TDDB creates is the `DatabaseObjectFactory`. You need one in order to create any top-level database objects.
+The "mother" of all database objects TDBJ creates is the `DatabaseObjectFactory`. You need one in order to create any top-level database objects.
 
 Top-level objects are objects in the database which are not scoped by any other objects. A schema for example is a top-level object in Exasol. A table on the other hand lives inside the scope of a schema.
 
@@ -90,7 +90,7 @@ Each dialect has its own list of privileges.
 
 #### Granting Object Privileges
 
-All database objects in TDDB implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure (Exasol database example):
+All database objects in TDBJ implement the `DataObject` interface. If you want to grant users privileges on the object level, follow this procedure (Exasol database example):
 
 ```java
 final Schema schema = factory.createSchema("SALES");
@@ -126,7 +126,7 @@ table.insert("Monday","Mon")
      .insert("Sunday","Sun");
 ```
 
-One thing to keep in mind here is that the TDDB's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
+One thing to keep in mind here is that the TDBJ's main design goal is expressiveness, not ultimate speed. While this approach here is perfectly suited for the functional integration tests, populating tables with mass data for performance testing is better done using Exasol's `IMPORT` statement.
 
 ## Exasol-Specific Database Objects
 
@@ -269,7 +269,7 @@ final AdapterScript adapterScript=schema.createAdapterScript("HELLO_WORLD","PYTH
 
 #### Debugging (Java only)
 
-Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schema-common-jdbc/blob/main/doc/development/remote_debugging.md)). This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. The TDDB can also add this JVM options. For that, initialize `ExasolObjectFactory` as follows:
+Exasol's Java adapter scripts support remote debugging (see [remote debugging in virtual schemas](https://github.com/exasol/virtual-schema-common-jdbc/blob/main/doc/development/remote_debugging.md)). This requires a special JVM option for the `CREATE ADAPTER SCRIPT` command. The TDBJ can also add this JVM options. For that, initialize `ExasolObjectFactory` as follows:
 
 ```java
 final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
@@ -281,7 +281,7 @@ final ExasolObjectFactory factory = new ExasolObjectFactory(connection,
 
 ### Creating Virtual Schemas
 
-Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDDB.
+Virtual Schemas have lots of parameters when you create them. That's why you need a builder in order to make one via the TDBJ.
 
 ```java
 final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUAL_SCHEMA")
@@ -341,7 +341,7 @@ When using VSCode you can enable debug output for tests by adding the following 
 
 Of course [creating scripts](#creating-scripts) is only part of the story. Usually you will want to execute them at some point in your tests.
 
-The TDDB offers two methods for executing scripts, depending on which result you expect.
+The TDBJ offers two methods for executing scripts, depending on which result you expect.
 
 Let's assume you have a script that fills a table with random data and returns the row count. You would call it like this:
 
@@ -376,7 +376,7 @@ As you can see, the `execute(...)` method takes a scalar followed by a collectio
 
 In some integration tests users need to manipulate database objects that already exist in the database For example if they were created by your implementation and you need to modify them for a white-box test. Or if they are imported from a SQL file.
 
-TDDB lets users attach to existing objects to control them.
+TDBJ lets users attach to existing objects to control them.
 
 ### Controlling Existing Exasol Scripts
 
@@ -386,7 +386,7 @@ Imagine you loaded a couple of scripts from a SQL file and you want to write an 
 final Script script = schema.getScript("THE_EXISTING_SCRIPT");
 ```
 
-Given that a script of that name exists, you can then [execute the script](#executing-exasol-scripts) as if you had [created it using the TDDB](#creating-scripts).
+Given that a script of that name exists, you can then [execute the script](#executing-exasol-scripts) as if you had [created it using the TDBJ](#creating-scripts).
 
 ## MySQL-Specific Database Objects
 
