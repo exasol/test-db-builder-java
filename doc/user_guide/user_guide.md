@@ -196,7 +196,7 @@ By default Exasol Scripts return a row count &mdash; even those scripts where yo
 
 Add `returnsTable()` to the builder if you want the script to return a table.
 
-See section ["Running Scripts"](#executing-scripts) for information about executing scripts.
+See section ["Running Scripts"](#executing-exasol-scripts) for information about executing scripts.
 
 ### Creating UDF Scripts
 
@@ -386,10 +386,10 @@ Imagine you loaded a couple of scripts from a SQL file and you want to write an 
 final Script script=schema.getScript("THE_EXISTING_SCRIPT");
 ```
 
-Given that a script of that name exists, you can then [execute the script](#executing-scripts) as if you had [created it using the TDDB](#creating-scripts).
+Given that a script of that name exists, you can then [execute the script](#executing-exasol-scripts) as if you had [created it using the TDDB](#creating-scripts).
 
 ## MySQL-Specific Database Objects
 
-So far there are no MySQL Specific Database Objects that are not described in [Dialect-Unspecific Database Objects](#dialect-unspecific-database-objects) section.
+So far there are no MySQL Specific Database Objects that are not described in [Dialect-Agnostic Database Objects](#dialect-agnostic-database-objects) section.
 
 Please keep in mind that Schema object represents a database in MySQL as a schema is a [synonym](https://dev.mysql.com/doc/refman/8.0/en/create-database.html) for a database in MySQL syntax.
