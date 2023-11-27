@@ -33,8 +33,6 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
 
     @Override
     public MySqlSchema createSchema(final String name) {
-        final MySqlSchema schema = new MySqlSchema(this.writer, MySQLIdentifier.of(name));
-        this.writer.write(schema);
-        return schema;
+        return writeSchema(new MySqlSchema(this.writer, MySQLIdentifier.of(name)));
     }
 }

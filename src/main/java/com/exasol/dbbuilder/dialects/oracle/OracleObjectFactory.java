@@ -31,8 +31,6 @@ public class OracleObjectFactory extends AbstractObjectFactory {
 
     @Override
     public Schema createSchema(final String name) {
-        final OracleSchema schema = new OracleSchema(this.writer, OracleIdentifier.of(name));
-        this.writer.write(schema);
-        return schema;
+        return writeSchema(new OracleSchema(this.writer, OracleIdentifier.of(name)));
     }
 }

@@ -53,24 +53,22 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * Create a connection without credentials.
      *
      * @param name     name of the connection
-     * @param to       target the connection points to
+     * @param target   target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
      * @return new {@link ConnectionDefinition} instance
      */
-    public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
-            final String password) {
+    public ConnectionDefinition createConnectionDefinition(final String name, final String target,
+            final String userName, final String password) {
         final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writer,
-                ExasolIdentifier.of(name), to, userName, password);
+                ExasolIdentifier.of(name), target, userName, password);
         this.writer.write(connectionDefinition);
         return connectionDefinition;
     }
 
     @Override
     public ExasolSchema createSchema(final String name) {
-        final ExasolSchema schema = new ExasolSchema(this.writer, ExasolIdentifier.of(name));
-        this.writer.write(schema);
-        return schema;
+        return writeSchema(new ExasolSchema(this.writer, ExasolIdentifier.of(name)));
     }
 
     @Override
