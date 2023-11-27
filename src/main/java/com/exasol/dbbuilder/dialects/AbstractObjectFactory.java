@@ -33,6 +33,14 @@ public abstract class AbstractObjectFactory implements DatabaseObjectFactory {
         return createUser(name, password);
     }
 
+    /**
+     * Write the given user to the database. The method returns the user to allow creating, writing and returning in a
+     * single line.
+     * 
+     * @param user the user to write
+     * @param <T>  the concrete user type
+     * @return the user
+     */
     protected <T extends User> T writeUser(final T user) {
         this.writer.write(user);
         return user;
