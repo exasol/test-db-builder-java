@@ -25,18 +25,13 @@ public class OracleObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
+    public User createUser(final String name) {
+        return writeUser(new OracleUser(this.writer, OracleIdentifier.of(name)));
     }
 
     @Override
-    protected User createNewUser(final String name) {
-        return new OracleUser(this.writer, OracleIdentifier.of(name));
-    }
-
-    @Override
-    protected User createNewUser(final String name, final String password) {
-        return new OracleUser(this.writer, OracleIdentifier.of(name), password);
+    public User createUser(final String name, final String password) {
+        return writeUser(new OracleUser(this.writer, OracleIdentifier.of(name), password));
     }
 
     @Override

@@ -2,7 +2,8 @@ package com.exasol.dbbuilder.dialects.mysql;
 
 import java.sql.Connection;
 
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
+import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Factory for MySQL top-level database objects.
@@ -26,13 +27,13 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    protected User createNewUser(final String name) {
-        return new MySqlUser(this.writer, MySQLIdentifier.of(name));
+    public User createUser(final String name) {
+        return writeUser(new MySqlUser(this.writer, MySQLIdentifier.of(name)));
     }
 
     @Override
-    protected User createNewUser(final String name, final String password) {
-        return new MySqlUser(this.writer, MySQLIdentifier.of(name), password);
+    public User createUser(final String name, final String password) {
+        return writeUser(new MySqlUser(this.writer, MySQLIdentifier.of(name), password));
     }
 
     @Override
@@ -40,10 +41,5 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
         final MySqlSchema schema = new MySqlSchema(this.writer, MySQLIdentifier.of(name));
         this.writer.write(schema);
         return schema;
-    }
-
-    @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
     }
 }

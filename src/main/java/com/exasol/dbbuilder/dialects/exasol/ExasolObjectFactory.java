@@ -3,7 +3,8 @@ package com.exasol.dbbuilder.dialects.exasol;
 import java.sql.Connection;
 
 import com.exasol.db.ExasolIdentifier;
-import com.exasol.dbbuilder.dialects.*;
+import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
+import com.exasol.dbbuilder.dialects.User;
 
 /**
  * Factory for Exasol top-level database objects.
@@ -73,13 +74,13 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    protected User createNewUser(final String name) {
-        return new ExasolUser(this.writer, ExasolIdentifier.of(name));
+    public User createUser(final String name) {
+        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name)));
     }
 
     @Override
-    protected User createNewUser(final String name, final String password) {
-        return new ExasolUser(this.writer, ExasolIdentifier.of(name), password);
+    public User createUser(final String name, final String password) {
+        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name), password));
     }
 
     @Override
@@ -102,10 +103,5 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
         return VirtualSchema.builder(this.writer, ExasolIdentifier.of(name));
-    }
-
-    @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
     }
 }

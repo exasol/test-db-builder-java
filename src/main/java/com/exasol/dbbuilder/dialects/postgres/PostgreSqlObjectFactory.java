@@ -25,18 +25,13 @@ public class PostgreSqlObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
+    public User createUser(final String name) {
+        return writeUser(new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name)));
     }
 
     @Override
-    protected User createNewUser(final String name) {
-        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name));
-    }
-
-    @Override
-    protected User createNewUser(final String name, final String password) {
-        return new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password);
+    public User createUser(final String name, final String password) {
+        return writeUser(new PostgreSqlUser(this.writer, PostgreSqlIdentifier.of(name), password));
     }
 
     @Override
