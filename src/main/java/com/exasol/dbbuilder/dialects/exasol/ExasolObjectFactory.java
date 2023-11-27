@@ -4,7 +4,6 @@ import java.sql.Connection;
 
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.AbstractObjectFactory;
-import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
 import com.exasol.dbbuilder.dialects.User;
 
 /**
@@ -30,7 +29,12 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      * @param configuration configuration for building Exasol objects
      */
     public ExasolObjectFactory(final Connection connection, final ExasolObjectConfiguration configuration) {
-        this.writer = new ExasolImmediateDatabaseObjectWriter(connection, configuration);
+        this(new ExasolImmediateDatabaseObjectWriter(connection, configuration));
+    }
+
+    ExasolObjectFactory(final ExasolImmediateDatabaseObjectWriter writer) {
+        super(writer);
+        this.writer = writer;
     }
 
     /**
@@ -42,44 +46,44 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     // [impl->dsn~creating-connections~1]
     public ConnectionDefinition createConnectionDefinition(final String name, final String to) {
-        return new ConnectionDefinition(this.writer, ExasolIdentifier.of(name), to);
+        return this.createConnectionDefinition(name, to, null, null);
     }
 
     /**
      * Create a connection without credentials.
      *
      * @param name     name of the connection
-     * @param to       target the connection points to
+     * @param target   target the connection points to
      * @param userName user as which to connect
      * @param password password or password-like credential
      * @return new {@link ConnectionDefinition} instance
      */
-    public ConnectionDefinition createConnectionDefinition(final String name, final String to, final String userName,
-            final String password) {
-        return new ConnectionDefinition(this.writer, ExasolIdentifier.of(name), to, userName, password);
+    public ConnectionDefinition createConnectionDefinition(final String name, final String target,
+            final String userName, final String password) {
+        final ConnectionDefinition connectionDefinition = new ConnectionDefinition(this.writer,
+                ExasolIdentifier.of(name), target, userName, password);
+        this.writer.write(connectionDefinition);
+        return connectionDefinition;
     }
 
     @Override
     public ExasolSchema createSchema(final String name) {
-        return new ExasolSchema(this.writer, ExasolIdentifier.of(name));
-    }
-
-    @Override
-    public User createUser(final String name) {
-        return new ExasolUser(this.writer, ExasolIdentifier.of(name));
+        return writeSchema(new ExasolSchema(this.writer, ExasolIdentifier.of(name)));
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new ExasolUser(this.writer, ExasolIdentifier.of(name), password);
+        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name), password));
     }
 
     @Override
+    @SuppressWarnings("java:S2095") // Not using try-with-resources, the caller is responsible for closing
     public User createLoginUser(final String name) {
         return createUser(name).grant(ExasolGlobalPrivilege.CREATE_SESSION);
     }
 
     @Override
+    @SuppressWarnings("java:S2095") // Not using try-with-resources, the caller is responsible for closing
     public User createLoginUser(final String name, final String password) {
         return createUser(name, password).grant(ExasolGlobalPrivilege.CREATE_SESSION);
     }
@@ -92,10 +96,5 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
      */
     public VirtualSchema.Builder createVirtualSchemaBuilder(final String name) {
         return VirtualSchema.builder(this.writer, ExasolIdentifier.of(name));
-    }
-
-    @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
     }
 }

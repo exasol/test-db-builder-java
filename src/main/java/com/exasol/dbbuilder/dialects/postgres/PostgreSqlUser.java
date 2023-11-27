@@ -10,25 +10,13 @@ public class PostgreSqlUser extends AbstractUser {
     private final PostgreSqlImmediateDatabaseObjectWriter writer;
 
     /**
-     * Create a PostgreSQL user.
-     * 
-     * @param writer object writer
-     * @param name   username
-     */
-    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name) {
-        super(name);
-        this.writer = writer;
-        writer.write(this);
-    }
-
-    /**
      * Create a PostgreSQL user with password.
      * 
      * @param writer   object writer
      * @param name     username
      * @param password password
      */
-    public PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name,
+    PostgreSqlUser(final PostgreSqlImmediateDatabaseObjectWriter writer, final PostgreSqlIdentifier name,
             final String password) {
         super(name, password);
         this.writer = writer;

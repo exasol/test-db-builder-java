@@ -1,8 +1,8 @@
 package com.exasol.dbbuilder.dialects.oracle;
 
-import com.exasol.dbbuilder.dialects.*;
-
 import java.sql.Connection;
+
+import com.exasol.dbbuilder.dialects.*;
 
 /**
  * Oracle {@link DatabaseObjectFactory}.
@@ -16,37 +16,21 @@ public class OracleObjectFactory extends AbstractObjectFactory {
      * @param connectionToOracle connection to the Oracle database.
      */
     public OracleObjectFactory(final Connection connectionToOracle) {
-        this.writer = new OracleImmediateDatabaseObjectWriter(connectionToOracle);
+        this(new OracleImmediateDatabaseObjectWriter(connectionToOracle));
     }
 
-    @Override
-    protected DatabaseObjectWriter getWriter() {
-        return this.writer;
-    }
-
-    @Override
-    public User createUser(final String name) {
-        return new OracleUser(this.writer, OracleIdentifier.of(name));
+    OracleObjectFactory(final OracleImmediateDatabaseObjectWriter writer) {
+        super(writer);
+        this.writer = writer;
     }
 
     @Override
     public User createUser(final String name, final String password) {
-        return new OracleUser(this.writer, OracleIdentifier.of(name), password);
-    }
-
-    @Override
-    public User createLoginUser(final String name) {
-        return createUser(name);
-    }
-
-    @Override
-    public User createLoginUser(final String name, final String password) {
-        return createUser(name, password);
+        return writeUser(new OracleUser(this.writer, OracleIdentifier.of(name), password));
     }
 
     @Override
     public Schema createSchema(final String name) {
-        return new OracleSchema(this.writer, OracleIdentifier.of(name));
+        return writeSchema(new OracleSchema(this.writer, OracleIdentifier.of(name)));
     }
-
 }

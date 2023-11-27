@@ -4,7 +4,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import java.util.Map;
@@ -17,12 +19,27 @@ import com.exasol.dbbuilder.dialects.exasol.ExasolObjectPrivilege;
 
 @SuppressWarnings("java:S5786") // this class should be public as implementation classes are in different packages
 public abstract class AbstractUserTest {
-
-    protected abstract User createUser(String name);
+    private static final String PASSWORD = "pwd";
 
     protected abstract User createUser(String name, String password);
 
     protected abstract DatabaseObjectWriter getWriterMock();
+
+    @Test
+    void constructorDoesNotCallWriter() {
+        createUser("name");
+        verify(getWriterMock(), never()).write(any(User.class));
+    }
+
+    private User createUser(final String name) {
+        return createUser(name, PASSWORD);
+    }
+
+    @Test
+    void constructorWithPasswordDoesNotCallWriter() {
+        createUser("name", "password");
+        verify(getWriterMock(), never()).write(any(User.class));
+    }
 
     @Test
     void getType() {
@@ -47,7 +64,7 @@ public abstract class AbstractUserTest {
 
     @Test
     void testGetDefaultPassword() {
-        assertThat(createUser("SMITH").getPassword(), equalTo("SMITHPWD"));
+        assertThat(createUser("SMITH").getPassword(), equalTo(PASSWORD));
     }
 
     @Test

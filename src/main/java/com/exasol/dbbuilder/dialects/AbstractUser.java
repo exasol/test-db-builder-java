@@ -16,20 +16,6 @@ public abstract class AbstractUser extends AbstractDatabaseObject implements Use
     protected final Set<GlobalPrivilege> globalPrivileges = new HashSet<>();
 
     /**
-     * Create a new database user with a default password.
-     * <p>
-     * This method creates a user with a password derived from the user name. Note that this is only acceptable in the
-     * scope of testing for which the TDBJ is made. Never use something like this in production code!
-     * </p>
-     *
-     * @param name user name
-     */
-    protected AbstractUser(final Identifier name) {
-        super(name, false);
-        this.password = name + "PWD";
-    }
-
-    /**
      * Create a new database user.
      *
      * @param name     user name

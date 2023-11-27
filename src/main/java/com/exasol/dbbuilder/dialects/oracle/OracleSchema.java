@@ -17,10 +17,9 @@ public class OracleSchema extends AbstractSchema {
      * @param writer object writer
      * @param name   name of the schema
      */
-    public OracleSchema(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
+    OracleSchema(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
         super(name);
         this.writer = writer;
-        this.writer.write(this);
     }
 
     @Override

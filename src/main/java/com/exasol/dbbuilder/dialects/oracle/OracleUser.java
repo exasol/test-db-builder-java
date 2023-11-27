@@ -10,26 +10,13 @@ public class OracleUser extends AbstractUser {
     private final OracleImmediateDatabaseObjectWriter writer;
 
     /**
-     * Create an Oracle user.
-     *
-     * @param writer object writer
-     * @param name   username
-     */
-    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name) {
-        super(name);
-        this.writer = writer;
-        writer.write(this);
-    }
-
-    /**
      * Create an Oracle user with password.
      *
      * @param writer   object writer
      * @param name     username
      * @param password password
      */
-    public OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name,
-            final String password) {
+    OracleUser(final OracleImmediateDatabaseObjectWriter writer, final OracleIdentifier name, final String password) {
         super(name, password);
         this.writer = writer;
     }

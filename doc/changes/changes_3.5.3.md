@@ -1,4 +1,4 @@
-# Test Database Builder for Java 3.5.3, released 2023-??-??
+# Test Database Builder for Java 3.5.3, released 2023-11-27
 
 Code name: Make DB objects `AutoClosable`
 
@@ -9,6 +9,10 @@ This release let's all database object classes implement the `AutoClosable` inte
 ## Features
 
 * #115: Implemented `AutoClosable` interface in all database objects
+
+## Refactoring
+
+* #119: Moved `DatabaseObjectWriter.write(object)` calls away from constructors
 
 ## Dependency Updates
 
