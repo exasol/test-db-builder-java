@@ -14,13 +14,9 @@ import com.exasol.dbbuilder.dialects.mysql.MySqlObjectPrivilege;
 
 @ExtendWith(MockitoExtension.class)
 class OracleUserTest extends AbstractUserTest {
+    private static final String PASSWORD = "pwd";
     @Mock
     private OracleImmediateDatabaseObjectWriter writerMock;
-
-    @Override
-    protected User createUser(final String name) {
-        return new OracleUser(this.writerMock, OracleIdentifier.of(name));
-    }
 
     @Override
     protected User createUser(final String name, final String password) {
@@ -34,15 +30,17 @@ class OracleUserTest extends AbstractUserTest {
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new OracleUser(this.writerMock, OracleIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
-                equalTo("\"JOHNDOE\""));
+        assertThat(testee("JOHNDOE").getFullyQualifiedName(), equalTo("\"JOHNDOE\""));
     }
 
     @Test
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { MySqlObjectPrivilege.INSERT, MySqlObjectPrivilege.DELETE };
-        final User user = new OracleUser(this.writerMock, OracleIdentifier.of("OBJUSER")) //
-                .grant(objectMock, expectedObjectPrivileges);
+        final User user = testee("OBJUSER").grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
+    }
+
+    private OracleUser testee(final String name) {
+        return new OracleUser(this.writerMock, OracleIdentifier.of(name), PASSWORD);
     }
 }

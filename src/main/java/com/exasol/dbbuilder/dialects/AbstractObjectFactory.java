@@ -24,6 +24,15 @@ public abstract class AbstractObjectFactory implements DatabaseObjectFactory {
     }
 
     @Override
+    public User createUser(final String name) {
+        return createUser(name, generateDefaultPassword(name));
+    }
+
+    private String generateDefaultPassword(final String username) {
+        return username + "PWD";
+    }
+
+    @Override
     public User createLoginUser(final String name) {
         return createUser(name);
     }

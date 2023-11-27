@@ -16,13 +16,9 @@ import com.exasol.dbbuilder.dialects.*;
 // [utest->dsn~creating-database-users~1]
 @ExtendWith(MockitoExtension.class)
 class ExasolUserTest extends AbstractUserTest {
+    private static final String PASSWORD = "pwd";
     @Mock
     private ExasolImmediateDatabaseObjectWriter writerMock;
-
-    @Override
-    protected User createUser(final String name) {
-        return new ExasolUser(this.writerMock, ExasolIdentifier.of(name));
-    }
 
     @Override
     protected User createUser(final String name, final String password) {
@@ -36,31 +32,31 @@ class ExasolUserTest extends AbstractUserTest {
 
     @Test
     void testGetFullyQualifiedName() {
-        assertThat(new ExasolUser(this.writerMock, ExasolIdentifier.of("JOHNDOE")).getFullyQualifiedName(),
-                equalTo("\"JOHNDOE\""));
+        assertThat(testee("JOHNDOE").getFullyQualifiedName(), equalTo("\"JOHNDOE\""));
     }
 
     @Test
     void testGetObjectPrivileges(@Mock final DatabaseObject objectMock) {
         final ObjectPrivilege[] expectedObjectPrivileges = { ExasolObjectPrivilege.INSERT,
                 ExasolObjectPrivilege.DELETE };
-        final User user = new ExasolUser(this.writerMock, ExasolIdentifier.of("OBJUSER")) //
-                .grant(objectMock, expectedObjectPrivileges);
+        final User user = testee("OBJUSER").grant(objectMock, expectedObjectPrivileges);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, expectedObjectPrivileges));
     }
 
     @Test
     // [utest->dsn~granting-system-privileges-to-database-users~1]
     void testGetSystemPrivileges() {
-        final User user = new ExasolUser(this.writerMock, ExasolIdentifier.of("SYTEMUSER")) //
-                .grant(ExasolGlobalPrivilege.CREATE_SESSION);
+        final User user = testee("SYTEMUSER").grant(ExasolGlobalPrivilege.CREATE_SESSION);
         assertThat(user.getGlobalPrivileges(), contains(ExasolGlobalPrivilege.CREATE_SESSION));
     }
 
     @Test
     void testGrantAllAccess(@Mock final DatabaseObject objectMock) {
-        final User user = new ExasolUser(this.writerMock, ExasolIdentifier.of("OBJSUPERUSER"))
-                .grantAllAccess(objectMock);
+        final User user = testee("OBJSUPERUSER").grantAllAccess(objectMock);
         assertThat(user.getObjectPrivileges(), hasEntry(objectMock, ExasolObjectPrivilege.values()));
+    }
+
+    private ExasolUser testee(final String name) {
+        return new ExasolUser(this.writerMock, ExasolIdentifier.of(name), PASSWORD);
     }
 }

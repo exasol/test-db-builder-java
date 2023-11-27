@@ -10,17 +10,6 @@ public class ExasolUser extends AbstractUser {
     private final ExasolImmediateDatabaseObjectWriter writer;
 
     /**
-     * Create a new database user with a default password.
-     * 
-     * @param writer database object writer
-     * @param name   user name
-     */
-    public ExasolUser(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
-        super(name);
-        this.writer = writer;
-    }
-
-    /**
      * Create a new database user.
      *
      * @param writer   database object writer

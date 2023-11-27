@@ -12,11 +12,6 @@ class PostgreSqlUserTest extends AbstractUserTest {
     private PostgreSqlImmediateDatabaseObjectWriter writerMock;
 
     @Override
-    protected User createUser(final String name) {
-        return new PostgreSqlUser(this.writerMock, PostgreSqlIdentifier.of(name));
-    }
-
-    @Override
     protected User createUser(final String name, final String password) {
         return new PostgreSqlUser(this.writerMock, PostgreSqlIdentifier.of(name), password);
     }

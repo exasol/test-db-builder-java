@@ -27,11 +27,6 @@ public final class MySqlObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    public User createUser(final String name) {
-        return writeUser(new MySqlUser(this.writer, MySQLIdentifier.of(name)));
-    }
-
-    @Override
     public User createUser(final String name, final String password) {
         return writeUser(new MySqlUser(this.writer, MySQLIdentifier.of(name), password));
     }

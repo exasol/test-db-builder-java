@@ -74,11 +74,6 @@ public final class ExasolObjectFactory extends AbstractObjectFactory {
     }
 
     @Override
-    public User createUser(final String name) {
-        return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name)));
-    }
-
-    @Override
     public User createUser(final String name, final String password) {
         return writeUser(new ExasolUser(this.writer, ExasolIdentifier.of(name), password));
     }

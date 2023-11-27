@@ -9,25 +9,13 @@ public class MySqlUser extends AbstractUser {
     private final MySqlImmediateDatabaseObjectWriter writer;
 
     /**
-     * Create a new database user with a default password.
-     *
-     * @param writer database object writer
-     * @param name   username
-     */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name) {
-        super(name);
-        this.writer = writer;
-    }
-
-    /**
      * Create a new database user.
      *
      * @param writer   database object writer
      * @param name     user name
      * @param password login password
      */
-    public MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name,
-            final String password) {
+    MySqlUser(final MySqlImmediateDatabaseObjectWriter writer, final MySQLIdentifier name, final String password) {
         super(name, password);
         this.writer = writer;
     }
