@@ -42,6 +42,12 @@ Users are recommended to upgrade to version 1.26, which fixes the issue.
 - https://lists.apache.org/thread/ch5yo2d21p7vlqrhll9b17otbyq4npfg
 - https://www.openwall.com/lists/oss-security/2024/02/19/2
 
+## Security
+
+* #128: CVE-2024-25710: org.apache.commons:commons-compress:jar:1.24.0:test
+* #130: CVE-2024-1597: org.postgresql:postgresql:jar:42.7.0:test
+* #131: CVE-2024-26308: org.apache.commons:commons-compress:jar:1.24.0:test
+
 ## Dependency Updates
 
 ### Compile Dependency Updates
