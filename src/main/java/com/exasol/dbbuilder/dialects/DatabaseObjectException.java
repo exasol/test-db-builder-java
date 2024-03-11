@@ -11,7 +11,7 @@ public class DatabaseObjectException extends RuntimeException {
      */
     private final String fullyQualifiedObjectName;
     /**
-     * type of the database object that is the context of this exception
+     * Type of the database object that is the context of this exception
      * @serial include
      */
     private final String objectType;

@@ -57,7 +57,7 @@ public class AdapterScript extends AbstractScript {
          * 
          * @deprecated Newer versions of Exasol 7.1 don't support Python 2 any more. Migrate to {@link #PYTHON3}.
          */
-        @Deprecated  PYTHON,
+        @Deprecated PYTHON,
         /** Python 3 language. */
         PYTHON3,
         /** Lua language. */

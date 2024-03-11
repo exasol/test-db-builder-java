@@ -1,6 +1,6 @@
 # Test Database Builder for Java 3.5.4, released 2024-03-11
 
-Code name: Fix CVE-2024-25710, CVE-2024-1597. CVE-2024-26308
+Code name: Fix CVE-2024-25710, CVE-2024-1597 and CVE-2024-26308 in test dependencies
 
 ## Summary
 
@@ -44,9 +44,9 @@ Users are recommended to upgrade to version 1.26, which fixes the issue.
 
 ## Bugfixes
 
-* #128: CVE-2024-25710: org.apache.commons:commons-compress:jar:1.24.0:test
-* #130: CVE-2024-1597: org.postgresql:postgresql:jar:42.7.0:test
-* #131: CVE-2024-26308: org.apache.commons:commons-compress:jar:1.24.0:test
+* #128: Fixed CVE-2024-25710 in `org.apache.commons:commons-compress:jar:1.24.0:test`
+* #130: Fixed CVE-2024-1597 in `org.postgresql:postgresql:jar:42.7.0:test`
+* #131: Fixed CVE-2024-26308 in `org.apache.commons:commons-compress:jar:1.24.0:test
 
 ## Dependency Updates
 
