@@ -2,6 +2,7 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
@@ -70,7 +71,7 @@ class ExasolSchemaTest extends AbstractSchemaTest {
     // [utest -> dsn~dropping-objects-via-AutoClosable~1]
     void testTryWithResourcesDropsSchema() {
         try (final ExasolSchema schema = testee()) {
-            // nothing to do
+            assertNotNull(schema); // Check for not null and get rid of compiler warning.
         }
         verify(writerMock).drop(any(ExasolSchema.class));
     }
