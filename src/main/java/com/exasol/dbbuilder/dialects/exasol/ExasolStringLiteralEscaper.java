@@ -5,6 +5,13 @@ package com.exasol.dbbuilder.dialects.exasol;
  */
 public class ExasolStringLiteralEscaper {
     /**
+     * Create a new instance of an {@link ExasolStringLiteralEscaper}.
+     */
+    public ExasolStringLiteralEscaper() {
+        // Intentionally empty default constructor to avoid Java 17+ JavaDoc warning.
+    }
+
+    /**
      * Escape a given message for the use in an Exasol string literal.
      * 
      * @param message message to escape
