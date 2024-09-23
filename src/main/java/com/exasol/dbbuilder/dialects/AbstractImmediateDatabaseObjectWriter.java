@@ -88,7 +88,8 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             final boolean autoCommitOriginalState = this.connection.getAutoCommit();
             this.connection.setAutoCommit(false);
-            rows.forEach(row -> writeRow(table, sql, preparedStatement, row));
+            rows.forEach(row -> addBatch(table, preparedStatement, row));
+            preparedStatement.executeBatch();
             if (autoCommitOriginalState) {
                 this.connection.commit();
                 this.connection.setAutoCommit(true);
@@ -101,16 +102,15 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
         }
     }
 
-    private void writeRow(final Table table, final String sql, final PreparedStatement preparedStatement,
-                            final List<Object> row) {
+    private void addBatch(final Table table, final PreparedStatement preparedStatement, final List<Object> row) {
         try {
             for (int i = 0; i < row.size(); ++i) {
                 preparedStatement.setObject(i + 1, row.get(i));
             }
-            preparedStatement.execute();
+            preparedStatement.addBatch();
         } catch (final SQLException exception) {
-            throw new DatabaseObjectException(table, ExaError.messageBuilder("E-TDBJ-1")
-                    .message("Failed to execute insert query: {{statement}}", sql).toString(), exception);
+            throw new DatabaseObjectException(table,
+                    ExaError.messageBuilder("E-TDBJ-35").message("Failed to row to batch").toString(), exception);
         }
     }
 
