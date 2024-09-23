@@ -1,4 +1,4 @@
-# Test Database Builder for Java 3.5.5, released 2024-??-??
+# Test Database Builder for Java 3.6.0, released 2024-??-??
 
 Code name: Fix CVE-2024-7254 in test dependency `com.google.protobuf:protobuf-java:3.25.1`
 
