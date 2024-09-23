@@ -26,8 +26,9 @@ import com.exasol.errorreporting.ExaError;
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
 class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:8.2.0";
+    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:9.0.1";
     @Container
+    @SuppressWarnings("resource") // Will be closed by JUnit rule
     private static final MySQLContainer<?> container = new MySQLContainer<>(MYSQL_DOCKER_IMAGE_REFERENCE)
             .withUsername("root").withPassword("");
 
@@ -79,7 +80,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
     }
 
     @Test
-    void testGrantSchemaPrivilegeToUser() throws InterruptedException {
+    void testGrantSchemaPrivilegeToUser() {
         final Schema schema = this.factory.createSchema("OBJPRIVSCHEMA");
         final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, SELECT, DELETE);
         assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Select_priv"),
@@ -87,7 +88,7 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
     }
 
     @Test
-    void testGrantTablePrivilegeToUser() throws InterruptedException {
+    void testGrantTablePrivilegeToUser() {
         final Schema schema = this.factory.createSchema("TABPRIVSCHEMA");
         final Table table = schema.createTable("TABPRIVTABLE", "COL1", "DATE", "COL2", "INT");
         final User user = this.factory.createUser("TABPRIVUSER").grant(table, SELECT, DELETE);

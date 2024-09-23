@@ -33,8 +33,9 @@ class MySqlSchemaTest extends AbstractSchemaTest {
 
     @Test
     void testCreateTableBuilder() {
-        final MySqlSchema mySqlSchema = new MySqlSchema(this.writerMock, MySQLIdentifier.of("THE_SCHEMA"));
-        final Table table = mySqlSchema.createTableBuilder("TABLE_D").column("A", "DATE").build();
-        assertThat(table.getName(), equalTo("TABLE_D"));
+        try (final MySqlSchema mySqlSchema = new MySqlSchema(this.writerMock, MySQLIdentifier.of("THE_SCHEMA"))) {
+            final Table table = mySqlSchema.createTableBuilder("TABLE_D").column("A", "DATE").build();
+            assertThat(table.getName(), equalTo("TABLE_D"));
+        }
     }
 }

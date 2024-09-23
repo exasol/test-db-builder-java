@@ -39,6 +39,7 @@ import com.exasol.errorreporting.ExaError;
 // [itest->dsn~exasol-object-factory~1]
 class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     @Container
+    @SuppressWarnings("resource") // Will be closed by JUnit rule
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
             .withReuse(true);
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):\n" + //
@@ -359,8 +360,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     private ResultSet getScriptDescription(final ExasolSchema exasolSchema) throws SQLException {
         final String sql = "SELECT SCRIPT_TEXT FROM EXA_ALL_SCRIPTS WHERE SCRIPT_SCHEMA = '" + exasolSchema.getName()
                 + "'";
-        final ResultSet result = getAdminConnection().createStatement().executeQuery(sql);
-        return result;
+        return getAdminConnection().createStatement().executeQuery(sql);
     }
 
     @Test
