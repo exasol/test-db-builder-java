@@ -1,9 +1,12 @@
 package com.exasol.dbbuilder.dialects;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -158,15 +161,38 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     @Override
     public void executeSqlFile(final Path... sqlFiles) {
         for (final Path sqlFile : sqlFiles) {
-            try (final Statement statement = this.connection.createStatement()) {
-                final String sql = Files.readString(sqlFile);
-                statement.execute(sql);
-            } catch (final IOException | SQLException exception) {
-                throw new DatabaseObjectException(
-                        ExaError.messageBuilder("E-TDBJ-14")
-                                .message("Unable to execute SQL from file: {{sqlFile}}", sqlFile).toString(),
-                        exception);
-            }
+            executeSingleSqlFile(sqlFile);
+        }
+    }
+
+    private void executeSingleSqlFile(final Path sqlFile) {
+        final String sqlScriptContent = readFileContent(sqlFile);
+        final List<String> statements = splitIntoStatements(sqlScriptContent);
+        for (final String statement : statements) {
+            executeStatement(sqlFile, statement);
+        }
+    }
+
+    private String readFileContent(final Path sqlFile) {
+        try {
+            return Files.readString(sqlFile);
+        } catch (final IOException exception) {
+            throw new DatabaseObjectException(ExaError.messageBuilder("E-TDBJ-38")
+                    .message("Unable to read SQL from file {{sqlFile}}", sqlFile).toString(), exception);
+        }
+    }
+
+    private List<String> splitIntoStatements(final String sqlScriptContent) {
+        return Arrays.stream(sqlScriptContent.split(";")).collect(toList());
+    }
+
+    private void executeStatement(final Path sqlFile, final String sql) {
+        try (final Statement statement = this.connection.createStatement()) {
+            statement.execute(sql);
+        } catch (final SQLException exception) {
+            throw new DatabaseObjectException(ExaError.messageBuilder("E-TDBJ-14")
+                    .message("Unable to execute SQL statement {{statement}} from file {{sqlFile}}", sql, sqlFile)
+                    .toString(), exception);
         }
     }
 

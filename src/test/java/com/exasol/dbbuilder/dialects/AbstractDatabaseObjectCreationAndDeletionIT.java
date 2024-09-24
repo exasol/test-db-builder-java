@@ -144,8 +144,7 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
          */
         protected abstract String getCheckCommand(final DatabaseObject object);
 
-        private boolean matchResult(final DatabaseObject object, final PreparedStatement objectExistenceStatement)
-                throws SQLException {
+        private boolean matchResult(final PreparedStatement objectExistenceStatement) throws SQLException {
             try (final ResultSet resultSet = objectExistenceStatement.executeQuery()) {
                 return resultSet.next();
             }
@@ -156,9 +155,11 @@ public abstract class AbstractDatabaseObjectCreationAndDeletionIT {
             try (final PreparedStatement objectExistenceStatement = this.connection
                     .prepareStatement(getCheckCommand(object))) {
                 objectExistenceStatement.setString(1, object.getName());
-                return matchResult(object, objectExistenceStatement);
+                return matchResult(objectExistenceStatement);
             } catch (final SQLException exception) {
-                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-19").message("Unable to determine existence of object: {{object}}", object.getName()).toString(), exception);
+                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-19")
+                        .message("Unable to determine existence of object: {{object}}", object.getName()).toString(),
+                        exception);
             }
         }
 
