@@ -33,7 +33,7 @@ public class MySqlSchema extends AbstractSchema {
     }
 
     @Override
-    public MySqlTable.MySqlTableBuilder createTableBuilder(final String name) {
+    public MySqlTable.Builder createTableBuilder(final String name) {
         return MySqlTable.builder(getWriter(), this, getIdentifier(name));
     }
 }
