@@ -4,16 +4,15 @@ import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.*;
 
 /**
- * A MySql table that allows specifying a charset.
+ * A MySql table that allows specifying a character set.
  */
 public class MySqlTable extends Table {
-
     private final String charset;
 
     /**
      * Create a new MySql table based on a given builder.
      *
-     * @param builder the builder from which to copy the values
+     * @param builder builder from which to copy the values
      */
     protected MySqlTable(final Builder builder) {
         super(builder);
@@ -21,7 +20,7 @@ public class MySqlTable extends Table {
     }
 
     /**
-     * Get the table's charset.
+     * Get the table's character set.
      * 
      * @return charset or {@code null} for the default charset
      */
@@ -46,7 +45,6 @@ public class MySqlTable extends Table {
      * Builder for {@link MySqlTable}s.
      */
     public static class Builder extends Table.Builder {
-
         private String charset;
 
         private Builder(final DatabaseObjectWriter writer, final Schema parentSchema, final Identifier tableName) {
@@ -60,7 +58,11 @@ public class MySqlTable extends Table {
         }
 
         /**
-         * Set a custom charset for the new table. Defaults to UTF-8.
+         * Set a custom character set for the new table. Defaults to UTF-8.
+         * <p>
+         * This character set is then used for the whole table down to the columns.
+         * Additionally the standard collation rules for this dataset are applied.
+         * </p>
          * 
          * @param charset custom charset, e.g. {@code ascii}
          * @return {@code this} for fluent programming
