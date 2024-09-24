@@ -86,7 +86,7 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     public void write(final Table table, final Stream<List<Object>> rows) {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
         final String sql = "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")";
-        try (AutoCommit autoCommit = AutoCommit.tryDeactivate(connection);
+        try (final AutoCommit autoCommit = AutoCommit.tryDeactivate(connection);
                 final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             rows.forEach(row -> addBatch(table, preparedStatement, row));
             preparedStatement.executeBatch();
