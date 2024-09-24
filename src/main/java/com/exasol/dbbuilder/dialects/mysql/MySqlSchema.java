@@ -31,4 +31,9 @@ public class MySqlSchema extends AbstractSchema {
     protected Identifier getIdentifier(final String name) {
         return MySQLIdentifier.of(name);
     }
+
+    @Override
+    public MySqlTable.Builder createTableBuilder(final String name) {
+        return MySqlTable.builder(getWriter(), this, getIdentifier(name));
+    }
 }

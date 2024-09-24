@@ -9,12 +9,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.*;
 
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -81,19 +83,21 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
 
     @Test
     void testGrantSchemaPrivilegeToUser() {
-        final Schema schema = this.factory.createSchema("OBJPRIVSCHEMA");
-        final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, SELECT, DELETE);
-        assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Select_priv"),
-                () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
+        try (final Schema schema = this.factory.createSchema("OBJPRIVSCHEMA")) {
+            final User user = this.factory.createUser("OBJPRIVUSER").grant(schema, SELECT, DELETE);
+            assertAll(() -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Select_priv"),
+                    () -> assertUserHasSchemaPrivilege(user.getName(), schema.getName(), "Delete_priv"));
+        }
     }
 
     @Test
     void testGrantTablePrivilegeToUser() {
-        final Schema schema = this.factory.createSchema("TABPRIVSCHEMA");
-        final Table table = schema.createTable("TABPRIVTABLE", "COL1", "DATE", "COL2", "INT");
-        final User user = this.factory.createUser("TABPRIVUSER").grant(table, SELECT, DELETE);
-        assertAll(() -> assertUserHasTablePrivilege(user.getName(), table.getName(), "Select"),
-                () -> assertUserHasTablePrivilege(user.getName(), table.getName(), "Delete"));
+        try (final Schema schema = this.factory.createSchema("TABPRIVSCHEMA")) {
+            final Table table = schema.createTable("TABPRIVTABLE", "COL1", "DATE", "COL2", "INT");
+            final User user = this.factory.createUser("TABPRIVUSER").grant(table, SELECT, DELETE);
+            assertAll(() -> assertUserHasTablePrivilege(user.getName(), table.getName(), "Select"),
+                    () -> assertUserHasTablePrivilege(user.getName(), table.getName(), "Delete"));
+        }
     }
 
     private void assertUserHasTablePrivilege(final String username, final String objectName,
@@ -114,17 +118,76 @@ class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCre
 
     @Test
     void testInsertIntoTable() {
-        final Schema schema = this.factory.createSchema("INSERTSCHEMA");
-        final Table table = schema.createTable("INSERTTABLE", "ID", "INT", "NAME", "VARCHAR(10)");
-        table.insert(1, "FOO").insert(2, "BAR");
-        try {
-            final ResultSet result = this.adminConnection.createStatement()
-                    .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
-            assertThat(result, table().row(1, "FOO").row(2, "BAR").matches());
-        } catch (final SQLException exception) {
-            throw new AssertionError(ExaError.messageBuilder("E-TDBJ-25")
-                    .message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName())
-                    .toString(), exception);
+        try (final Schema schema = this.factory.createSchema("INSERTSCHEMA")) {
+            final Table table = schema.createTable("INSERTTABLE", "ID", "INT", "NAME", "VARCHAR(10)");
+            table.insert(1, "FOO").insert(2, "BAR");
+            try {
+                final ResultSet result = this.adminConnection.createStatement()
+                        .executeQuery("SELECT ID, NAME FROM " + table.getFullyQualifiedName() + "ORDER BY ID ASC");
+                assertThat(result, table().row(1, "FOO").row(2, "BAR").matches());
+            } catch (final SQLException exception) {
+                throw new AssertionError(ExaError.messageBuilder("E-TDBJ-25")
+                        .message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName())
+                        .toString(), exception);
+            }
+        }
+    }
+
+    @Test
+    void testCreateTableWithDefaultCharsetUsesUtf8() {
+        try (final MySqlSchema schema = (MySqlSchema) this.factory.createSchema("CHARSET_SCHEMA_DEFAULT")) {
+            final MySqlTable table = schema.createTableBuilder("TABLE_WITH_CHARSET").column("ID", "INT")
+                    .column("NAME", "VARCHAR(10)").build();
+            assertAll(
+                    () -> assertThat("column charset",
+                            getColumnCharset("def", schema.getName(), table.getName(), "NAME"), equalTo("utf8mb4")),
+                    () -> assertThat("table collation", getTableCollation("def", schema.getName(), table.getName()),
+                            equalTo("utf8mb4_0900_ai_ci")));
+        }
+    }
+
+    @Test
+    void testCreateTableWithCharset() {
+        try (final MySqlSchema schema = (MySqlSchema) this.factory.createSchema("CHARSET_SCHEMA_ASCII")) {
+            final MySqlTable table = schema.createTableBuilder("TABLE_WITH_CHARSET").charset("ASCII")
+                    .column("ID", "INT").column("NAME", "VARCHAR(10)").build();
+            assertAll(
+                    () -> assertThat("column charset",
+                            getColumnCharset("def", schema.getName(), table.getName(), "NAME"), equalTo("ascii")),
+                    () -> assertThat("table collation", getTableCollation("def", schema.getName(), table.getName()),
+                            equalTo("ascii_general_ci")));
+        }
+    }
+
+    private String getColumnCharset(final String catalog, final String schema, final String table,
+            final String column) {
+        final String query = "select CHARACTER_SET_NAME from information_schema.COLUMNS "
+                + "where TABLE_CATALOG=? AND TABLE_SCHEMA=? AND TABLE_NAME=? AND COLUMN_NAME=?";
+        try (Connection con = container.createConnection(""); PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, catalog);
+            stmt.setString(2, schema);
+            stmt.setString(3, table);
+            stmt.setString(4, column);
+            final ResultSet rs = stmt.executeQuery();
+            assertTrue(rs.next());
+            return rs.getString("CHARACTER_SET_NAME");
+        } catch (NoDriverFoundException | SQLException exception) {
+            throw new IllegalStateException("Query '" + query + "' failed: " + exception.getMessage(), exception);
+        }
+    }
+
+    private String getTableCollation(final String catalog, final String schema, final String table) {
+        final String query = "select TABLE_COLLATION from information_schema.TABLES "
+                + "where TABLE_CATALOG=? AND TABLE_SCHEMA=? AND TABLE_NAME=?";
+        try (Connection con = container.createConnection(""); PreparedStatement stmt = con.prepareStatement(query)) {
+            stmt.setString(1, catalog);
+            stmt.setString(2, schema);
+            stmt.setString(3, table);
+            final ResultSet rs = stmt.executeQuery();
+            assertTrue(rs.next());
+            return rs.getString("TABLE_COLLATION");
+        } catch (NoDriverFoundException | SQLException exception) {
+            throw new IllegalStateException("Query '" + query + "' failed: " + exception.getMessage(), exception);
         }
     }
 

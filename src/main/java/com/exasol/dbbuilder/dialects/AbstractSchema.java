@@ -63,7 +63,7 @@ public abstract class AbstractSchema extends AbstractDatabaseObject implements S
     public Table createTable(final String name, final List<String> columnNames, final List<String> columnTypes) {
         verifyNotDeleted();
         if (columnNames.size() == columnTypes.size()) {
-            final Table.Builder builder = Table.builder(getWriter(), this, getIdentifier(name));
+            final Table.Builder builder = createTableBuilder(name);
             passColumnsToTableBuilder(columnNames, columnTypes, builder);
             final Table table = builder.build();
             this.tables.add(table);
