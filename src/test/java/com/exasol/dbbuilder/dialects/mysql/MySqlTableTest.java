@@ -13,7 +13,6 @@ import com.exasol.dbbuilder.dialects.Schema;
 
 @ExtendWith(MockitoExtension.class)
 class MySqlTableTest {
-
     @Mock
     DatabaseObjectWriter writerMock;
     @Mock
