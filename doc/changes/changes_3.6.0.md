@@ -6,7 +6,7 @@ Code name: Fix CVE-2024-7254 in test dependency `com.google.protobuf:protobuf-ja
 
 This release fixes CVE-2024-7254 in test dependency `com.google.protobuf:protobuf-java:3.25.1`.
 
-The release also speeds up inserting rows into a table by using batch insert.
+The release also speeds up inserting rows into a table by using batch insert and allows specifying a charset when creating MySQL tables, see the [user guide](../user_guide/user_guide.md#mysql-specific-database-objects) for details.
 
 ## Security
 
@@ -15,6 +15,7 @@ The release also speeds up inserting rows into a table by using batch insert.
 ## Features
 
 * #137: Updated `AbstractImmediateDatabaseObjectWriter#write()` to use batching for inserting rows
+* #134: Allowed specifying charset for MySQL tables
 
 ## Dependency Updates
 

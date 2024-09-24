@@ -62,7 +62,7 @@ final Table table = schema.createTable("DAYS","DAY_NAME","VARCHAR(9), "SHORT_NAM
 In case you want to create more complex tables, you can also use a builder.
 
 ```java
-final Table table=schema.createTableBuilder("DAYS")
+final Table table = schema.createTableBuilder("DAYS")
         .column("DAY_NAME","VARCHAR(9)"
         .column("SHORT_NAME","VARCHAR(3)"
         .column("DAY_IN_WEEK","DECIMAL(1,0)"
@@ -390,6 +390,17 @@ Given that a script of that name exists, you can then [execute the script](#exec
 
 ## MySQL-Specific Database Objects
 
-So far there are no MySQL Specific Database Objects that are not described in [Dialect-Agnostic Database Objects](#dialect-agnostic-database-objects) section.
+In addition to [Dialect-Agnostic Database Objects](#dialect-agnostic-database-objects), MySQL allows specifying a charset when creating a new table using the table builder of a `MySqlSchema`. When no charset is specified, MySql uses UTF8 as default.
+
+```java
+final MySqlSchema schema = (MySqlSchema) factory.createSchema("TEST"));
+final MySqlTable table = schema.createTableBuilder("ASCII_DAYS")
+        .charset("ASCII")
+        .column("DAY_NAME","VARCHAR(9)"
+        .column("SHORT_NAME","VARCHAR(3)"
+        .column("DAY_IN_WEEK","DECIMAL(1,0)"
+        // ...
+        .build()
+```
 
 Please keep in mind that Schema object represents a database in MySQL as a schema is a [synonym](https://dev.mysql.com/doc/refman/8.0/en/create-database.html) for a database in MySQL syntax.

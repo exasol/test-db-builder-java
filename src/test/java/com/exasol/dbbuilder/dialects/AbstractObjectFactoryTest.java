@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 public abstract class AbstractObjectFactoryTest {
 
-    abstract protected AbstractImmediateDatabaseObjectWriter getWriterMock();
+    protected abstract AbstractImmediateDatabaseObjectWriter getWriterMock();
 
-    abstract protected DatabaseObjectFactory testee();
+    protected abstract DatabaseObjectFactory testee();
 
     @Test
     void createSchemaWritesObject() {
