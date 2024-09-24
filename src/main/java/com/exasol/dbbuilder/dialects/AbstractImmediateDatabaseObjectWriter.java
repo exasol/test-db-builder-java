@@ -82,18 +82,14 @@ public abstract class AbstractImmediateDatabaseObjectWriter implements DatabaseO
     protected abstract String getQuotedColumnName(String columnName);
 
     @Override
+    @SuppressWarnings("try") // autoCommit never referenced in try block by intention
     public void write(final Table table, final Stream<List<Object>> rows) {
         final String valuePlaceholders = "?" + ", ?".repeat(table.getColumnCount() - 1);
         final String sql = "INSERT INTO " + table.getFullyQualifiedName() + " VALUES(" + valuePlaceholders + ")";
-        try (final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
-            final boolean autoCommitOriginalState = this.connection.getAutoCommit();
-            this.connection.setAutoCommit(false);
+        try (final AutoCommit autoCommit = AutoCommit.tryDeactivate(connection);
+                final PreparedStatement preparedStatement = this.connection.prepareStatement(sql)) {
             rows.forEach(row -> addBatch(table, preparedStatement, row));
             preparedStatement.executeBatch();
-            if (autoCommitOriginalState) {
-                this.connection.commit();
-                this.connection.setAutoCommit(true);
-            }
         } catch (final SQLException exception) {
             throw new DatabaseObjectException(table,
                     ExaError.messageBuilder("E-TDBJ-2")
