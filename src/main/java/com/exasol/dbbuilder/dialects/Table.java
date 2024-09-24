@@ -30,7 +30,7 @@ public class Table extends AbstractSchemaChild {
      * @param writer    database object writer
      * @param schema    parent schema
      * @param tableName name of the database table
-     * @return new {@link Table} instance
+     * @return new {@link Builder} instance
      */
     // [impl->dsn~creating-tables~1]
     public static Builder builder(final DatabaseObjectWriter writer, final Schema schema, final Identifier tableName) {
