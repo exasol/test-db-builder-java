@@ -6,7 +6,7 @@ Code name: Fix CVE-2024-7254 in test dependency `com.google.protobuf:protobuf-ja
 
 This release fixes CVE-2024-7254 in test dependency `com.google.protobuf:protobuf-java:3.25.1`.
 
-The release also speeds up inserting rows into a table by using batch insert, allows specifying a charset when creating MySQL tables, see the [user guide](../user_guide/user_guide.md#mysql-specific-database-objects) for details and supports databases that don't support transactions. TDBJ will then insert rows without a transaction.
+The release also speeds up inserting rows into a table by using batch insert, allows specifying a charset when creating MySQL tables, see the [user guide](../user_guide/user_guide.md#mysql-specific-database-objects) for details and supports databases that don't support transactions. TDBJ will then insert rows without a transaction. Additionally, method `factory.executeSqlFile()` now supports running scripts with multiple statements, separated with `;`.
 
 ## Security
 
@@ -17,6 +17,7 @@ The release also speeds up inserting rows into a table by using batch insert, al
 * #137: Updated `AbstractImmediateDatabaseObjectWriter#write()` to use batching for inserting rows
 * #134: Allowed specifying charset for MySQL tables
 * #136: Added support for databases without transaction support
+* #135: Added support for running scripts with multiple statements
 
 ## Dependency Updates
 

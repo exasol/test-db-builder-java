@@ -9,10 +9,8 @@ import static com.exasol.matcher.ResultSetStructureMatcher.table;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -476,6 +474,25 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                     .message("Unable to validate contents of table {{table}}", table.getFullyQualifiedName())
                     .toString(), exception);
         }
+    }
+
+    @Test
+    void testRunSqlScriptFails(@TempDir final Path tempDir) throws IOException {
+        final Path script = tempDir.resolve("script.sql");
+        Files.writeString(script, "invalid");
+        final DatabaseObjectException exception = assertThrows(DatabaseObjectException.class,
+                () -> factory.executeSqlFile(script));
+        assertThat(exception.getMessage(),
+                startsWith("E-TDBJ-14: Unable to execute SQL statement 'invalid' from file"));
+    }
+
+    @Test
+    void testRunSqlScriptWithMultipleStatements(@TempDir final Path tempDir) throws IOException {
+        final Path createScript = tempDir.resolve("create-script.sql");
+        final Path dropScript = tempDir.resolve("drop-script.sql");
+        Files.writeString(createScript, "CREATE SCHEMA script_schema_1; CREATE SCHEMA script_schema_2;");
+        Files.writeString(dropScript, "DROP SCHEMA script_schema_1; DROP SCHEMA script_schema_2;");
+        assertDoesNotThrow(() -> factory.executeSqlFile(createScript, dropScript));
     }
 
     @Override

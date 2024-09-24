@@ -114,6 +114,8 @@ You can also run multiple SQL files in a row. They are executed in the order the
 factory.executeSqlFile(file1, file2, file3);
 ```
 
+SQL files may contain multiple statements separated with `;`.
+
 ## Populating Tables
 
 Populating a table is really simple:

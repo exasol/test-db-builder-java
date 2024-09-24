@@ -2,6 +2,7 @@ package com.exasol.dbbuilder.dialects.exasol;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -60,8 +61,10 @@ class AttachToExistingObjectIT {
 
     // [itest->dsn~creating-objects-through-sql-files~1]
     @Test
-    @SuppressWarnings("java:S5778") // creating lists is not an Exception throwing method
     void testAttachToScriptThrowsExceptionOnNonExistingFile() {
-        assertThrows(DatabaseObjectException.class, () -> factory.executeSqlFile(Path.of("non/existent/file.sql")));
+        final Path path = Path.of("non/existent/file.sql");
+        final DatabaseObjectException exception = assertThrows(DatabaseObjectException.class,
+                () -> factory.executeSqlFile(path));
+        assertThat(exception.getMessage(), startsWith("E-TDBJ-38: Unable to read SQL from file"));
     }
 }

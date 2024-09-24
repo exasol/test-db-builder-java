@@ -54,9 +54,10 @@ public interface DatabaseObjectFactory {
     public User createLoginUser(final String name, final String password);
 
     /**
-     * Execute the contents of an SQL script file.
+     * Execute the contents of one or more SQL script files. Each file may contain multiple SQL statements, separated
+     * with {@code ;}.
      *
-     * @param sqlFiles path to the script file
+     * @param sqlFiles paths to the script files
      */
     // [impl->dsn~creating-objects-through-sql-files~1]
     public void executeSqlFile(final Path... sqlFiles);
