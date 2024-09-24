@@ -52,16 +52,16 @@ public class MySqlTable extends Table {
         }
 
         @Override
+        // Overriding this so that returned builder has the right type and users don't need to cast.
         public Builder column(final String columnName, final String columnType) {
-            super.column(columnName, columnType);
-            return this;
+            return (Builder) super.column(columnName, columnType);
         }
 
         /**
          * Set a custom character set for the new table. Defaults to UTF-8.
          * <p>
-         * This character set is then used for the whole table down to the columns.
-         * Additionally the standard collation rules for this dataset are applied.
+         * This character set is then used for the whole table down to the columns. Additionally the standard collation
+         * rules for this dataset are applied.
          * </p>
          * 
          * @param charset custom charset, e.g. {@code ascii}
