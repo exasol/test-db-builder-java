@@ -29,7 +29,7 @@
 | [JUnit Jupiter Engine][23]                      | [Eclipse Public License v2.0][14]                                      |
 | [mockito-junit-jupiter][24]                     | [MIT][25]                                                              |
 | [EqualsVerifier \| release normal jar][26]      | [Apache License, Version 2.0][27]                                      |
-| [SLF4J JDK14 Provider][28]                      | [MIT License][29]                                                      |
+| [SLF4J JDK14 Provider][28]                      | [MIT][29]                                                              |
 
 ## Plugin Dependencies
 
@@ -61,7 +61,7 @@
 [2]: https://github.com/exasol/error-reporting-java/
 [3]: https://github.com/exasol/error-reporting-java/blob/main/LICENSE
 [4]: http://www.exasol.com/
-[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/24.1.2/exasol-jdbc-24.1.2-license.txt
+[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/25.2.2/exasol-jdbc-25.2.2-license.txt
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [7]: https://developers.google.com/protocol-buffers/protobuf-java/
 [8]: https://opensource.org/licenses/BSD-3-Clause
@@ -85,7 +85,7 @@
 [26]: https://www.jqno.nl/equalsverifier
 [27]: https://www.apache.org/licenses/LICENSE-2.0.txt
 [28]: http://www.slf4j.org
-[29]: http://www.opensource.org/licenses/mit-license.php
+[29]: https://opensource.org/license/mit
 [30]: http://sonarsource.github.io/sonar-scanner-maven/
 [31]: http://www.gnu.org/licenses/lgpl.txt
 [32]: https://maven.apache.org/plugins/maven-toolchains-plugin/
