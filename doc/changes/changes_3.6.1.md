@@ -22,6 +22,9 @@ This release updates the dependencies of this project and suppresses the OSSInde
 * Updated `com.oracle.database.jdbc:ojdbc11:23.5.0.24.07` to `23.7.0.25.01`
 * Updated `nl.jqno.equalsverifier:equalsverifier:3.16.2` to `3.19.4`
 * Updated `org.junit-pioneer:junit-pioneer:2.2.0` to `2.3.0`
+* Updated `org.junit.jupiter:junit-jupiter-api:5.11.0` to `5.12.0`
+* Removed `org.junit.jupiter:junit-jupiter-engine:5.11.0`
+* Added `org.junit.jupiter:junit-jupiter-params:5.12.0`
 * Updated `org.mockito:mockito-junit-jupiter:5.13.0` to `5.17.0`
 * Updated `org.postgresql:postgresql:42.7.4` to `42.7.5`
 * Updated `org.slf4j:slf4j-jdk14:2.0.16` to `2.0.17`
@@ -42,7 +45,7 @@ This release updates the dependencies of this project and suppresses the OSSInde
 * Updated `org.apache.maven.plugins:maven-deploy-plugin:3.1.2` to `3.1.4`
 * Updated `org.apache.maven.plugins:maven-failsafe-plugin:3.2.5` to `3.5.2`
 * Updated `org.apache.maven.plugins:maven-gpg-plugin:3.2.4` to `3.2.7`
-* Updated `org.apache.maven.plugins:maven-install-plugin:3.1.2` to `3.1.4`
+* Updated `org.apache.maven.plugins:maven-install-plugin:3.1.1` to `3.1.4`
 * Updated `org.apache.maven.plugins:maven-javadoc-plugin:3.7.0` to `3.11.2`
 * Updated `org.apache.maven.plugins:maven-site-plugin:3.12.1` to `3.21.0`
 * Updated `org.apache.maven.plugins:maven-surefire-plugin:3.2.5` to `3.5.2`
