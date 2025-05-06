@@ -45,7 +45,7 @@ This release updates the dependencies of this project and suppresses the OSSInde
 * Updated `org.apache.maven.plugins:maven-deploy-plugin:3.1.2` to `3.1.4`
 * Updated `org.apache.maven.plugins:maven-failsafe-plugin:3.2.5` to `3.5.2`
 * Updated `org.apache.maven.plugins:maven-gpg-plugin:3.2.4` to `3.2.7`
-* Updated `org.apache.maven.plugins:maven-install-plugin:3.1.1` to `3.1.4`
+* Updated `org.apache.maven.plugins:maven-install-plugin:3.1.2` to `3.1.4`
 * Updated `org.apache.maven.plugins:maven-javadoc-plugin:3.7.0` to `3.11.2`
 * Updated `org.apache.maven.plugins:maven-site-plugin:3.12.1` to `3.21.0`
 * Updated `org.apache.maven.plugins:maven-surefire-plugin:3.2.5` to `3.5.2`
