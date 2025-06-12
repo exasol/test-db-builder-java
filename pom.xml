@@ -115,8 +115,8 @@
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>4.0.1</version>
-            <!-- Version 4 and later require Java 17 -->
+            <!-- Pinned to 3.x, since version 4 and later require Java 17 -->
+            <version>3.19.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
