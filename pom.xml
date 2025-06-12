@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>test-db-builder-java</artifactId>
-    <version>3.6.1</version>
+    <version>3.6.2</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
     <properties>
-        <test.containers.version>1.21.0</test.containers.version>
+        <test.containers.version>1.21.1</test.containers.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,13 +25,13 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.5</version>
+            <version>42.7.7</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc11</artifactId>
-            <version>23.7.0.25.01</version>
+            <version>23.8.0.25.04</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-testcontainers</artifactId>
-            <version>7.1.5</version>
+            <version>7.1.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -97,25 +97,26 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.12.0</version>
+            <version>5.13.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.12.0</version>
+            <version>5.13.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.17.0</version>
+            <version>5.18.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
-            <version>3.19.4</version><!-- Version 4 and later require Java 17 -->
+            <!-- Pinned to 3.x, since version 4 and later require Java 17 -->
+            <version>3.19.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -152,7 +153,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.0.1</version>
+                <version>5.2.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -186,7 +187,7 @@
     <parent>
         <artifactId>test-db-builder-java-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>3.6.1</version>
+        <version>3.6.2</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>

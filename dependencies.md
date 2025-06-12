@@ -54,12 +54,12 @@
 | [Apache Maven GPG Plugin][50]                           | [Apache-2.0][25]                            |
 | [Apache Maven Source Plugin][51]                        | [Apache License, Version 2.0][25]           |
 | [Apache Maven Javadoc Plugin][52]                       | [Apache-2.0][25]                            |
-| [Nexus Staging Maven Plugin][53]                        | [Eclipse Public License][54]                |
-| [Maven Failsafe Plugin][55]                             | [Apache-2.0][25]                            |
-| [JaCoCo :: Maven Plugin][56]                            | [EPL-2.0][57]                               |
-| [Quality Summarizer Maven Plugin][58]                   | [MIT License][59]                           |
-| [error-code-crawler-maven-plugin][60]                   | [MIT License][61]                           |
-| [Git Commit Id Maven Plugin][62]                        | [GNU Lesser General Public License 3.0][63] |
+| [Central Publishing Maven Plugin][53]                   | [The Apache License, Version 2.0][25]       |
+| [Maven Failsafe Plugin][54]                             | [Apache-2.0][25]                            |
+| [JaCoCo :: Maven Plugin][55]                            | [EPL-2.0][56]                               |
+| [Quality Summarizer Maven Plugin][57]                   | [MIT License][58]                           |
+| [error-code-crawler-maven-plugin][59]                   | [MIT License][60]                           |
+| [Git Commit Id Maven Plugin][61]                        | [GNU Lesser General Public License 3.0][62] |
 
 [0]: https://github.com/exasol/db-fundamentals-java/
 [1]: https://github.com/exasol/db-fundamentals-java/blob/main/LICENSE
@@ -93,7 +93,7 @@
 [29]: https://maven.apache.org/plugins/maven-install-plugin/
 [30]: https://maven.apache.org/plugins/maven-resources-plugin/
 [31]: https://maven.apache.org/plugins/maven-site-plugin/
-[32]: http://docs.sonarqube.org/display/PLUG/Plugin+Library/sonar-maven-plugin
+[32]: http://docs.sonarqube.org/display/PLUG/Plugin+Library/sonar-scanner-maven/sonar-maven-plugin
 [33]: http://www.gnu.org/licenses/lgpl.txt
 [34]: https://maven.apache.org/plugins/maven-toolchains-plugin/
 [35]: https://maven.apache.org/plugins/maven-compiler-plugin/
@@ -114,14 +114,13 @@
 [50]: https://maven.apache.org/plugins/maven-gpg-plugin/
 [51]: https://maven.apache.org/plugins/maven-source-plugin/
 [52]: https://maven.apache.org/plugins/maven-javadoc-plugin/
-[53]: http://www.sonatype.com/public-parent/nexus-maven-plugins/nexus-staging/nexus-staging-maven-plugin/
-[54]: http://www.eclipse.org/legal/epl-v10.html
-[55]: https://maven.apache.org/surefire/maven-failsafe-plugin/
-[56]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
-[57]: https://www.eclipse.org/legal/epl-2.0/
-[58]: https://github.com/exasol/quality-summarizer-maven-plugin/
-[59]: https://github.com/exasol/quality-summarizer-maven-plugin/blob/main/LICENSE
-[60]: https://github.com/exasol/error-code-crawler-maven-plugin/
-[61]: https://github.com/exasol/error-code-crawler-maven-plugin/blob/main/LICENSE
-[62]: https://github.com/git-commit-id/git-commit-id-maven-plugin
-[63]: http://www.gnu.org/licenses/lgpl-3.0.txt
+[53]: https://central.sonatype.org
+[54]: https://maven.apache.org/surefire/maven-failsafe-plugin/
+[55]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
+[56]: https://www.eclipse.org/legal/epl-2.0/
+[57]: https://github.com/exasol/quality-summarizer-maven-plugin/
+[58]: https://github.com/exasol/quality-summarizer-maven-plugin/blob/main/LICENSE
+[59]: https://github.com/exasol/error-code-crawler-maven-plugin/
+[60]: https://github.com/exasol/error-code-crawler-maven-plugin/blob/main/LICENSE
+[61]: https://github.com/git-commit-id/git-commit-id-maven-plugin
+[62]: http://www.gnu.org/licenses/lgpl-3.0.txt
