@@ -24,7 +24,6 @@
 | [Testcontainers :: JDBC :: Oracle XE][15]       | [MIT][16]                                                              |
 | [Matcher for SQL Result Sets][17]               | [MIT License][18]                                                      |
 | [Hamcrest][19]                                  | [BSD-3-Clause][20]                                                     |
-| [JUnit Jupiter API][21]                         | [Eclipse Public License v2.0][12]                                      |
 | [JUnit Jupiter Params][21]                      | [Eclipse Public License v2.0][12]                                      |
 | [mockito-junit-jupiter][22]                     | [MIT][23]                                                              |
 | [EqualsVerifier \| release normal jar][24]      | [Apache License, Version 2.0][25]                                      |
@@ -42,7 +41,7 @@
 | [Apache Maven Toolchains Plugin][34]                    | [Apache-2.0][25]                            |
 | [Apache Maven Compiler Plugin][35]                      | [Apache-2.0][25]                            |
 | [Apache Maven Enforcer Plugin][36]                      | [Apache-2.0][25]                            |
-| [Maven Flatten Plugin][37]                              | [Apache Software Licenese][25]              |
+| [Maven Flatten Plugin][37]                              | [Apache Software License][25]               |
 | [OpenFastTrace Maven Plugin][38]                        | [GNU General Public License v3.0][39]       |
 | [Project Keeper Maven plugin][40]                       | [The MIT License][41]                       |
 | [org.sonatype.ossindex.maven:ossindex-maven-plugin][42] | [ASL2][43]                                  |
@@ -65,8 +64,8 @@
 [1]: https://github.com/exasol/db-fundamentals-java/blob/main/LICENSE
 [2]: https://github.com/exasol/error-reporting-java/
 [3]: https://github.com/exasol/error-reporting-java/blob/main/LICENSE
-[4]: http://www.exasol.com/
-[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/25.2.3/exasol-jdbc-25.2.3-license.txt
+[4]: https://www.exasol.com/
+[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/25.2.5/exasol-jdbc-25.2.5-license.txt
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [7]: https://jdbc.postgresql.org
 [8]: https://jdbc.postgresql.org/license/
@@ -82,7 +81,7 @@
 [18]: https://github.com/exasol/hamcrest-resultset-matcher/blob/main/LICENSE
 [19]: http://hamcrest.org/JavaHamcrest/
 [20]: https://raw.githubusercontent.com/hamcrest/JavaHamcrest/master/LICENSE
-[21]: https://junit.org/junit5/
+[21]: https://junit.org/
 [22]: https://github.com/mockito/mockito
 [23]: https://opensource.org/licenses/MIT
 [24]: https://www.jqno.nl/equalsverifier
