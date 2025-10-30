@@ -1,12 +1,10 @@
-# Test Database Builder for Java 3.6.4, released 2025-??-??
+# Test Database Builder for Java 3.6.4, released 2025-10-30
 
-Code name:
+Code name: Upgrade Project Keeper
 
 ## Summary
 
-## Features
-
-* ISSUE_NUMBER: description
+This release upgrades project keeper and dependencies.
 
 ## Dependency Updates
 
