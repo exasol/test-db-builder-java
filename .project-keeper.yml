@@ -10,8 +10,8 @@ build:
     - name: ci-build.yml
       stepCustomizations:
         - action: INSERT_AFTER
-          job: build
-          stepId: setup-java
+          job: build-and-test
+          stepId: enable-testcontainer-reuse
           content:
             name: Fix VM Crash in UDFs
             id: fix-vm-crash

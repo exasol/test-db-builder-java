@@ -72,6 +72,11 @@ jobs:
         id: enable-testcontainer-reuse,
         run: echo 'testcontainers.reuse.enable=true' > "$HOME/.testcontainers.properties"
       }
+      - {
+        name: Fix VM Crash in UDFs,
+        id: fix-vm-crash,
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      }
       - name: Run tests and build with Maven
         id: build-pk-verify
         run: |
@@ -196,11 +201,6 @@ jobs:
             11
             17
           cache: maven
-      - {
-        name: Fix VM Crash in UDFs,
-        id: fix-vm-crash,
-        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-      }
       - name: Check if release is needed
         id: check-release
         if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') }}
