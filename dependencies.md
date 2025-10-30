@@ -69,7 +69,7 @@
 [5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/25.2.5/exasol-jdbc-25.2.5-license.txt
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [7]: https://jdbc.postgresql.org
-[8]: https://jdbc.postgresql.org/license/
+[8]: https://jdbc.postgresql.org/about/license.html
 [9]: https://www.oracle.com/database/technologies/maven-central-guide.html
 [10]: https://www.oracle.com/downloads/licenses/oracle-free-license.html
 [11]: https://junit-pioneer.org/
