@@ -4,16 +4,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.hamcrest.Matcher;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
 class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:16.4-bullseye";
+    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:18.0";
     @Container
-    private static final PostgreSQLContainer<? extends PostgreSQLContainer<?>> container = new PostgreSQLContainer<>(
+    private static final PostgreSQLContainer container = new PostgreSQLContainer(
             POSTGRES_DOCKER_IMAGE_REFERENCE);
 
     @Override

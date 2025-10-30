@@ -5,5 +5,14 @@ sources:
       - maven_central
       - integration_tests
 linkReplacements:
-  - https://www.mojohaus.org/flatten-maven-plugin/flatten-maven-plugin|https://www.mojohaus.org/flatten-maven-plugin
-  - https://jdbc.postgresql.org/about/license.html|https://jdbc.postgresql.org/license/
+build:
+  workflows:
+    - name: ci-build.yml
+      stepCustomizations:
+        - action: INSERT_AFTER
+          job: build-and-test
+          stepId: enable-testcontainer-reuse
+          content:
+            name: Fix VM Crash in UDFs
+            id: fix-vm-crash
+            run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
