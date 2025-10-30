@@ -17,9 +17,9 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException;
-import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mysql.MySQLContainer;
 
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
@@ -28,10 +28,10 @@ import com.exasol.errorreporting.ExaError;
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
 class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:9.0.1";
+    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:9.5.0";
     @Container
     @SuppressWarnings("resource") // Will be closed by JUnit rule
-    private static final MySQLContainer<?> container = new MySQLContainer<>(MYSQL_DOCKER_IMAGE_REFERENCE)
+    private static final MySQLContainer container = new MySQLContainer(MYSQL_DOCKER_IMAGE_REFERENCE)
             .withUsername("root").withPassword("");
 
     @Override

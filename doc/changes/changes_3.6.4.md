@@ -15,7 +15,7 @@ This release upgrades project keeper and dependencies.
 * Updated `com.exasol:hamcrest-resultset-matcher:1.7.1` to `1.7.2`
 * Updated `com.mysql:mysql-connector-j:9.3.0` to `9.5.0`
 * Updated `com.oracle.database.jdbc:ojdbc11:23.8.0.25.04` to `23.26.0.0.0`
-* Removed `org.junit.jupiter:junit-jupiter-api:5.13.1`
+* Updated `org.junit.jupiter:junit-jupiter-api:5.13.1` to `5.13.4`
 * Updated `org.junit.jupiter:junit-jupiter-params:5.13.1` to `5.13.4`
 * Updated `org.mockito:mockito-junit-jupiter:5.18.0` to `5.20.0`
 * Updated `org.postgresql:postgresql:42.7.7` to `42.7.8`
