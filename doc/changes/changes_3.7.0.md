@@ -24,7 +24,7 @@ This release disables telemetry for UDF scripts and virtual schemas by adding vi
 * Updated `com.mysql:mysql-connector-j:9.5.0` to `9.6.0`
 * Updated `com.oracle.database.jdbc:ojdbc11:23.26.0.0.0` to `23.26.1.0.0`
 * Removed `org.junit.jupiter:junit-jupiter-api:5.13.4`
-* Updated `org.junit.jupiter:junit-jupiter-params:5.13.4` to `6.0.3`
+* Updated `org.junit.jupiter:junit-jupiter-params:5.13.4` to `5.14.3`
 * Updated `org.mockito:mockito-junit-jupiter:5.20.0` to `5.23.0`
 * Updated `org.postgresql:postgresql:42.7.8` to `42.7.10`
 * Updated `org.testcontainers:testcontainers-junit-jupiter:2.0.1` to `2.0.5`
