@@ -1,10 +1,13 @@
-# Test Database Builder for Java 3.7.0, released 2026-04-21
+# Test Database Builder for Java 4.0.0, released 2026-04-21
 
 Code name: Disable telemetry for tests
 
 ## Summary
 
 This release disables telemetry for UDF scripts and virtual schemas by adding virtual schema property `TELEMETRY=false` and by setting environment variable `EXASOL_TELEMETRY_DISABLE=true` for UDF scripts.
+
+## Breaking Changes
+
 
 ## Features
 
