@@ -51,6 +51,30 @@ Covers:
 
 Needs: impl, itest
 
+## `OracleObjectFactory`
+
+`dsn~oracle-object-factory~1`
+
+The `OracleObjectFactory` is a factory that allows users to create Oracle-specific database objects.
+
+Covers:
+
+* `req~supporting-oracle-database~1`
+
+Needs: impl, itest
+
+## `PostgreSqlObjectFactory`
+
+`dsn~postgresql-object-factory~1`
+
+The `PostgreSqlObjectFactory` is a factory that allows users to create PostgreSql-specific database objects.
+
+Covers:
+
+* `req~supporting-postgresql-database~1`
+
+Needs: impl, itest
+
 # Runtime
 
 This section describes the runtime behavior of the software.
@@ -130,6 +154,16 @@ Covers:
 * `req~creating-virtual-schemas~1`
 
 Needs: impl, utest, itest
+
+#### Disabling Telemetry for Virtual Schemas
+`dsn~creating-virtual-schemas.disable-telemetry~1`
+
+TDBJ automatically disables telemetry by adding property `TELEMETRY=false` when creating a virtual schema.
+
+Covers:
+* [`req~disabling-telemetry.virtual-schemas~1`](system_requirements.md#disabling-telemetry-for-virtual-schemas)
+
+Needs: impl, utest
 
 ### Creating Tables
 

@@ -290,9 +290,13 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
         .dialectName("Exasol")
         .adapterScript(adapterScript)
         .connectionDefinition(connectionDefinition)
-        .properties(Map.of("IS_LOCAL", "true", "LOG_LEVEL", "ALL"))
+        .addProperties(Map.of("IS_LOCAL", "true", "LOG_LEVEL", "ALL"))
         .build();
 ```
+
+#### Disabling Telemetry
+
+Virtual Schemas use [telemetry-java](https://github.com/exasol/telemetry-java) to send feature usage telemetry. To avoid polluting statistics, TDBJ automatically disables telemetry when creating a virtual schema by adding property `TELEMETRY` with value `false`. See [virtual-schema-common-java](https://github.com/exasol/virtual-schema-common-java/releases/tag/18.0.0) for details.
 
 #### Debug Output
 

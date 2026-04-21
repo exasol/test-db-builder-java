@@ -7,6 +7,7 @@ import com.exasol.dbbuilder.dialects.*;
 /**
  * PostgreSQL {@link DatabaseObjectFactory}.
  */
+// [impl->dsn~postgresql-object-factory~1]
 public class PostgreSqlObjectFactory extends AbstractObjectFactory {
     private final PostgreSqlImmediateDatabaseObjectWriter writer;
 

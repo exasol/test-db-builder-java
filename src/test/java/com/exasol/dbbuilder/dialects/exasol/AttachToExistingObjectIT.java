@@ -23,9 +23,7 @@ import com.exasol.dbbuilder.dialects.DatabaseObjectException;
 @Tag("integration")
 class AttachToExistingObjectIT {
     @Container
-    @SuppressWarnings("resource") // Will be closed by JUnit rule
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
-            .withReuse(true);
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = ExasolFixture.create();
     private static ExasolObjectFactory factory;
 
     @BeforeAll
