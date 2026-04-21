@@ -122,6 +122,7 @@ class VirtualSchemaTest {
     }
 
     @Test
+    // [utest->dsn~creating-virtual-schemas.disable-telemetry~1]
     void testDefaultPropertiesContainTelemetryFalse() {
         final Map<String, String> properties = builder.build().getProperties();
         assertAll(() -> assertThat(properties, aMapWithSize(1)),

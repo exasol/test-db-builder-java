@@ -90,6 +90,14 @@ TDBJ allows developers to attach to existing database objects to control them pr
 
 Needs: req
 
+### Disabling Telemetry
+`feat~disabling-telemetry~1`
+
+TDBJ disables telemetry for UDF scripts and virtual schemas running in an Exasol database.
+
+Rational: This avoids polluting feature usage statistics.
+
+Needs: req
 
 ## Functional Requirements
 
@@ -112,6 +120,28 @@ Needs: dsn
 `req~supporting-mysql-database~1`
 
 User can create objects for MySQL database.
+
+Covers: 
+
+* [feat~supporting-different-database~1](#supporting-different-database)
+
+Needs: dsn
+
+#### Supporting Oracle Database
+`req~supporting-oracle-database~1`
+
+User can create objects for Oracle database.
+
+Covers: 
+
+* [feat~supporting-different-database~1](#supporting-different-database)
+
+Needs: dsn
+
+#### Supporting PostgreSql Database
+`req~supporting-postgresql-database~1`
+
+User can create objects for PostgreSql database.
 
 Covers: 
 
@@ -259,7 +289,7 @@ Needs: dsn
 
 ### Dropping Database Objects
 
-### Dropping Users
+#### Dropping Users
 `req~dropping-users~1`
 
 Users can drop database users using TDBJ.
@@ -270,7 +300,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Tables
+#### Dropping Tables
 `req~dropping-tables~1`
 
 Users can drop tables using TDBJ.
@@ -281,7 +311,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Schemas
+#### Dropping Schemas
 `req~dropping-schemas~1`
 
 Users can drop schemas using TDBJ.
@@ -294,7 +324,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Adapter Scripts
+#### Dropping Adapter Scripts
 `req~dropping-adapter-scripts~1`
 
 Users can drop adapter scripts using TDBJ.
@@ -305,7 +335,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Connections
+#### Dropping Connections
 `req~dropping-connections~1`
 
 Users can drop connections using TDBJ.
@@ -316,7 +346,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Scripts
+#### Dropping Scripts
 `req~dropping-scripts~1`
 
 Users can drop scripts using TDBJ.
@@ -327,7 +357,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping UDFs
+#### Dropping UDFs
 `req~dropping-udfs~1`
 
 Users can drop UDFs using TDBJ.
@@ -338,7 +368,7 @@ Covers:
 
 Needs: dsn
 
-### Dropping Virtual Schemas
+#### Dropping Virtual Schemas
 `req~dropping-virtual-schemas~1`
 
 Users can drop virtual schemas using TDBJ.
@@ -351,7 +381,7 @@ Covers:
 
 Needs: dsn
 
-#### Executing Scripts Without Returns
+### Executing Scripts Without Returns
 `req~executing-scripts-without-returns~1`
 
 ### Populating the Database With Test Data
@@ -391,5 +421,27 @@ Scripts that are part of the implementation are often loaded from files. In inte
 Covers:
 
 * [feat~controlling-existing-database-objects~1](#controlling-existing-database-objects)
+
+Needs: dsn
+
+### Disabling Telemetry
+
+#### Disabling Telemetry for Virtual Schemas
+`req~disabling-telemetry.virtual-schemas~1`
+
+TDBJ automatically disables telemetry when creating a virtual schema.
+
+Covers:
+* [`feat~disabling-telemetry~1`](#disabling-telemetry)
+
+Needs: dsn
+
+#### Disabling Telemetry for UDFs
+`req~disabling-telemetry.udfs~1`
+
+TDBJ automatically disables telemetry when creating a UDF.
+
+Covers:
+* [`feat~disabling-telemetry~1`](#disabling-telemetry)
 
 Needs: dsn

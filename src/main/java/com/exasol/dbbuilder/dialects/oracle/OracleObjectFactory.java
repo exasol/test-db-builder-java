@@ -7,6 +7,7 @@ import com.exasol.dbbuilder.dialects.*;
 /**
  * Oracle {@link DatabaseObjectFactory}.
  */
+// [impl->dsn~oracle-object-factory~1]
 public class OracleObjectFactory extends AbstractObjectFactory {
     private final OracleImmediateDatabaseObjectWriter writer;
 

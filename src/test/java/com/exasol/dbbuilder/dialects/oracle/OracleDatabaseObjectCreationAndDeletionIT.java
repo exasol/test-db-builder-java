@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import com.exasol.dbbuilder.dialects.*;
 import com.exasol.errorreporting.ExaError;
 
+// [itest->dsn~oracle-object-factory~1]
 class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     private static final String ORACLE_DOCKER_IMAGE_REFERENCE = "gvenzl/oracle-xe:21.3.0-slim-faststart";
     private static final String QUOTES = "\"\"";

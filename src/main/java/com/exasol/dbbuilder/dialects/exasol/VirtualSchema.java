@@ -174,6 +174,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
             this.properties.putAll(getDefaultProperties());
         }
 
+        // [impl->dsn~creating-virtual-schemas.disable-telemetry~1]
         private static Map<String, String> getDefaultProperties() {
             return Map.of("TELEMETRY", "false");
         }
