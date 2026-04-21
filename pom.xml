@@ -96,7 +96,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <!-- Version 6 requires Java 17 -->
             <version>5.14.3</version>
             <scope>test</scope>
