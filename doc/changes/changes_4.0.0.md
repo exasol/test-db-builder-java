@@ -4,13 +4,13 @@ Code name: Disable telemetry for tests
 
 ## Summary
 
-This release disables telemetry for virtual schemas by adding virtual schema property `TELEMETRY=false`.
+This release disables telemetry for virtual schemas by automatically adding virtual schema property `TELEMETRY=false`.
 
 Note: Telemetry for UDF scripts will be disabled in #155.
 
 ## Breaking Changes
 
-Builder method `VirtualSchema.Builder.properties(Map<String, String>)` is replaced with `addProperties(Map<String, String>)`. The old method always overwrote existing properties. The new method adds new properties, keeping the old ones (espeically `TELEMETRY=false`).
+Builder method `VirtualSchema.Builder.properties(Map<String, String>)` is replaced with `addProperties(Map<String, String>)`. The old method always overwrote existing properties. The new method adds new properties, keeping the old ones (especially `TELEMETRY=false`).
 
 ## Features
 

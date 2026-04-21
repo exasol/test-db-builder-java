@@ -296,7 +296,7 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
 
 #### Disabling Telemetry
 
-Virtual Schemas use [telemetry-java](https://github.com/exasol/telemetry-java) to send feature usage telemetry. To avoid polluting statistics, TDBJ automatically disables telemetry when creating a virtual schema by adding property `TELEMETRY` with value `false`.
+Virtual Schemas use [telemetry-java](https://github.com/exasol/telemetry-java) to send feature usage telemetry. To avoid polluting statistics, TDBJ automatically disables telemetry when creating a virtual schema by adding property `TELEMETRY` with value `false`. See [virtual-schema-common-java](https://github.com/exasol/virtual-schema-common-java/releases/tag/18.0.0) for details.
 
 #### Debug Output
 
