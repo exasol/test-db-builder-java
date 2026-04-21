@@ -8,6 +8,7 @@ This release disables telemetry for UDF scripts and virtual schemas by adding vi
 
 ## Breaking Changes
 
+* Builder method `VirtualSchema.Builder.properties(Map<String, String>)` is replaced with `addProperties(Map<String, String>)`. The old method always overwrote existing properties. The new method adds new properties, keeping the old ones (espeically `TELEMETRY=false`).
 
 ## Features
 

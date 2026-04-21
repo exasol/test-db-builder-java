@@ -122,11 +122,47 @@ class VirtualSchemaTest {
     }
 
     @Test
+    void testDefaultPropertiesContainTelemetryFalse() {
+        final Map<String, String> properties = builder.build().getProperties();
+        assertAll(() -> assertThat(properties, aMapWithSize(1)),
+                () -> assertThat(properties, hasEntry("TELEMETRY", "false")));
+    }
+
+    @Test
+    void testOverwritingDefaultTelemetryProperty() {
+        final Map<String, String> properties = builder.addProperties(Map.of("TELEMETRY", "customValue"))
+                .build().getProperties();
+        assertAll(() -> assertThat(properties, aMapWithSize(1)),
+                () -> assertThat(properties, hasEntry("TELEMETRY", "customValue")));
+    }
+
+    @Test
+    void testAddAdditionalProperty() {
+        final Map<String, String> properties = builder.addProperties(Map.of("PROP1", "VALUE1"))
+                .addProperties(Map.of("PROP2", "VALUE2"))
+                .build().getProperties();
+        assertAll(() -> assertThat(properties, aMapWithSize(3)),
+                () -> assertThat(properties, hasEntry("TELEMETRY", "false")),
+                () -> assertThat(properties, hasEntry("PROP1", "VALUE1")),
+                () -> assertThat(properties, hasEntry("PROP2", "VALUE2")));
+    }
+
+    @Test
+    void testAddOverwriteExistingProperty() {
+        final Map<String, String> properties = builder.addProperties(Map.of("PROP1", "VALUE1"))
+                .addProperties(Map.of("PROP1", "VALUE2"))
+                .build().getProperties();
+        assertAll(() -> assertThat(properties, aMapWithSize(2)),
+                () -> assertThat(properties, hasEntry("TELEMETRY", "false")),
+                () -> assertThat(properties, hasEntry("PROP1", "VALUE2")));
+    }
+
+    @Test
     void testGetProperties(@Mock final ConnectionDefinition connectionDefinitionMock) {
         when(connectionDefinitionMock.getName()).thenReturn("THE_CONNECTION");
         final Map<String, String> properties = this.builder //
                 .dialectName("EXASOL_VS") //
-                .properties(Map.of("FOO", "BAR", "BAZ", "ZOO")) //
+                .addProperties(Map.of("FOO", "BAR", "BAZ", "ZOO")) //
                 .connectionDefinition(connectionDefinitionMock) //
                 .build() //
                 .getProperties();

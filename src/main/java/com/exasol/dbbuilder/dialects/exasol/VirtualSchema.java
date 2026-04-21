@@ -160,7 +160,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
         private AdapterScript adapterScript;
         private String dialectName;
         private ConnectionDefinition connectionDefinition;
-        private Map<String, String> properties = new HashMap<>();
+        private final Map<String, String> properties = new HashMap<>();
 
         /**
          * Create a new instance of a builder for a {@link VirtualSchema}.
@@ -171,6 +171,11 @@ public class VirtualSchema extends AbstractDatabaseObject {
         private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Identifier name) {
             this.writer = writer;
             this.name = name;
+            this.properties.putAll(getDefaultProperties());
+        }
+
+        private static Map<String, String> getDefaultProperties() {
+            return Map.of("TELEMETRY", "false");
         }
 
         /**
@@ -191,8 +196,7 @@ public class VirtualSchema extends AbstractDatabaseObject {
          * @return {@code this} for fluent programming
          */
         public Builder sourceSchema(final Schema sourceSchema) {
-            this.sourceSchemaName = sourceSchema.getName();
-            return this;
+            return this.sourceSchemaName(sourceSchema.getName());
         }
 
         /**
@@ -241,12 +245,22 @@ public class VirtualSchema extends AbstractDatabaseObject {
 
         /**
          * Set additional properties for the adapter.
+         * <p>
+         * Existing properties with the same name will be overwritten. The following properties are reserved and will be set automatically when the
+         * corresponding builder methods are used:
+         * <ul>
+         * <li>{@code SCHEMA_NAME}: set via {@link #sourceSchemaName(String)} or {@link #sourceSchema(Schema)}</li>
+         * <li>{@code SQL_DIALECT}: set via {@link #dialectName(String)}</li>
+         * <li>{@code CONNECTION_NAME}: set via {@link #connectionDefinition(ConnectionDefinition)}</li>
+         * <li>{@code DEBUG_ADDRESS} and {@code LOG_LEVEL}: set via system properties {@code com.exasol.virtualschema.debug.host},
+         * {@code com.exasol.virtualschema.debug.port} and {@code com.exasol.virtualschema.debug.level}</li>
+         * </ul>
          *
          * @param properties additional properties
          * @return {@code this} for fluent programming
          */
-        public Builder properties(final Map<String, String> properties) {
-            this.properties = properties;
+        public Builder addProperties(final Map<String, String> properties) {
+            this.properties.putAll(properties);
             return this;
         }
     }
