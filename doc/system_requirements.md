@@ -435,13 +435,3 @@ Covers:
 * [`feat~disabling-telemetry~1`](#disabling-telemetry)
 
 Needs: dsn
-
-#### Disabling Telemetry for UDFs
-`req~disabling-telemetry.udfs~1`
-
-TDBJ automatically disables telemetry when creating a UDF.
-
-Covers:
-* [`feat~disabling-telemetry~1`](#disabling-telemetry)
-
-Needs: dsn
