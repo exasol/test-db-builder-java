@@ -37,9 +37,7 @@ import com.exasol.errorreporting.ExaError;
 // [itest->dsn~exasol-object-factory~1]
 class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
     @Container
-    @SuppressWarnings("resource") // Will be closed by JUnit rule
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
-            .withReuse(true);
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = ExasolFixture.create();
     private static final String ADAPTER_SCRIPT_CONTENT = "def adapter_call(request):\n" + //
             "\tif 'createVirtualSchema' in request:\n"
             + "\t\treturn '{\"type\":\"createVirtualSchema\",\"schemaMetadata\":{\"tables\":[]}}'\n" + "\telse:\n"
