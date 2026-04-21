@@ -431,6 +431,10 @@ Needs: dsn
 
 TDBJ automatically disables telemetry when creating a virtual schema.
 
+Rationale:
+
+As the name suggests, the Test Database Builder Java is intended for test setups. Test setups should never produce telemetry data.
+
 Covers:
 * [`feat~disabling-telemetry~1`](#disabling-telemetry)
 
