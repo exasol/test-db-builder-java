@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>test-db-builder-java</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
@@ -15,7 +15,7 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <!-- Version 6 requires Java 17 -->
-                <version>5.14.3</version>
+                <version>6.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -31,13 +31,13 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.6.0</version>
+            <version>9.7.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.10</version>
+            <version>42.7.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -114,7 +114,7 @@
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
             <!-- Pinned to 3.x, since version 4 and later require Java 17 -->
-            <version>3.19.4</version>
+            <version>4.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -151,7 +151,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.4.6</version>
+                <version>5.6.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -175,7 +175,7 @@
     <parent>
         <artifactId>test-db-builder-java-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
