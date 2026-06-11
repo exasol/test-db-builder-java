@@ -1,4 +1,4 @@
-# Test Database Builder for Java 4.0.1, released 2026-??-??
+# Test Database Builder for Java 4.0.1, released 2026-06-11
 
 Code name: Fixed vulnerability CVE-2026-42198 in org.postgresql:postgresql:jar:42.7.10:test
 
@@ -16,6 +16,7 @@ pgjdbc is an open source postgresql JDBC Driver. From version 42.2.0 to before v
 ## Security
 
 * #158: Fixed vulnerability CVE-2026-42198 in dependency `org.postgresql:postgresql:jar:42.7.10:test`
+* #156: Fixed vulnerability CVE-2026-42198 in dependency `org.postgresql:postgresql:jar:42.7.10:test`
 
 ## Dependency Updates
 
@@ -24,11 +25,15 @@ pgjdbc is an open source postgresql JDBC Driver. From version 42.2.0 to before v
 * Updated `com.exasol:exasol-testcontainers:7.2.3` to `7.3.0`
 * Updated `com.mysql:mysql-connector-j:9.6.0` to `9.7.0`
 * Updated `com.oracle.database.jdbc:ojdbc11:23.26.1.0.0` to `23.26.2.0.0`
-* Updated `nl.jqno.equalsverifier:equalsverifier:3.19.4` to `4.5`
-* Updated `org.junit.jupiter:junit-jupiter-params:5.14.3` to `6.1.0`
+* Updated `org.junit.jupiter:junit-jupiter-params:5.14.3` to `5.14.4`
 * Updated `org.postgresql:postgresql:42.7.10` to `42.7.11`
 * Updated `org.slf4j:slf4j-jdk14:2.0.17` to `2.0.18`
 
 ### Plugin Dependency Updates
 
+* Updated `com.exasol:error-code-crawler-maven-plugin:2.0.6` to `2.0.7`
 * Updated `com.exasol:project-keeper-maven-plugin:5.4.6` to `5.6.2`
+* Updated `io.github.git-commit-id:git-commit-id-maven-plugin:9.0.2` to `10.0.0`
+* Updated `org.apache.maven.plugins:maven-failsafe-plugin:3.5.4` to `3.5.5`
+* Updated `org.apache.maven.plugins:maven-resources-plugin:3.4.0` to `3.5.0`
+* Updated `org.apache.maven.plugins:maven-surefire-plugin:3.5.4` to `3.5.5`
