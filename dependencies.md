@@ -65,7 +65,7 @@
 [2]: https://github.com/exasol/error-reporting-java/
 [3]: https://github.com/exasol/error-reporting-java/blob/main/LICENSE
 [4]: https://www.exasol.com/
-[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/26.2.7/exasol-jdbc-26.2.7-license.txt
+[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/26.2.8/exasol-jdbc-26.2.8-license.txt
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [7]: https://jdbc.postgresql.org
 [8]: https://jdbc.postgresql.org/about/license.html
