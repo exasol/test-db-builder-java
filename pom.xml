@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>test-db-builder-java</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2</version>
     <name>Test Database Builder for Java</name>
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.11</version>
+            <version>42.7.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-testcontainers</artifactId>
-            <version>7.3.0</version>
+            <version>8.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -151,7 +151,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.6.2</version>
+                <version>5.7.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -170,12 +170,26 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.ossindex.maven</groupId>
+                <artifactId>ossindex-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <!-- OSS Index exclusion for CVE-2026-60586, CVE-2026-60623, CVE-2026-60624, CVE-2026-61082 in com.mysql:mysql-connector-j; no CVE-free upgrade was found after trying no downloadable newer version -->
+                    <excludeVulnerabilityIds>
+                        <exclude>CVE-2026-60586</exclude>
+                        <exclude>CVE-2026-60623</exclude>
+                        <exclude>CVE-2026-60624</exclude>
+                        <exclude>CVE-2026-61082</exclude>
+                    </excludeVulnerabilityIds>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <parent>
         <artifactId>test-db-builder-java-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>4.0.1</version>
+        <version>4.0.2</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
