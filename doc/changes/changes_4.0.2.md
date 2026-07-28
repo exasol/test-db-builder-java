@@ -63,6 +63,7 @@ PostgreSQL JDBC Driver: Silent channel-binding authentication downgrade via unsu
 
 ### Test Dependency Updates
 
+* Updated `com.exasol:exasol-testcontainers:7.3.0` to `8.0.1`
 * Updated `org.postgresql:postgresql:42.7.11` to `42.7.12`
 
 ### Plugin Dependency Updates

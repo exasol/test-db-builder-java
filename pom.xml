@@ -19,12 +19,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Upgrading transitive dependency org.eclipse.parsson:parsson:jar:1.1.7:compile of com.exasol:exasol-testcontainers:jar:7.3.0:test to fix CVE-2026-9563 -->
-            <dependency>
-                <groupId>org.eclipse.parsson</groupId>
-                <artifactId>parsson</artifactId>
-                <version>1.1.9</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -67,7 +61,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-testcontainers</artifactId>
-            <version>7.3.0</version>
+            <version>8.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
