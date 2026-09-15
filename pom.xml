@@ -15,7 +15,7 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <!-- Version 6 requires Java 17 -->
-                <version>6.1.3</version>
+                <version>5.14.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -114,7 +114,7 @@
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
             <!-- Pinned to 3.x, since version 4 and later require Java 17 -->
-            <version>4.5.2</version>
+            <version>3.19.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -135,7 +135,7 @@
             <plugin>
                 <groupId>org.itsallcode</groupId>
                 <artifactId>openfasttrace-maven-plugin</artifactId>
-                <version>2.3.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>trace-requirements</id>
@@ -168,20 +168,6 @@
                         <arg>-Xlint:all,-path</arg>
                         <arg>-Werror</arg>
                     </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.ossindex.maven</groupId>
-                <artifactId>ossindex-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <!-- OSS Index exclusion for CVE-2026-60586, CVE-2026-60623, CVE-2026-60624, CVE-2026-61082 in com.mysql:mysql-connector-j; no CVE-free upgrade was found after trying no downloadable newer version -->
-                    <excludeVulnerabilityIds>
-                        <exclude>CVE-2026-60586</exclude>
-                        <exclude>CVE-2026-60623</exclude>
-                        <exclude>CVE-2026-60624</exclude>
-                        <exclude>CVE-2026-61082</exclude>
-                    </excludeVulnerabilityIds>
                 </configuration>
             </plugin>
         </plugins>
