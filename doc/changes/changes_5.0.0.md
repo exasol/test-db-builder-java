@@ -1,4 +1,4 @@
-# Test Database Builder for Java 5.0.0, released 2026-10-??
+# Test Database Builder for Java 5.0.0, released 2026-10-30
 
 Code name: Fixed vulnerabilities CVE-2026-107314, CVE-2026-107315
 
