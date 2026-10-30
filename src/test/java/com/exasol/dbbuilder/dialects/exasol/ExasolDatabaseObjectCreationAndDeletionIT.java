@@ -315,9 +315,12 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 .language(UdfScript.Language.PYTHON3).parameter("test", "VARCHAR(254)").emits().content("print('HI')")
                 .build();
         assertThat(getScriptDescription(exasolSchema),
-                table().row(
-                        "CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n%env EXASOL_TELEMETRY_DISABLE=1;\n\n"
-                                + "print('HI')\n")
+                table().row("""
+                        CREATE PYTHON3 SET SCRIPT "UDF_TEST" ("test" VARCHAR(254) UTF8) EMITS (...) AS
+                        %env EXASOL_TELEMETRY_DISABLE=1;
+
+                        print('HI')
+                        """)
                         .matches());
     }
 

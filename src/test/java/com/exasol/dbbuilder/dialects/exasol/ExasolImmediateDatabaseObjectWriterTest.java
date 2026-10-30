@@ -57,9 +57,12 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
         try (final ExasolSchema schema = new ExasolSchema(objectWriter, ExasolIdentifier.of("TEST_SCHEMA"))) {
             schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
                     .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR").content("return 'value'").build();
-            assertThat(objectWriter.getLastQuery(), equalTo(
-                    "CREATE PYTHON3 SCALAR SCRIPT \"TEST_SCHEMA\".\"MY_UDF\"( ...) RETURNS VARCHARAS "
-                            + "%env EXASOL_TELEMETRY_DISABLE=1;\n\nreturn 'value'\n/"));
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=1;
+
+                    return 'value'
+                    /"""));
         }
     }
 
@@ -71,9 +74,13 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
             schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
                     .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR")
                     .environmentVariable("CUSTOM_SETTING", "custom-value").content("return 'value'").build();
-            assertThat(objectWriter.getLastQuery(), equalTo(
-                    "CREATE PYTHON3 SCALAR SCRIPT \"TEST_SCHEMA\".\"MY_UDF\"( ...) RETURNS VARCHARAS "
-                            + "%env EXASOL_TELEMETRY_DISABLE=1;\n%env CUSTOM_SETTING=custom-value;\n\nreturn 'value'\n/"));
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=1;
+                    %env CUSTOM_SETTING=custom-value;
+
+                    return 'value'
+                    /"""));
         }
     }
 
@@ -85,9 +92,12 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
             schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
                     .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR")
                     .environmentVariable("EXASOL_TELEMETRY_DISABLE", "0").content("return 'value'").build();
-            assertThat(objectWriter.getLastQuery(), equalTo(
-                    "CREATE PYTHON3 SCALAR SCRIPT \"TEST_SCHEMA\".\"MY_UDF\"( ...) RETURNS VARCHARAS "
-                            + "%env EXASOL_TELEMETRY_DISABLE=0;\n\nreturn 'value'\n/"));
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=0;
+
+                    return 'value'
+                    /"""));
         }
     }
 }

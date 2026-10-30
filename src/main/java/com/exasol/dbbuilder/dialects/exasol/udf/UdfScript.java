@@ -138,7 +138,7 @@ public class UdfScript extends AbstractScript {
      * Builder for {@link UdfScript}.
      */
     public static class Builder extends BucketFsContentAdapterScriptBuilder<Builder> {
-        private static final String ENVIRONMENT_VARIABLE_NAME_REGEX = "[A-Za-z_][A-Za-z0-9_]*";
+        private static final String ENVIRONMENT_VARIABLE_NAME_REGEX = "[A-Za-z_]\\w*";
         private static final Pattern ENVIRONMENT_VARIABLE_NAME = Pattern.compile(ENVIRONMENT_VARIABLE_NAME_REGEX);
         private static final Pattern ILLEGAL_ENVIRONMENT_VARIABLE_VALUE_CHARACTER = Pattern.compile("[;\\r\\n\\x00]");
         private final List<Column> parameters = new ArrayList<>();

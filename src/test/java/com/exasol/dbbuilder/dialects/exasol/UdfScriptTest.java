@@ -83,7 +83,7 @@ class UdfScriptTest {
         final UdfScript.Builder builder = getDefaultBuilder();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> builder.environmentVariable("INVALID-NAME", "value"));
         assertThat(exception.getMessage(), equalTo(
-                "E-TDBJ-39: Invalid environment variable name. Names must match '[A-Za-z_][A-Za-z0-9_]*'."));
+                "E-TDBJ-39: Invalid environment variable name. Names must match '[A-Za-z_]\\w*'."));
     }
 
     @ParameterizedTest
