@@ -10,8 +10,7 @@
   "java.sources.organizeImports.staticStarThreshold": 3,
   "java.test.config": {
     "vmArgs": [
-      "-Djava.util.logging.config.file=src/test/resources/logging.properties",
-      "-Dcom.exasol.dockerdb.image=2025.2.1"
+      "-Djava.util.logging.config.file=src/test/resources/logging.properties"
     ],
     "env": {
       "EXASOL_TELEMETRY_DISABLE": "true"
@@ -21,5 +20,7 @@
     "connectionId": "exasol",
     "projectKey": "com.exasol:test-db-builder-java"
   },
-  "cSpell.words": ["TDBJ"]
+  "cSpell.words": [
+    "TDBJ"
+  ]
 }

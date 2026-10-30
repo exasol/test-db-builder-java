@@ -4,6 +4,7 @@ sources:
     modules:
       - maven_central
       - integration_tests
+      - mockito_agent
 linkReplacements:
 build:
   workflows:

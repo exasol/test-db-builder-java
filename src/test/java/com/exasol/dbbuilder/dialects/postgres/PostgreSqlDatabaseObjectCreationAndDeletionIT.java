@@ -12,7 +12,8 @@ import com.exasol.errorreporting.ExaError;
 
 // [itest->dsn~postgresql-object-factory~1]
 class PostgreSqlDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:18.3";
+    // https://hub.docker.com/_/postgres/tags
+    private static final String POSTGRES_DOCKER_IMAGE_REFERENCE = "postgres:18.6";
     @Container
     private static final PostgreSQLContainer container = new PostgreSQLContainer(
             POSTGRES_DOCKER_IMAGE_REFERENCE);
