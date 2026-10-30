@@ -1,6 +1,7 @@
 package com.exasol.dbbuilder.dialects.exasol.udf;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import com.exasol.db.Identifier;
 import com.exasol.dbbuilder.dialects.Column;
@@ -16,6 +17,7 @@ public class UdfScript extends AbstractScript {
     private final UdfReturnType returnType;
     private final InputType inputType;
     private final Language language;
+    private final Map<String, String> environmentVariables;
 
     private UdfScript(final Builder builder) {
         super(builder);
@@ -23,6 +25,7 @@ public class UdfScript extends AbstractScript {
         this.returnType = builder.returnType;
         this.inputType = builder.inputType;
         this.language = builder.language;
+        this.environmentVariables = Collections.unmodifiableMap(new LinkedHashMap<>(builder.environmentVariables));
     }
 
     /**
@@ -79,6 +82,15 @@ public class UdfScript extends AbstractScript {
         return this.language;
     }
 
+    /**
+     * Get custom environment variables configured for this UDF.
+     *
+     * @return custom environment variables
+     */
+    public Map<String, String> getEnvironmentVariables() {
+        return this.environmentVariables;
+    }
+
     @Override
     protected void dropInternally() {
         this.writer.drop(this);
@@ -126,10 +138,15 @@ public class UdfScript extends AbstractScript {
      * Builder for {@link UdfScript}.
      */
     public static class Builder extends BucketFsContentAdapterScriptBuilder<Builder> {
+        private static final String ENVIRONMENT_VARIABLE_NAME_REGEX = "[A-Za-z_]\\w*";
+        private static final Pattern ENVIRONMENT_VARIABLE_NAME = Pattern.compile(ENVIRONMENT_VARIABLE_NAME_REGEX);
+        private static final Pattern ILLEGAL_ENVIRONMENT_VARIABLE_VALUE_CHARACTER = Pattern.compile("[;\\r\\n\\x00]");
         private final List<Column> parameters = new ArrayList<>();
         private Language language;
         private InputType inputType;
         private UdfReturnType returnType;
+        private final Map<String, String> environmentVariables = new LinkedHashMap<>(
+                Map.of("EXASOL_TELEMETRY_DISABLE", "1"));
 
         private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
                 final Identifier name) {
@@ -199,6 +216,28 @@ public class UdfScript extends AbstractScript {
          */
         public Builder returns(final String returnType) {
             this.returnType = new UdfReturnTypeReturns(returnType);
+            return this;
+        }
+
+        /**
+         * Add an environment variable to the UDF script.
+         *
+         * @param name  environment variable name
+         * @param value environment variable value
+         * @return self for fluent programming
+         */
+        public Builder environmentVariable(final String name, final String value) {
+            if (name == null || !ENVIRONMENT_VARIABLE_NAME.matcher(name).matches()) {
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-39").message(
+                        "Invalid environment variable name. Names must match {{expected format}}.",
+                        ENVIRONMENT_VARIABLE_NAME_REGEX).toString());
+            }
+            if (value == null || ILLEGAL_ENVIRONMENT_VARIABLE_VALUE_CHARACTER.matcher(value).find()) {
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-TDBJ-40").message(
+                        "Invalid value for environment variable {{name}}. Values must not contain semicolons, line breaks, or NUL characters.",
+                        name).toString());
+            }
+            this.environmentVariables.put(name, value);
             return this;
         }
 
