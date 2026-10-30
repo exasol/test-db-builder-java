@@ -10,24 +10,24 @@
 
 ## Test Dependencies
 
-| Dependency                                      | License                                                                |
-| ----------------------------------------------- | ---------------------------------------------------------------------- |
-| [Exasol JDBC Driver][4]                         | [EXAClient License][5]                                                 |
-| [MySQL Connector/J][6]                          | The GNU General Public License, v2 with Universal FOSS Exception, v1.0 |
-| [PostgreSQL JDBC Driver][7]                     | [BSD-2-Clause][8]                                                      |
-| [ojdbc17][9]                                    | [Oracle Free Use Terms and Conditions (FUTC)][10]                      |
-| [junit-pioneer][11]                             | [Eclipse Public License v2.0][12]                                      |
-| [Test containers for Exasol on Docker][13]      | [MIT License][14]                                                      |
-| [Testcontainers :: JUnit Jupiter Extension][15] | [MIT][16]                                                              |
-| [Testcontainers :: JDBC :: MySQL][15]           | [MIT][16]                                                              |
-| [Testcontainers :: JDBC :: PostgreSQL][15]      | [MIT][16]                                                              |
-| [Testcontainers :: JDBC :: Oracle XE][15]       | [MIT][16]                                                              |
-| [Matcher for SQL Result Sets][17]               | [MIT License][18]                                                      |
-| [Hamcrest][19]                                  | [BSD-3-Clause][20]                                                     |
-| [JUnit Jupiter Params][21]                      | [Eclipse Public License v2.0][12]                                      |
-| [mockito-junit-jupiter][22]                     | [MIT][23]                                                              |
-| [EqualsVerifier \| release normal jar][24]      | [Apache License, Version 2.0][25]                                      |
-| [SLF4J JDK14 Provider][26]                      | [MIT][27]                                                              |
+| Dependency                                           | License                                                                |
+| ---------------------------------------------------- | ---------------------------------------------------------------------- |
+| [Exasol JDBC Driver][4]                              | [EXAClient License][5]                                                 |
+| [MySQL Connector/J][6]                               | The GNU General Public License, v2 with Universal FOSS Exception, v1.0 |
+| [PostgreSQL JDBC Driver][7]                          | [BSD-2-Clause][8]                                                      |
+| [ojdbc17][9]                                         | [Oracle Free Use Terms and Conditions (FUTC)][10]                      |
+| [junit-pioneer][11]                                  | [Eclipse Public License v2.0][12]                                      |
+| [Test containers for Exasol on Docker][13]           | [MIT License][14]                                                      |
+| [Testcontainers :: JUnit Jupiter Extension][15]      | [MIT][16]                                                              |
+| [Testcontainers :: JDBC :: MySQL][15]                | [MIT][16]                                                              |
+| [Testcontainers :: JDBC :: PostgreSQL][15]           | [MIT][16]                                                              |
+| [Testcontainers :: JDBC :: Oracle Database Free][15] | [MIT][16]                                                              |
+| [Matcher for SQL Result Sets][17]                    | [MIT License][18]                                                      |
+| [Hamcrest][19]                                       | [BSD-3-Clause][20]                                                     |
+| [JUnit Jupiter Params][21]                           | [Eclipse Public License v2.0][12]                                      |
+| [mockito-junit-jupiter][22]                          | [MIT][23]                                                              |
+| [EqualsVerifier \| release normal jar][24]           | [Apache License, Version 2.0][25]                                      |
+| [SLF4J JDK14 Provider][26]                           | [MIT][27]                                                              |
 
 ## Plugin Dependencies
 

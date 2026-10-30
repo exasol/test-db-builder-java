@@ -28,7 +28,8 @@ import com.exasol.errorreporting.ExaError;
 @Testcontainers
 // [itest->dsn~mysql-object-factory~1]
 class MySQLDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:9.6.0";
+    // https://hub.docker.com/_/mysql/tags
+    private static final String MYSQL_DOCKER_IMAGE_REFERENCE = "mysql:26.10.0";
     @Container
     @SuppressWarnings("resource") // Will be closed by JUnit rule
     private static final MySQLContainer container = new MySQLContainer(MYSQL_DOCKER_IMAGE_REFERENCE)

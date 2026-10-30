@@ -16,7 +16,8 @@ import com.exasol.errorreporting.ExaError;
 
 // [itest->dsn~oracle-object-factory~1]
 class OracleDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCreationAndDeletionIT {
-    private static final String ORACLE_DOCKER_IMAGE_REFERENCE = "gvenzl/oracle-xe:21.3.0-slim-faststart";
+    // https://hub.docker.com/r/gvenzl/oracle-free/tags
+    private static final String ORACLE_DOCKER_IMAGE_REFERENCE = "gvenzl/oracle-free:23-slim-faststart";
     private static final String QUOTES = "\"\"";
     @Container
     private static final OracleContainerDBA container = new OracleContainerDBA(ORACLE_DOCKER_IMAGE_REFERENCE);

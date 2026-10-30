@@ -48,6 +48,8 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 * Updated `org.mockito:mockito-junit-jupiter:5.23.0` to `5.24.0`
 * Updated `org.postgresql:postgresql:42.7.13` to `42.7.14`
 * Updated `org.slf4j:slf4j-jdk14:2.0.19` to `2.0.20`
+* Added `org.testcontainers:testcontainers-oracle-free:2.0.5`
+* Removed `org.testcontainers:testcontainers-oracle-xe:2.0.5`
 
 ### Plugin Dependency Updates
 
