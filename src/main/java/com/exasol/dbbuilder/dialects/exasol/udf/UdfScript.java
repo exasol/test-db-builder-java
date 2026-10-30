@@ -16,6 +16,7 @@ public class UdfScript extends AbstractScript {
     private final UdfReturnType returnType;
     private final InputType inputType;
     private final Language language;
+    private final Map<String, String> environmentVariables;
 
     private UdfScript(final Builder builder) {
         super(builder);
@@ -23,6 +24,7 @@ public class UdfScript extends AbstractScript {
         this.returnType = builder.returnType;
         this.inputType = builder.inputType;
         this.language = builder.language;
+        this.environmentVariables = Collections.unmodifiableMap(new LinkedHashMap<>(builder.environmentVariables));
     }
 
     /**
@@ -79,6 +81,15 @@ public class UdfScript extends AbstractScript {
         return this.language;
     }
 
+    /**
+     * Get custom environment variables configured for this UDF.
+     *
+     * @return custom environment variables
+     */
+    public Map<String, String> getEnvironmentVariables() {
+        return this.environmentVariables;
+    }
+
     @Override
     protected void dropInternally() {
         this.writer.drop(this);
@@ -130,6 +141,8 @@ public class UdfScript extends AbstractScript {
         private Language language;
         private InputType inputType;
         private UdfReturnType returnType;
+        private final Map<String, String> environmentVariables = new LinkedHashMap<>(
+                Map.of("EXASOL_TELEMETRY_DISABLE", "1"));
 
         private Builder(final ExasolImmediateDatabaseObjectWriter writer, final Schema parentSchema,
                 final Identifier name) {
@@ -199,6 +212,18 @@ public class UdfScript extends AbstractScript {
          */
         public Builder returns(final String returnType) {
             this.returnType = new UdfReturnTypeReturns(returnType);
+            return this;
+        }
+
+        /**
+         * Add an environment variable to the UDF script.
+         *
+         * @param name  environment variable name
+         * @param value environment variable value
+         * @return self for fluent programming
+         */
+        public Builder environmentVariable(final String name, final String value) {
+            this.environmentVariables.put(name, value);
             return this;
         }
 

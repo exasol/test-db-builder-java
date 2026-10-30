@@ -426,6 +426,20 @@ Needs: dsn
 
 ### Disabling Telemetry
 
+#### Disabling Telemetry for UDF Scripts
+`req~disabling-telemetry.udf-scripts~1`
+
+TDBJ automatically disables telemetry when creating a UDF script.
+
+Rationale:
+
+As the name suggests, the Test Database Builder Java is intended for test setups. Test setups should never produce telemetry data.
+
+Covers:
+* [`feat~disabling-telemetry~1`](#disabling-telemetry)
+
+Needs: dsn
+
 #### Disabling Telemetry for Virtual Schemas
 `req~disabling-telemetry.virtual-schemas~1`
 

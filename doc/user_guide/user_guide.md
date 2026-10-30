@@ -219,6 +219,7 @@ final UdfScript udfScript = schema.createUdfBuilder("UDF_SCRIPT")
         .language(UdfScript.Language.JAVA)
         .inputType(UdfScript.InputType.SCALAR)
         .emits(new Column("COLUMN_NAME","VARCHAR(2000)"))
+        .environmentVariable("MY_SETTING", "some-value")
         .bucketFsContent("com.exasol.script.UdfScript","/buckets/bfsdefault/artifacts/udfscript-1.0.0.jar")
         .build()
 ```
@@ -227,6 +228,8 @@ It creates the following UDF script:
 
 ```sql
 CREATE JAVA SCALAR SCRIPT UDF_SCRIPT(...) EMITS ("COLUMN_NAME" VARCHAR(2000)) AS
+  %env EXASOL_TELEMETRY_DISABLE=1;
+  %env MY_SETTING=some-value;
   %scriptclass com.exasol.script.UdfScript;
   %jar /buckets/bfsdefault/artifacts/udfscript-1.0.0.jar;
 /
@@ -249,6 +252,7 @@ It creates the following Python UDF script:
 ```sql
 CREATE PYTHON SET SCRIPT UDF_SCRIPT("INPUT" VARCHAR(256))
 EMITS ("COLUMN_ONE" VARCHAR(256), "COLUMN_TWO" VARCHAR(256)) AS
+  %env EXASOL_TELEMETRY_DISABLE=1;
   print('Hello, World!')
 /
 ```
@@ -296,7 +300,17 @@ final VirtualSchema virtualSchema=factory.createVirtualSchemaBuilder("THE_VIRTUA
 
 #### Disabling Telemetry
 
-Virtual Schemas use [telemetry-java](https://github.com/exasol/telemetry-java) to send feature usage telemetry. To avoid polluting statistics, TDBJ automatically disables telemetry when creating a virtual schema by adding property `TELEMETRY` with value `false`. See [virtual-schema-common-java](https://github.com/exasol/virtual-schema-common-java/releases/tag/18.0.0) for details.
+Virtual Schemas and UDF scripts can send feature usage telemetry. To avoid polluting statistics, TDBJ automatically disables telemetry for both.
+
+##### Virtual Schemas
+
+TDBJ adds the property `TELEMETRY` with value `false` when creating a virtual schema. See [virtual-schema-common-java](https://github.com/exasol/virtual-schema-common-java/releases/tag/18.0.0) for details.
+
+##### UDFs
+
+TDBJ adds `%env EXASOL_TELEMETRY_DISABLE=1;` to the UDF script definition. See [telemetry-java](https://github.com/exasol/telemetry-java) for details.
+
+Add custom UDF environment variables with `environmentVariable(name, value)` on the UDF builder. TDBJ writes each variable as a `%env` directive.
 
 #### Debug Output
 

@@ -57,7 +57,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     /**
      * Drop an Adapter Script.
-     * 
+     *
      * @param adapterScript to drop
      */
     void drop(final AdapterScript adapterScript) {
@@ -83,7 +83,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     /**
      * Drop a Connection.
-     * 
+     *
      * @param connectionDefinition to drop
      */
     public void drop(final ConnectionDefinition connectionDefinition) {
@@ -137,10 +137,11 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     /**
      * Write an {@link UdfScript} to the Exasol database.
-     * 
+     *
      * @param udfScript UDF script to write
      */
-    // [impl->dsn~creating-udfs~1]
+    // [impl->dsn~creating-udfs~2]
+    // [impl->dsn~creating-udfs.disable-telemetry~1]
     public void write(final UdfScript udfScript) {
         final StringBuilder sqlBuilder = new StringBuilder("CREATE ");
         sqlBuilder.append(udfScript.getLanguage());
@@ -161,6 +162,8 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
         if (udfScript.getLanguage().equals(UdfScript.Language.JAVA)) {
             sqlBuilder.append(getJvmOptions());
         }
+        udfScript.getEnvironmentVariables()
+                .forEach((name, value) -> sqlBuilder.append("%env ").append(name).append("=").append(value).append(";\n"));
         sqlBuilder.append("\n");
         sqlBuilder.append(udfScript.content);
         sqlBuilder.append("\n/");
@@ -169,7 +172,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
 
     /**
      * Drop a UDF script
-     * 
+     *
      * @param udfScript script to drop
      */
     // [impl->dsn~dropping-udfs~1]
@@ -262,7 +265,7 @@ public class ExasolImmediateDatabaseObjectWriter extends AbstractImmediateDataba
      * currently does not support prepared statements for script execution (see
      * https://www.exasol.com/support/browse/IDEA-42).
      * </p>
-     * 
+     *
      * @param script          script to execute
      * @param parameterValues script parameters
      * @return row count

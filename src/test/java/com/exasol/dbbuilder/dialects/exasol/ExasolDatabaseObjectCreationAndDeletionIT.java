@@ -288,13 +288,13 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
     }
 
     @Test
-    // [itest->dsn~creating-udfs~1]
+    // [itest->dsn~creating-udfs~2]
     void testCreateUdf() throws SQLException {
         final ExasolSchema exasolSchema = (ExasolSchema) this.factory.createSchema("PARENT_SCHEMA_FOR_UDF");
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET)
                 .language(UdfScript.Language.PYTHON3).emits().content("print('HI')").build();
         assertThat(getScriptDescription(exasolSchema),
-                table().row("CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\nprint('HI')\n").matches());
+                table().row("CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\n%env EXASOL_TELEMETRY_DISABLE=1;\n\nprint('HI')\n").matches());
     }
 
     @Test
@@ -315,8 +315,10 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 .language(UdfScript.Language.PYTHON3).parameter("test", "VARCHAR(254)").emits().content("print('HI')")
                 .build();
         assertThat(getScriptDescription(exasolSchema),
-                table().row("CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n"
-                        + "print('HI')\n").matches());
+                table().row(
+                        "CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (...) AS\n%env EXASOL_TELEMETRY_DISABLE=1;\n\n"
+                                + "print('HI')\n")
+                        .matches());
     }
 
     @Test
@@ -328,7 +330,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
                 .emits(new Column("C1", "VARCHAR(254)"), new Column("C2", "VARCHAR(254)")).content("print('HI')")
                 .build();
         assertThat(getScriptDescription(exasolSchema), table().row(
-                "CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (\"C1\" VARCHAR(254) UTF8, \"C2\" VARCHAR(254) UTF8) AS\nprint('HI')\n")
+                "CREATE PYTHON3 SET SCRIPT \"UDF_TEST\" (\"test\" VARCHAR(254) UTF8) EMITS (\"C1\" VARCHAR(254) UTF8, \"C2\" VARCHAR(254) UTF8) AS\n%env EXASOL_TELEMETRY_DISABLE=1;\n\nprint('HI')\n")
                 .matches());
     }
 
@@ -338,7 +340,7 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SET).language(UdfScript.Language.JAVA)
                 .emits().bucketFsContent("com.exasol.MyClass", "/buckets/bfsdefault/default/test.jar").build();
         assertThat(getScriptDescription(exasolSchema), table().row(
-                "CREATE JAVA SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\n%jvmoption -DsomeProperty=\"1\";\n\n%scriptclass com.exasol.MyClass;\n%jar /buckets/bfsdefault/default/test.jar;\n\n")
+                "CREATE JAVA SET SCRIPT \"UDF_TEST\" (...) EMITS (...) AS\n%jvmoption -DsomeProperty=\"1\";\n%env EXASOL_TELEMETRY_DISABLE=1;\n\n%scriptclass com.exasol.MyClass;\n%jar /buckets/bfsdefault/default/test.jar;\n\n")
                 .matches());
     }
 
@@ -349,8 +351,30 @@ class ExasolDatabaseObjectCreationAndDeletionIT extends AbstractDatabaseObjectCr
         exasolSchema.createUdfBuilder("UDF_TEST").inputType(UdfScript.InputType.SCALAR)
                 .language(UdfScript.Language.PYTHON3).returns("VARCHAR(254)").content("print('HI')").build();
         assertThat(getScriptDescription(exasolSchema), table()
-                .row("CREATE PYTHON3 SCALAR SCRIPT \"UDF_TEST\" (...) RETURNS VARCHAR(254) UTF8 AS\n" + "print('HI')\n")
+                .row("CREATE PYTHON3 SCALAR SCRIPT \"UDF_TEST\" (...) RETURNS VARCHAR(254) UTF8 AS\n%env EXASOL_TELEMETRY_DISABLE=1;\n\nprint('HI')\n")
                 .matches());
+    }
+
+    @Test
+    // [itest->dsn~creating-udfs.disable-telemetry~1]
+    void testUdfCustomEnvironmentVariableIsSet() throws SQLException {
+        final ExasolSchema exasolSchema = (ExasolSchema) this.factory
+                .createSchema("PARENT_SCHEMA_FOR_UDF_CUSTOM_ENV");
+        final UdfScript udf = exasolSchema.createUdfBuilder("GET_CUSTOM_ENV")
+                .language(UdfScript.Language.PYTHON3).inputType(UdfScript.InputType.SCALAR)
+                .emits(new Column("ENV_NAME", "VARCHAR(2000)"), new Column("ENV_VALUE", "VARCHAR(2000)"))
+                .environmentVariable("CUSTOM_SETTING", "custom-value")
+                .content("import os\ndef run(ctx):\n    for name, value in os.environ.items():\n        ctx.emit(name, value)")
+                .build();
+
+        try (Connection connection = container.createConnection("");
+                Statement statement = connection.createStatement();
+                ResultSet result = statement.executeQuery("SELECT * FROM (SELECT " + udf.getFullyQualifiedName()
+                        + "() FROM DUAL) "
+                        + "WHERE ENV_NAME IN ('CUSTOM_SETTING', 'EXASOL_TELEMETRY_DISABLE') ORDER BY ENV_NAME")) {
+            assertThat(result,
+                    table("VARCHAR", "VARCHAR").row("CUSTOM_SETTING", "custom-value").row("EXASOL_TELEMETRY_DISABLE", "1").matches());
+        }
     }
 
     private ResultSet getScriptDescription(final ExasolSchema exasolSchema) throws SQLException {
