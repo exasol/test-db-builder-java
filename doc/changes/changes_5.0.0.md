@@ -57,6 +57,7 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 * Updated `com.exasol:project-keeper-maven-plugin:5.7.5` to `5.8.2`
 * Updated `org.apache.maven.plugins:maven-artifact-plugin:3.6.1` to `3.7.0`
 * Updated `org.apache.maven.plugins:maven-compiler-plugin:3.15.0` to `3.16.0`
+* Added `org.apache.maven.plugins:maven-dependency-plugin:3.11.0`
 * Updated `org.apache.maven.plugins:maven-deploy-plugin:3.1.4` to `3.2.0`
 * Updated `org.apache.maven.plugins:maven-failsafe-plugin:3.5.6` to `3.6.1`
 * Updated `org.apache.maven.plugins:maven-install-plugin:3.1.4` to `3.2.0`

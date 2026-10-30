@@ -52,14 +52,15 @@
 | [Build Helper Maven Plugin][49]                         | [The MIT License][50]                          |
 | [Apache Maven GPG Plugin][51]                           | [Apache-2.0][25]                               |
 | [Central Publishing Maven Plugin][52]                   | [The Apache License, Version 2.0][25]          |
-| [Maven Failsafe Plugin][53]                             | [Apache-2.0][25]                               |
-| [JaCoCo :: Maven Plugin][54]                            | [EPL-2.0][55]                                  |
-| [error-code-crawler-maven-plugin][56]                   | [MIT License][57]                              |
-| [Git Commit Id Maven Plugin][58]                        | [GNU Lesser General Public License 3.0][59]    |
-| [Apache Maven Clean Plugin][60]                         | [Apache-2.0][25]                               |
-| [Apache Maven Resources Plugin][61]                     | [Apache-2.0][25]                               |
-| [Apache Maven Install Plugin][62]                       | [Apache-2.0][25]                               |
-| [Apache Maven Site Plugin][63]                          | [Apache-2.0][25]                               |
+| [Apache Maven Dependency Plugin][53]                    | [Apache-2.0][25]                               |
+| [Maven Failsafe Plugin][54]                             | [Apache-2.0][25]                               |
+| [JaCoCo :: Maven Plugin][55]                            | [EPL-2.0][56]                                  |
+| [error-code-crawler-maven-plugin][57]                   | [MIT License][58]                              |
+| [Git Commit Id Maven Plugin][59]                        | [GNU Lesser General Public License 3.0][60]    |
+| [Apache Maven Clean Plugin][61]                         | [Apache-2.0][25]                               |
+| [Apache Maven Resources Plugin][62]                     | [Apache-2.0][25]                               |
+| [Apache Maven Install Plugin][63]                       | [Apache-2.0][25]                               |
+| [Apache Maven Site Plugin][64]                          | [Apache-2.0][25]                               |
 
 [0]: https://github.com/exasol/db-fundamentals-java/
 [1]: https://github.com/exasol/db-fundamentals-java/blob/main/LICENSE
@@ -114,14 +115,15 @@
 [50]: https://spdx.org/licenses/MIT.txt
 [51]: https://maven.apache.org/plugins/maven-gpg-plugin/
 [52]: https://central.sonatype.org
-[53]: https://maven.apache.org/surefire/maven-failsafe-plugin/
-[54]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
-[55]: https://www.eclipse.org/legal/epl-2.0/
-[56]: https://github.com/exasol/error-code-crawler-maven-plugin/
-[57]: https://github.com/exasol/error-code-crawler-maven-plugin/blob/main/LICENSE
-[58]: https://github.com/git-commit-id/git-commit-id-maven-plugin
-[59]: http://www.gnu.org/licenses/lgpl-3.0.txt
-[60]: https://maven.apache.org/plugins/maven-clean-plugin/
-[61]: https://maven.apache.org/plugins/maven-resources-plugin/
-[62]: https://maven.apache.org/plugins/maven-install-plugin/
-[63]: https://maven.apache.org/plugins/maven-site-plugin/
+[53]: https://maven.apache.org/plugins/maven-dependency-plugin/
+[54]: https://maven.apache.org/surefire/maven-failsafe-plugin/
+[55]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
+[56]: https://www.eclipse.org/legal/epl-2.0/
+[57]: https://github.com/exasol/error-code-crawler-maven-plugin/
+[58]: https://github.com/exasol/error-code-crawler-maven-plugin/blob/main/LICENSE
+[59]: https://github.com/git-commit-id/git-commit-id-maven-plugin
+[60]: http://www.gnu.org/licenses/lgpl-3.0.txt
+[61]: https://maven.apache.org/plugins/maven-clean-plugin/
+[62]: https://maven.apache.org/plugins/maven-resources-plugin/
+[63]: https://maven.apache.org/plugins/maven-install-plugin/
+[64]: https://maven.apache.org/plugins/maven-site-plugin/

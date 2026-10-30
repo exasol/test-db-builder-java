@@ -185,7 +185,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.6.1</version>
                 <configuration>
-                    <argLine>${argLine}</argLine>
+                    <argLine>-javaagent:${org.mockito:mockito-core:jar} ${argLine}</argLine>
                     <environmentVariables>
                         <EXASOL_TELEMETRY_DISABLE>true</EXASOL_TELEMETRY_DISABLE>
                     </environmentVariables>
@@ -400,10 +400,23 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.11.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- Allow resolving dependency placeholders like ${org.mockito:mockito-core:jar} -->
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.6.1</version>
                 <configuration>
-                    <argLine>${argLine}</argLine>
+                    <argLine>-javaagent:${org.mockito:mockito-core:jar} ${argLine}</argLine>
                     <environmentVariables>
                         <EXASOL_TELEMETRY_DISABLE>true</EXASOL_TELEMETRY_DISABLE>
                     </environmentVariables>
