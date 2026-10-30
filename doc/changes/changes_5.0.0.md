@@ -9,7 +9,7 @@ This release fixes the following 2 vulnerabilities.
 ## Breaking Changes
 
 * This projects requires Java 17 for building and running.
-* The following deprecated API was removed:
+* The following deprecated APIs were removed:
   * Enum value `AdapterScript.Language.PYTHON`. Use `AdapterScript.Language.PYTHON3` instead.
   * Enum value `UdfScript.Language.PYTHON`. Use `UdfScript.Language.PYTHON3` instead.
 
