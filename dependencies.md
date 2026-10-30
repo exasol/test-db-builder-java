@@ -15,7 +15,7 @@
 | [Exasol JDBC Driver][4]                         | [EXAClient License][5]                                                 |
 | [MySQL Connector/J][6]                          | The GNU General Public License, v2 with Universal FOSS Exception, v1.0 |
 | [PostgreSQL JDBC Driver][7]                     | [BSD-2-Clause][8]                                                      |
-| [ojdbc11][9]                                    | [Oracle Free Use Terms and Conditions (FUTC)][10]                      |
+| [ojdbc17][9]                                    | [Oracle Free Use Terms and Conditions (FUTC)][10]                      |
 | [junit-pioneer][11]                             | [Eclipse Public License v2.0][12]                                      |
 | [Test containers for Exasol on Docker][13]      | [MIT License][14]                                                      |
 | [Testcontainers :: JUnit Jupiter Extension][15] | [MIT][16]                                                              |
@@ -66,7 +66,7 @@
 [2]: https://github.com/exasol/error-reporting-java/
 [3]: https://github.com/exasol/error-reporting-java/blob/main/LICENSE
 [4]: https://www.exasol.com/
-[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/26.2.9/exasol-jdbc-26.2.9-license.txt
+[5]: https://repo1.maven.org/maven2/com/exasol/exasol-jdbc/26.2.10/exasol-jdbc-26.2.10-license.txt
 [6]: http://dev.mysql.com/doc/connector-j/en/
 [7]: https://jdbc.postgresql.org
 [8]: https://jdbc.postgresql.org/about/license.html

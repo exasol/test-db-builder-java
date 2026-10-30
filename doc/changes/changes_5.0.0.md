@@ -38,7 +38,11 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 
 ### Test Dependency Updates
 
+* Updated `com.exasol:exasol-jdbc:26.2.9` to `26.2.10`
 * Updated `com.exasol:hamcrest-resultset-matcher:1.7.3` to `1.7.4`
+* Updated `com.mysql:mysql-connector-j:26.7.0` to `26.10.0`
+* Removed `com.oracle.database.jdbc:ojdbc11:23.26.3.0.0`
+* Added `com.oracle.database.jdbc:ojdbc17:23.26.4.0.0`
 * Updated `nl.jqno.equalsverifier:equalsverifier:3.19.4` to `4.5.2`
 * Updated `org.junit.jupiter:junit-jupiter-params:5.14.4` to `6.1.3`
 * Updated `org.mockito:mockito-junit-jupiter:5.23.0` to `5.24.0`
@@ -47,4 +51,17 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 
 ### Plugin Dependency Updates
 
-* Updated `com.exasol:project-keeper-maven-plugin:5.7.5` to `5.7.6`
+* Updated `com.exasol:error-code-crawler-maven-plugin:2.1.1` to `2.1.3`
+* Updated `com.exasol:project-keeper-maven-plugin:5.7.5` to `5.8.2`
+* Updated `org.apache.maven.plugins:maven-artifact-plugin:3.6.1` to `3.7.0`
+* Updated `org.apache.maven.plugins:maven-compiler-plugin:3.15.0` to `3.16.0`
+* Updated `org.apache.maven.plugins:maven-deploy-plugin:3.1.4` to `3.2.0`
+* Updated `org.apache.maven.plugins:maven-failsafe-plugin:3.5.6` to `3.6.1`
+* Updated `org.apache.maven.plugins:maven-install-plugin:3.1.4` to `3.2.0`
+* Updated `org.apache.maven.plugins:maven-surefire-plugin:3.5.6` to `3.6.1`
+* Updated `org.codehaus.mojo:build-helper-maven-plugin:3.6.1` to `3.6.2`
+* Updated `org.codehaus.mojo:versions-maven-plugin:2.21.0` to `2.23.0`
+* Updated `org.itsallcode:openfasttrace-maven-plugin:3.0.0` to `3.1.0`
+* Updated `org.jacoco:jacoco-maven-plugin:0.8.15` to `0.8.16`
+* Updated `org.sonarsource.scanner.maven:sonar-maven-plugin:5.7.0.6970` to `5.8.0.7211`
+* Updated `org.sonatype.central:central-publishing-maven-plugin:0.11.0` to `0.12.0`

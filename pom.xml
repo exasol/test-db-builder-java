@@ -7,6 +7,7 @@
     <description>pom.xml</description>
     <url>https://github.com/exasol/test-db-builder-java/</url>
     <properties>
+        <java.version>17</java.version>
         <test.containers.version>2.0.5</test.containers.version>
     </properties>
     <dependencyManagement>
@@ -25,13 +26,13 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-jdbc</artifactId>
-            <version>26.2.9</version>
+            <version>26.2.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>26.7.0</version>
+            <version>26.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,8 +43,8 @@
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>23.26.3.0.0</version>
+            <artifactId>ojdbc17</artifactId>
+            <version>23.26.4.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -135,7 +136,7 @@
             <plugin>
                 <groupId>org.itsallcode</groupId>
                 <artifactId>openfasttrace-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>trace-requirements</id>
@@ -151,7 +152,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.7.6</version>
+                <version>5.8.2</version>
                 <executions>
                     <execution>
                         <goals>
