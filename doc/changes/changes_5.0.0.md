@@ -1,10 +1,19 @@
-# Test Database Builder for Java 4.0.4, released 2026-??-??
+# Test Database Builder for Java 5.0.0, released 2026-10-30
 
 Code name: Fixed vulnerabilities CVE-2026-107314, CVE-2026-107315
 
 ## Summary
 
-This release fixes the following 2 vulnerabilities:
+This release fixes the following 2 vulnerabilities.
+
+## Breaking Changes
+
+* This projects requires Java 17 for building and running.
+* The following deprecated API was removed:
+  * Enum value `AdapterScript.Language.PYTHON`. Use `AdapterScript.Language.PYTHON3` instead.
+  * Enum value `UdfScript.Language.PYTHON`. Use `UdfScript.Language.PYTHON3` instead.
+
+## Details on Fixed Vulnerabilities
 
 ### CVE-2026-107314 (CWE-636) in dependency `org.postgresql:postgresql:jar:42.7.13:test`
 pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.11 through 42.7.13 enforce no restriction when the requireAuth connection property excludes all six authentication methods the driver knows, for example requireAuth=!password,!md5,!gss,!sspi,!scram-sha-256,!none. The driver then accepts any method the server asks for, including cleartext password authentication. A value without a method in it, such as requireAuth=, (a single comma), is affected the same way. An attacker positioned between the application and its server can ask for cleartext password authentication and receive the database password. A positive list such as requireAuth=scram-sha-256, and a partial exclusion such as requireAuth=!password,!md5, are enforced correctly. The property has no default value, so a deployment that does not set it is not affected. 42.7.14 fixes the problem: such a connection is refused with SQLState 08004, and a value without a method in it is rejected as invalid.

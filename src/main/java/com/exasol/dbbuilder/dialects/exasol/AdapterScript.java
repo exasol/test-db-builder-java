@@ -52,12 +52,6 @@ public class AdapterScript extends AbstractScript {
     public enum Language {
         /** Java language. */
         JAVA,
-        /**
-         * Python 2 language.
-         * 
-         * @deprecated Newer versions of Exasol 7.1 don't support Python 2 any more. Migrate to {@link #PYTHON3}.
-         */
-        @Deprecated PYTHON,
         /** Python 3 language. */
         PYTHON3,
         /** Lua language. */
@@ -77,7 +71,7 @@ public class AdapterScript extends AbstractScript {
 
         /**
          * Set the language of the adapter script.
-         * 
+         *
          * @param language language of the adapter script
          * @return self
          */
@@ -88,7 +82,7 @@ public class AdapterScript extends AbstractScript {
 
         /**
          * Build the {@link AdapterScript}.
-         * 
+         *
          * @return built {@link AdapterScript}.
          */
         public AdapterScript build() {
