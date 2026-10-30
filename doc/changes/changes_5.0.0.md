@@ -31,7 +31,7 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 
 ## Features
 
-* #155: Disable telemetry for UDF scripts by default and allow custom environment variables via `environmentVariable(name, value)`. The default can be overridden by setting `EXASOL_TELEMETRY_DISABLE` explicitly.
+* #155: Disabled telemetry for UDF scripts by default
 
 ## Security
 
