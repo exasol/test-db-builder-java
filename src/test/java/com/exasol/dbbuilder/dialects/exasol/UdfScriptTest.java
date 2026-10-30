@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -66,26 +68,56 @@ class UdfScriptTest {
 
     @Test
     void testEmitsWithReturnsReturnType() {
-        final UdfReturnTypeReturns result = (UdfReturnTypeReturns) getDefaultBuilder().returns("VARCHAR").build()
-                .getReturnType();
+        final UdfReturnTypeReturns result = (UdfReturnTypeReturns) getDefaultBuilder().returns("VARCHAR").build().getReturnType();
         assertThat(result.getType(), equalTo("VARCHAR"));
     }
 
     @Test
-    void testMissingReturnType() {
-        final UdfScript.Builder builder = UdfScript.builder(this.writerMock, this.schema, ExasolIdentifier.of("test"))
-                .inputType(UdfScript.InputType.SET).language(UdfScript.Language.JAVA);
-        final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
+    void testEnvironmentVariableAcceptsStandardNameAndValue() {
+        final UdfScript script = getDefaultBuilder().environmentVariable("CUSTOM_SETTING", "value=with spaces").build();
+        assertThat(script.getEnvironmentVariables().get("CUSTOM_SETTING"), equalTo("value=with spaces"));
+    }
+
+    @Test
+    void testEnvironmentVariableRejectsInvalidName() {
+        final UdfScript.Builder builder = getDefaultBuilder();
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> builder.environmentVariable("INVALID-NAME", "value"));
         assertThat(exception.getMessage(), equalTo(
-                "E-TDBJ-7: Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder."));
+                "E-TDBJ-39: Invalid environment variable name. Names must match '[A-Za-z_][A-Za-z0-9_]*'."));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "value;OTHER=value", "value\nOTHER=value", "value\rOTHER=value", "value\0OTHER=value" })
+    void testEnvironmentVariableRejectsIllegalCharactersInValue(final String value) {
+        final UdfScript.Builder builder = getDefaultBuilder();
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> builder.environmentVariable("CUSTOM_SETTING", value));
+        assertThat(exception.getMessage(), equalTo(
+                "E-TDBJ-40: Invalid value for environment variable 'CUSTOM_SETTING'. Values must not contain semicolons, line breaks, or NUL characters."));
+    }
+
+    @Test
+    void testEnvironmentVariableRejectsNullValue() {
+        final UdfScript.Builder builder = getDefaultBuilder();
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> builder.environmentVariable("CUSTOM_SETTING", null));
+        assertThat(exception.getMessage(), equalTo(
+                "E-TDBJ-40: Invalid value for environment variable 'CUSTOM_SETTING'. Values must not contain semicolons, line breaks, or NUL characters."));
+    }
+
+    @Test
+    void testMissingReturnType() {
+        final UdfScript.Builder builder = UdfScript.builder(this.writerMock, this.schema, ExasolIdentifier.of("test")).inputType(UdfScript.InputType.SET)
+                .language(UdfScript.Language.JAVA);
+        final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
+        assertThat(exception.getMessage(),
+                equalTo("E-TDBJ-7: Missing return type. Please set it by calling emits(), emits(types...) or returns(type) on this builder."));
     }
 
     @Test
     void testMissingLanguage() {
         final UdfScript.Builder builder = getDefaultBuilder().language(null);
         final IllegalStateException exception = assertThrows(IllegalStateException.class, builder::build);
-        assertThat(exception.getMessage(), equalTo(
-                "E-TDBJ-15: \'language\' is a required field. Please provide a value by calling language() before build()."));
+        assertThat(exception.getMessage(),
+                equalTo("E-TDBJ-15: \'language\' is a required field. Please provide a value by calling language() before build()."));
     }
 
     private UdfScript.Builder getDefaultBuilder() {
