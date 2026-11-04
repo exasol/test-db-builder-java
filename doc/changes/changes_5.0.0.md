@@ -1,10 +1,10 @@
-# Test Database Builder for Java 5.0.0, released 2026-10-??
+# Test Database Builder for Java 5.0.0, released 2026-10-30
 
 Code name: Fixed vulnerabilities CVE-2026-107314, CVE-2026-107315
 
 ## Summary
 
-This release fixes the following 2 vulnerabilities.
+This release fixes the following 2 vulnerabilities and disables telemetry for UDF scripts by default and allows custom environment variables via `environmentVariable(name, value)`. The default can be overridden by setting `EXASOL_TELEMETRY_DISABLE` explicitly.
 
 ## Breaking Changes
 
@@ -28,6 +28,10 @@ pgjdbc, the PostgreSQL JDBC Driver, versions 42.7.4 through 42.7.13 pads a value
 * https://guide.sonatype.com/vulnerability/CVE-2026-107315?component-type=maven&component-name=org.postgresql%2Fpostgresql&utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1
 * http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2026-107315
 * https://github.com/pgjdbc/pgjdbc/security/advisories/GHSA-f64h-wr5q-3qf3
+
+## Features
+
+* #155: Disabled telemetry for UDF scripts by default
 
 ## Security
 

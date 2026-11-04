@@ -155,6 +155,16 @@ Covers:
 
 Needs: impl, utest, itest
 
+#### Disabling Telemetry for UDF Scripts
+`dsn~creating-udfs.disable-telemetry~1`
+
+TDBJ automatically disables telemetry by adding `%env EXASOL_TELEMETRY_DISABLE=1;` to UDF script definitions.
+
+Covers:
+* [`req~disabling-telemetry.udf-scripts~1`](system_requirements.md#disabling-telemetry-for-udf-scripts)
+
+Needs: impl, utest, itest
+
 #### Disabling Telemetry for Virtual Schemas
 `dsn~creating-virtual-schemas.disable-telemetry~1`
 
@@ -203,9 +213,11 @@ Needs: impl, itest
 
 ### Creating UDFs
 
-`dsn~creating-udfs~1`
+`dsn~creating-udfs~2`
 
 Users can create UDF objects from inside schema objects by providing the script from file.
+
+The UDF builder also supports adding environment variables, which TDBJ writes as `%env` directives in the script definition.
 
 Covers:
 

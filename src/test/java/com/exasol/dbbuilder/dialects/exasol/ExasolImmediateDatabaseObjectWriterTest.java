@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.exasol.db.ExasolIdentifier;
 import com.exasol.dbbuilder.dialects.AbstractImmediateDatabaseObjectWriterTest;
 import com.exasol.dbbuilder.dialects.DatabaseObjectWriter;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
 
 @ExtendWith(MockitoExtension.class)
 class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseObjectWriterTest {
@@ -45,6 +46,58 @@ class ExasolImmediateDatabaseObjectWriterTest extends AbstractImmediateDatabaseO
             objectWriter.write(adapterScript);
             assertThat(objectWriter.getLastQuery(), equalTo(
                     "CREATE JAVA ADAPTER SCRIPT \"TEST_SCHEMA\".\"MY_ADAPTER\" AS\n%jvmoption -DmyProp=1;\ncontent\n/"));
+        }
+    }
+
+    @Test
+    // [utest->dsn~creating-udfs.disable-telemetry~1]
+    void testWriteUdfScriptDisablesTelemetry() {
+        final ExasolImmediateDatabaseObjectWriterStub objectWriter = new ExasolImmediateDatabaseObjectWriterStub(
+                this.connectionMock, ExasolObjectConfiguration.builder().build());
+        try (final ExasolSchema schema = new ExasolSchema(objectWriter, ExasolIdentifier.of("TEST_SCHEMA"))) {
+            schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
+                    .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR").content("return 'value'").build();
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=1;
+
+                    return 'value'
+                    /"""));
+        }
+    }
+
+    @Test
+    void testWriteUdfScriptWithCustomEnvironmentVariable() {
+        final ExasolImmediateDatabaseObjectWriterStub objectWriter = new ExasolImmediateDatabaseObjectWriterStub(
+                this.connectionMock, ExasolObjectConfiguration.builder().build());
+        try (final ExasolSchema schema = new ExasolSchema(objectWriter, ExasolIdentifier.of("TEST_SCHEMA"))) {
+            schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
+                    .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR")
+                    .environmentVariable("CUSTOM_SETTING", "custom-value").content("return 'value'").build();
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=1;
+                    %env CUSTOM_SETTING=custom-value;
+
+                    return 'value'
+                    /"""));
+        }
+    }
+
+    @Test
+    void testWriteUdfScriptCanOverrideDefaultTelemetryEnvironmentVariable() {
+        final ExasolImmediateDatabaseObjectWriterStub objectWriter = new ExasolImmediateDatabaseObjectWriterStub(
+                this.connectionMock, ExasolObjectConfiguration.builder().build());
+        try (final ExasolSchema schema = new ExasolSchema(objectWriter, ExasolIdentifier.of("TEST_SCHEMA"))) {
+            schema.createUdfBuilder("MY_UDF").language(UdfScript.Language.PYTHON3)
+                    .inputType(UdfScript.InputType.SCALAR).returns("VARCHAR")
+                    .environmentVariable("EXASOL_TELEMETRY_DISABLE", "0").content("return 'value'").build();
+            assertThat(objectWriter.getLastQuery(), equalTo("""
+                    CREATE PYTHON3 SCALAR SCRIPT "TEST_SCHEMA"."MY_UDF"( ...) RETURNS VARCHARAS \
+                    %env EXASOL_TELEMETRY_DISABLE=0;
+
+                    return 'value'
+                    /"""));
         }
     }
 }
